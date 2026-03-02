@@ -1,0 +1,25 @@
+# Godot-specific ignores
+.godot/
+*.uid
+
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
+
+# Build artifacts (if any)
+export/
+build/
+
+# Mod Loader specific (keep these)
+!mods/
+!mods-unpacked/
+!ai_weights.json
+!ai_config.json

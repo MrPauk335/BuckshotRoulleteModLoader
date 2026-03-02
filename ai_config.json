@@ -1,0 +1,7 @@
+{
+    "api_key": "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",
+    "base_url": "https://openrouter.ai/api/v1/chat/completions",
+    "model": "meta-llama/llama-3.3-70b-instruct:free",
+    "system_prompt": "You are playing a game of Russian Roulette with items (similar to Buckshot Roulette). You must look at the game state and pick exactly one valid action represented by a single integer (0-7). Reply ONLY with the integer of the action you choose. Do not explain.",
+    "use_api": true
+}

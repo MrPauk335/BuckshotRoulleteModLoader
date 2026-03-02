@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="ModLoaderCurrentOptions" load_steps=2 format=3 uid="uid://bls83tkysflvg"]
+
+[ext_resource type="Script" uid="uid://cbntrvtsyxu0n" path="res://addons/mod_loader/resources/options_current.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

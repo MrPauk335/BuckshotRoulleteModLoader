@@ -1,0 +1,21 @@
+{
+    "dependencies": [],
+    "description": "Host Mod Menu for Buckshot Multiplayer.",
+    "extra": {
+        "godot": {
+            "authors": [
+                "mrpauk335"
+            ],
+            "compatible_game_version": [
+                "*"
+            ],
+            "compatible_mod_loader_version": [
+                "7.0.0"
+            ]
+        }
+    },
+    "name": "ModMenu",
+    "namespace": "mrpauk335",
+    "version_number": "1.0.7",
+    "website_url": "https://github.com/mrpauk335/ModMenu"
+}
