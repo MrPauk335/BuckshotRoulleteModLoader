@@ -80,15 +80,15 @@ func _ready():
 		vanilla__ready()
 
 func vanilla__ready():
-    MAIN_active_running_intro = !skipping_intro
-    SetupInventory()
-    MakeSequenceCopies()
-    SetupEmptyGlobalItemCount()
-    if GlobalVariables.exiting_to_lobby_after_inactivity:
-        pinging_mouse_pos = true
-        PingMousePosition()
+	MAIN_active_running_intro = !skipping_intro
+	SetupInventory()
+	MakeSequenceCopies()
+	SetupEmptyGlobalItemCount()
+	if GlobalVariables.exiting_to_lobby_after_inactivity:
+		pinging_mouse_pos = true
+		PingMousePosition()
 
-    game_state_ready.emit(self)
+	game_state_ready.emit(self)
 
     await get_tree().create_timer(5, false).timeout
 

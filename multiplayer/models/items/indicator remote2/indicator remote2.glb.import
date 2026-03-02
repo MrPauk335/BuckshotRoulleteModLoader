@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/indicator remote2.glb-e9b62683545901ff2f94fb2
 
 nodes/root_type="Node3D"
 nodes/root_name="indicator remote2"
+nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -33,6 +34,9 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
 _subresources={
 "meshes": {
 "indicator remote2_Plane_040": {

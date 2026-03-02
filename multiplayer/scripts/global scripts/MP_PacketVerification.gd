@@ -13,50 +13,50 @@ func VerifyPacket(packet_data):
 	return vanilla_VerifyPacket(packet_data)
 
 func vanilla_VerifyPacket(packet_data):
-    if packet_data.has("sender") and packet_data["sender"] == "bot":
-        return packet_data.duplicate(true)
+	if packet_data.has("sender") and packet_data["sender"] == "bot":
+		return packet_data.duplicate(true)
 
-    if !packet_data.has("sent_from_socket") or !packet_data.has("packet_id"):
-        print("unknown packet in verification: ", packet_data, ". returning")
-        return {}
-    var id = packet_data.values()[3]
-    var verified_data = {}
-    var verification_successful = false
-    var properties = game_state.GetSocketProperties(packet_data.sent_from_socket)
-    match id:
-        10:
-            if !game_state.MAIN_is_shotgun_held && !properties.is_holding_shotgun && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
-                verification_successful = true
-        12:
-            if properties.is_holding_shotgun && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
-                verification_successful = true
-        15:
-            if properties.is_holding_shotgun:
-                verification_successful = true
-        17:
-            if properties.is_grabbing_items && !properties.is_holding_item_to_place:
-                verification_successful = true
-        19:
-            if properties.is_grabbing_items && properties.is_holding_item_to_place:
-                verification_successful = true
-        22:
-            if packet_data.has("item_id") && packet_data.has("stealing_item") && packet_data.has("item_socket_number"):
-                if !packet_data.stealing_item:
-                    if game_state.CheckIfPropertyHasItem(properties.socket_number, packet_data.item_id) && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
-                        verification_successful = true
-                else:
-                    if properties.is_stealing_item && game_state.CheckIfPropertyHasItem(packet_data.item_socket_number, packet_data.item_id) && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
-                        verification_successful = true
-        24:
-            if properties.is_viewing_jammer && properties.has_turn:
-                verification_successful = true
+	if !packet_data.has("sent_from_socket") or !packet_data.has("packet_id"):
+		print("unknown packet in verification: ", packet_data, ". returning")
+		return {}
+	var id = packet_data.values()[3]
+	var verified_data = {}
+	var verification_successful = false
+	var properties = game_state.GetSocketProperties(packet_data.sent_from_socket)
+	match id:
+		10:
+			if !game_state.MAIN_is_shotgun_held && !properties.is_holding_shotgun && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
+				verification_successful = true
+		12:
+			if properties.is_holding_shotgun && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
+				verification_successful = true
+		15:
+			if properties.is_holding_shotgun:
+				verification_successful = true
+		17:
+			if properties.is_grabbing_items && !properties.is_holding_item_to_place:
+				verification_successful = true
+		19:
+			if properties.is_grabbing_items && properties.is_holding_item_to_place:
+				verification_successful = true
+		22:
+			if packet_data.has("item_id") && packet_data.has("stealing_item") && packet_data.has("item_socket_number"):
+				if !packet_data.stealing_item:
+					if game_state.CheckIfPropertyHasItem(properties.socket_number, packet_data.item_id) && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
+						verification_successful = true
+				else:
+					if properties.is_stealing_item && game_state.CheckIfPropertyHasItem(packet_data.item_socket_number, packet_data.item_id) && game_state.MAIN_active_current_turn_socket == properties.socket_number && properties.has_turn:
+						verification_successful = true
+		24:
+			if properties.is_viewing_jammer && properties.has_turn:
+				verification_successful = true
 
-    if verification_successful:
-        verified_data = packet_data.duplicate(true)
-    else:
-        verified_data = {}
+	if verification_successful:
+		verified_data = packet_data.duplicate(true)
+	else:
+		verified_data = {}
 
-    return verified_data
+	return verified_data
 
 func PacketSort(dict: Dictionary):
     var value_category = dict.values()[0]

@@ -17,8 +17,8 @@ func _on_round_manager_ready(chain: ModLoaderHookChain) -> void :
         ModLoaderLog.info("Connected to bot_turn_started signal.", LOG_NAME)
 
 func _on_bot_turn_started(properties: MP_UserInstanceProperties) -> void :
-    var rm = properties.intermediary.roundManager
-    var game_state = properties.intermediary.game_state
+    var rm = properties.intermediary.get("roundManager")
+    var game_state = properties.intermediary.get("game_state")
 
     var bot_think_delay1 = 0.4
     if GlobalVariables.mp_auto_battler_enabled: bot_think_delay1 = 0.1

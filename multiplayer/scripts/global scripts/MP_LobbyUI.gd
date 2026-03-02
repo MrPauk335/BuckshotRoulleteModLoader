@@ -77,10 +77,10 @@ func _ready():
 		vanilla__ready()
 
 func vanilla__ready():
-    GlobalVariables.cursor_state_after_toggle = false
-    cursor.SetCursor(false, false)
-    _create_bot_buttons()
-    UpdatePlayerList()
+	GlobalVariables.cursor_state_after_toggle = false
+	cursor.SetCursor(false, false)
+	_create_bot_buttons()
+	UpdatePlayerList()
 
     if GlobalVariables.running_short_intro_in_lobby_scene:
         ShortIntro()
@@ -104,17 +104,17 @@ func _process(delta):
 		vanilla__process(delta)
 
 func vanilla__process(delta):
-    CheckHostLeave()
-    CheckLobbyCopyPaste()
-    CheckHostUI()
-    CheckStartButton()
-    FailsafeFocusUI()
-    DebugLabel()
-    _check_bot_buttons()
-    CheckLowerConsolePosition()
-    CheckSearchForLobbies()
-    CheckFriendsOnlyToggle()
-    _check_auto_battler()
+	CheckHostLeave()
+	CheckLobbyCopyPaste()
+	CheckHostUI()
+	CheckStartButton()
+	FailsafeFocusUI()
+	DebugLabel()
+	_check_bot_buttons()
+	CheckLowerConsolePosition()
+	CheckSearchForLobbies()
+	CheckFriendsOnlyToggle()
+	_check_auto_battler()
 
 func DebugLabel():
     debug_timeouts_enabled.visible = GlobalVariables.timeouts_enabled
@@ -234,30 +234,30 @@ func UpdatePlayerList():
 		vanilla_UpdatePlayerList()
 
 func vanilla_UpdatePlayerList():
-    CheckAllVersions()
-    var members = GlobalSteam.LOBBY_MEMBERS.duplicate()
-    if members.size() != prev_members.size() && fs:
-        speaker_info_change.pitch_scale = randf_range(0.2, 0.3)
-        if playing_info_change_sound: speaker_info_change.play()
-    prev_members = members
-    for i in range(array_members.size()):
-        array_members[i].text = ""
-        array_kick[i].visible = false
-        array_circles[i].visible = false
-    for i in range(members.size()):
-        array_members[i].text = GlobalSteam.LOBBY_MEMBERS[i]["steam_name"]
-        array_circles[i].visible = true
-        if i != 0 && GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
-            array_kick[i].visible = true
-            array_kick[i].get_child(0).get_child(0).sub_alias = str(members[i].steam_id)
+	CheckAllVersions()
+	var members = GlobalSteam.LOBBY_MEMBERS.duplicate()
+	if members.size() != prev_members.size() && fs:
+		speaker_info_change.pitch_scale = randf_range(0.2, 0.3)
+		if playing_info_change_sound: speaker_info_change.play()
+	prev_members = members
+	for i in range(array_members.size()):
+		array_members[i].text = ""
+		array_kick[i].visible = false
+		array_circles[i].visible = false
+	for i in range(members.size()):
+		array_members[i].text = GlobalSteam.LOBBY_MEMBERS[i]["steam_name"]
+		array_circles[i].visible = true
+		if i != 0 && GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
+			array_kick[i].visible = true
+			array_kick[i].get_child(0).get_child(0).sub_alias = str(members[i].steam_id)
 
-    var bot_names = ["Alex", "John", "David", "Mike"]
-    for b in range(GlobalVariables.mp_bot_count):
-        var slot = members.size() + b
-        if slot < array_members.size():
-            array_members[slot].text = bot_names[b] if b < bot_names.size() else "Player"
-            array_circles[slot].visible = true
-    fs = true
+	var bot_names = ["Alex", "John", "David", "Mike"]
+	for b in range(GlobalVariables.mp_bot_count):
+		var slot = members.size() + b
+		if slot < array_members.size():
+			array_members[slot].text = bot_names[b] if b < bot_names.size() else "Player"
+			array_circles[slot].visible = true
+	fs = true
 
 func ShowPopupWindow(with_message: String):
     await get_tree().create_timer(0.1, false).timeout

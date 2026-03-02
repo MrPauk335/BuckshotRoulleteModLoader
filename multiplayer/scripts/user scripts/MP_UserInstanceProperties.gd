@@ -350,9 +350,10 @@ func ResetLastAliveProperty():
 func ReceivePacket_TimeoutExceeded(packet: Dictionary):
     print("timeout exceeded with packet: ", packet)
 
-    intermediary.game_state.StopTimeoutForSocket(packet.timeout_type, packet.socket_number)
-    intermediary.game_state.StopTimeoutForSocket("adrenaline", packet.socket_number)
-    intermediary.game_state.StopTimeoutForSocket("jammer", packet.socket_number)
+    var game_state_ref = intermediary.get("game_state")
+    game_state_ref.StopTimeoutForSocket(packet.timeout_type, packet.socket_number)
+    game_state_ref.StopTimeoutForSocket("adrenaline", packet.socket_number)
+    game_state_ref.StopTimeoutForSocket("jammer", packet.socket_number)
 
     match packet.timeout_type:
         "adrenaline":
@@ -369,7 +370,7 @@ func ReceivePacket_TimeoutExceeded(packet: Dictionary):
             else:
                 if socket_number == packet.socket_number:
                     permissions.SetMainPermission(false)
-                    intermediary.roundManager.PassTurn(packet.next_turn_socket)
+                    intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
                     is_stealing_item = false
                     is_on_secondary_interaction = false
         "jammer":
@@ -384,17 +385,17 @@ func ReceivePacket_TimeoutExceeded(packet: Dictionary):
                     item_interaction.ReturnJammerAfterTimeout()
                     permissions.SetMainPermission(false)
                     is_on_secondary_interaction = false
-                    intermediary.roundManager.PassTurn(packet.next_turn_socket)
+                    intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
         "item distribution":
             if socket_number == packet.socket_number:
                 item_manager.EndItemGrabbingAfterTimeout()
         "turn":
             if socket_number == packet.socket_number:
                 permissions.SetMainPermission(false)
-                intermediary.roundManager.PassTurn(packet.next_turn_socket)
+                intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
         "shotgun target selection":
             if socket_number == packet.socket_number:
                 permissions.SetMainPermission(false)
                 shotgun.DropShotgun()
                 await get_tree().create_timer(0.39, false).timeout
-                intermediary.roundManager.PassTurn(packet.next_turn_socket)
+                intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
