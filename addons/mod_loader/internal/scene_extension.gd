@@ -4,7 +4,7 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:SceneExtension"
+const LOG_NAME = "ModLoader:SceneExtension"
 
 
 
@@ -46,8 +46,8 @@ static func handle_scene_extensions() -> void :
 
 
 static func _save_scene(modified_scene: Node, scene_path: String) -> void :
-    var packed_scene: = PackedScene.new()
-    var _pack_error: = packed_scene.pack(modified_scene)
+    var packed_scene = PackedScene.new()
+    var _pack_error = packed_scene.pack(modified_scene)
     ModLoaderLog.debug("packing scene -> %s" % packed_scene, LOG_NAME)
     packed_scene.take_over_path(scene_path)
     ModLoaderLog.debug(

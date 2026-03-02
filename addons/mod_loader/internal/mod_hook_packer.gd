@@ -5,7 +5,7 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:ModHookPacker"
+const LOG_NAME = "ModLoader:ModHookPacker"
 
 
 static func start() -> void :
@@ -13,18 +13,18 @@ static func start() -> void :
     var hook_pre_processor = _ModLoaderModHookPreProcessor.new()
     hook_pre_processor.process_begin()
 
-    var mod_hook_pack_path: = _ModLoaderPath.get_path_to_hook_pack()
+    var mod_hook_pack_path = _ModLoaderPath.get_path_to_hook_pack()
 
 
     if not DirAccess.dir_exists_absolute(mod_hook_pack_path.get_base_dir()):
-        var error: = DirAccess.make_dir_recursive_absolute(mod_hook_pack_path.get_base_dir())
+        var error = DirAccess.make_dir_recursive_absolute(mod_hook_pack_path.get_base_dir())
         if not error == OK:
             ModLoaderLog.error("Error creating the mod hook directory at %s" % mod_hook_pack_path, LOG_NAME)
             return
         ModLoaderLog.debug("Created dir at: %s" % mod_hook_pack_path, LOG_NAME)
 
 
-    var zip_writer: = ZIPPacker.new()
+    var zip_writer = ZIPPacker.new()
     var error: Error
 
     if not FileAccess.file_exists(mod_hook_pack_path):
@@ -40,19 +40,19 @@ static func start() -> void :
 
     ModLoaderLog.debug("Scripts requiring hooks: %s" % [ModLoaderStore.hooked_script_paths], LOG_NAME)
 
-    var cache: = _ModLoaderCache.get_data("hooks")
+    var cache = _ModLoaderCache.get_data("hooks")
     var cached_script_paths: Dictionary = {} if cache.is_empty() or not cache.has("hooked_script_paths") else cache.hooked_script_paths
     if cached_script_paths == ModLoaderStore.hooked_script_paths:
         ModLoaderLog.info("Scripts are already processed according to cache, skipping process.", LOG_NAME)
         zip_writer.close()
         return
 
-    var new_hooks_created: = false
+    var new_hooks_created = false
 
     for path in ModLoaderStore.hooked_script_paths.keys():
         var method_mask: Array[String] = []
         method_mask.assign(ModLoaderStore.hooked_script_paths[path])
-        var processed_source_code: = hook_pre_processor.process_script_verbose(path, false, method_mask)
+        var processed_source_code = hook_pre_processor.process_script_verbose(path, false, method_mask)
 
 
         if not hook_pre_processor.script_paths_hooked.has(path):

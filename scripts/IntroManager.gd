@@ -48,6 +48,9 @@ func _ready():
 	parent_pills.visible = false
 	allowingPills = false
 	SetControllerState()
+	if (GlobalVariables.skipping_intro):
+		BeginGame()
+		return
 	await get_tree().create_timer(0.5, false).timeout
 	if (roundManager.playerData.playerEnteringFromDeath && !roundManager.playerData.enteringFromTrueDeath):
 		RevivalBathroomStart()

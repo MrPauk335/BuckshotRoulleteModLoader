@@ -1,7 +1,7 @@
 class_name _ModLoaderSteam
 extends Node
 
-const LOG_NAME: = "ModLoader:ThirdParty:Steam"
+const LOG_NAME = "ModLoader:ThirdParty:Steam"
 
 
 
@@ -12,15 +12,15 @@ const LOG_NAME: = "ModLoader:ThirdParty:Steam"
 static func find_steam_workshop_zips() -> Array[String]:
 
     var zip_paths: Array[String] = []
-    var workshop_folder_path: = _get_path_to_workshop()
+    var workshop_folder_path = _get_path_to_workshop()
 
     ModLoaderLog.info("Checking workshop items, with path: \"%s\"" % workshop_folder_path, LOG_NAME)
 
-    var workshop_dir: = DirAccess.open(workshop_folder_path)
+    var workshop_dir = DirAccess.open(workshop_folder_path)
     if workshop_dir == null:
         ModLoaderLog.error("Can't open workshop folder %s (Error: %s)" % [workshop_folder_path, error_string(DirAccess.get_open_error())], LOG_NAME)
         return []
-    var workshop_dir_listdir_error: = workshop_dir.list_dir_begin()
+    var workshop_dir_listdir_error = workshop_dir.list_dir_begin()
     if not workshop_dir_listdir_error == OK:
         ModLoaderLog.error("Can't read workshop folder %s (Error: %s)" % [workshop_folder_path, error_string(workshop_dir_listdir_error)], LOG_NAME)
         return []
@@ -28,11 +28,11 @@ static func find_steam_workshop_zips() -> Array[String]:
 
     while true:
 
-        var item_dir: = workshop_dir.get_next()
+        var item_dir = workshop_dir.get_next()
         if item_dir == "":
             break
 
-        var item_path: = workshop_dir.get_current_dir() + "/" + item_dir
+        var item_path = workshop_dir.get_current_dir() + "/" + item_dir
         ModLoaderLog.info("Checking workshop item path: \"%s\"" % item_path, LOG_NAME)
 
 
@@ -60,11 +60,11 @@ static func _get_path_to_workshop() -> String:
     if ModLoaderStore.ml_options.override_path_to_workshop:
         return ModLoaderStore.ml_options.override_path_to_workshop
 
-    var game_install_directory: = _ModLoaderPath.get_local_folder_dir()
-    var path: = ""
+    var game_install_directory = _ModLoaderPath.get_local_folder_dir()
+    var path = ""
 
 
-    var path_array: = game_install_directory.split("/")
+    var path_array = game_install_directory.split("/")
     path_array.resize(path_array.size() - 3)
 
 
@@ -87,9 +87,9 @@ static func _get_steam_app_id() -> String:
         ModLoaderLog.debug("No Steam ID specified in the Mod Loader options. Attempting to read the steam_data.json file next.", LOG_NAME)
 
 
-    var game_install_directory: = _ModLoaderPath.get_local_folder_dir()
-    var steam_app_id: = ""
-    var file: = FileAccess.open(game_install_directory.path_join("steam_data.json"), FileAccess.READ)
+    var game_install_directory = _ModLoaderPath.get_local_folder_dir()
+    var steam_app_id = ""
+    var file = FileAccess.open(game_install_directory.path_join("steam_data.json"), FileAccess.READ)
 
     if not file == null:
         var test_json_conv = JSON.new()

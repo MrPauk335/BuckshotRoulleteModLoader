@@ -195,8 +195,13 @@ func SetupRoundArray():
 	for i in range(batchArray.size()):
 		if (batchArray[i].batchIndex == mainBatchIndex):
 			var matched = batchArray[i]
-			for z in range(matched.roundArray.size()):
-				roundArray.append(matched.roundArray[z])
+			var limit = GlobalVariables.active_match_customization_dictionary.get("number_of_rounds", matched.roundArray.size())
+			for z in range(min(matched.roundArray.size(), limit)):
+				var r = matched.roundArray[z].duplicate() # Duplicate to avoid modifying global resources
+				var hp_override = GlobalVariables.active_match_customization_dictionary.get("starting_health_override", -1)
+				if hp_override != -1:
+					r.startingHealth = hp_override
+				roundArray.append(r)
 				pass
 	pass
 

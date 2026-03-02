@@ -75,9 +75,9 @@ var MAIN_barrel_sawed_off = false
 
 func _ready():
 	if _ModLoaderHooks.any_mod_hooked:
-		_ModLoaderHooks.call_hooks(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_GameStateManager.gd", "_ready"))
+		await _ModLoaderHooks.call_hooks_async(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_GameStateManager.gd", "_ready"))
 	else:
-		vanilla__ready()
+		await vanilla__ready()
 
 func vanilla__ready():
 	MAIN_active_running_intro = !skipping_intro

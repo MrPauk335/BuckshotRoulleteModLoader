@@ -1,6 +1,6 @@
 class_name Unlocker extends Node
 
-const savepath: = "user://buckshotroulette_pills.shell"
+const savepath = "user://buckshotroulette_pills.shell"
 @export var ach: Achievement
 @export var dia: DialogueEnding
 @export var ui: Label

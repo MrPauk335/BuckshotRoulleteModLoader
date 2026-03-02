@@ -4,7 +4,7 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:Deprecated"
+const LOG_NAME = "ModLoader:Deprecated"
 
 
 
@@ -58,7 +58,7 @@ static func deprecated_removed(old_method: String, since_version: String, show_r
 
 
 static func deprecated_message(msg: String, since_version: String = "") -> void :
-    var since_text: = " (since version %s)" % since_version if since_version else ""
+    var since_text = " (since version %s)" % since_version if since_version else ""
     _deprecated_log(str("DEPRECATED: ", msg, since_text))
 
 

@@ -47,7 +47,7 @@ enum VERSION_VALIDATION{
 @export_group("Logging")
 
 
-@export var log_level: = ModLoaderLog.VERBOSITY_LEVEL.DEBUG
+@export var log_level = ModLoaderLog.VERBOSITY_LEVEL.DEBUG
 
 @export var ignore_deprecated_errors: bool = false
 
@@ -55,7 +55,7 @@ enum VERSION_VALIDATION{
 
 
 @export var ignored_mod_names_in_log: Array[String] = []
-@export var hint_color: = Color("#70bafa")
+@export var hint_color = Color("#70bafa")
 
 @export_group("Game Data")
 
@@ -65,7 +65,7 @@ enum VERSION_VALIDATION{
 
 
 
-@export var semantic_version: = "0.0.0":
+@export var semantic_version = "0.0.0":
     get:
         return semantic_version
 
@@ -95,20 +95,20 @@ enum VERSION_VALIDATION{
 @export_group("Mod Hooks")
 
 
-@export_global_dir var override_path_to_hook_pack: = ""
+@export_global_dir var override_path_to_hook_pack = ""
 
-@export var override_hook_pack_name: = ""
+@export var override_hook_pack_name = ""
 
 
-@export_dir var restart_notification_scene_path: = "res://addons/mod_loader/restart_notification.tscn"
+@export_dir var restart_notification_scene_path = "res://addons/mod_loader/restart_notification.tscn"
 
-@export var disable_restart: = false
+@export var disable_restart = false
 
 @export_group("Mod Validation")
 
 
 
-@export var game_version_validation: = VERSION_VALIDATION.DEFAULT
+@export var game_version_validation = VERSION_VALIDATION.DEFAULT
 
 
 

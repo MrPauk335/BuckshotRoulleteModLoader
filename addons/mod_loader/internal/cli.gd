@@ -5,7 +5,7 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:CLI"
+const LOG_NAME = "ModLoader:CLI"
 
 
 
@@ -19,16 +19,16 @@ static func is_running_with_command_line_arg(argument: String) -> bool:
 
 
 static func get_cmd_line_arg_value(argument: String) -> String:
-    var args: = _get_fixed_cmdline_args()
+    var args = _get_fixed_cmdline_args()
 
     for arg_index in args.size():
-        var arg: = args[arg_index] as String
+        var arg = args[arg_index] as String
 
-        var key: = arg.split("=")[0]
+        var key = arg.split("=")[0]
         if key == argument:
 
             if "=" in arg:
-                var value: = arg.trim_prefix(argument + "=")
+                var value = arg.trim_prefix(argument + "=")
                 value = value.trim_prefix("\"").trim_suffix("\"")
                 value = value.trim_prefix("'").trim_suffix("'")
                 return value
@@ -52,13 +52,13 @@ static func fix_godot_cmdline_args_string_space_splitting(args: PackedStringArra
     if OS.has_feature("windows"):
         return args
 
-    var fixed_args: = PackedStringArray([])
-    var fixed_arg: = ""
+    var fixed_args = PackedStringArray([])
+    var fixed_arg = ""
 
 
 
     for arg in args:
-        var arg_string: = arg as String
+        var arg_string = arg as String
         if "=\"" in arg_string or "=\"" in fixed_arg or \
 arg_string.begins_with("\"") or fixed_arg.begins_with("\""):
             if not fixed_arg == "":

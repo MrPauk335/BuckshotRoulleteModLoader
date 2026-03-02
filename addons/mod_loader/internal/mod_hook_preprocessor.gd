@@ -6,52 +6,52 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:ModHookPreProcessor"
+const LOG_NAME = "ModLoader:ModHookPreProcessor"
 
-const REQUIRE_EXPLICIT_ADDITION: = false
-const METHOD_PREFIX: = "vanilla_"
-const HASH_COLLISION_ERROR: = \
+const REQUIRE_EXPLICIT_ADDITION = false
+const METHOD_PREFIX = "vanilla_"
+const HASH_COLLISION_ERROR = \
 "MODDING HOOKS ERROR: Hash collision between %s and %s. The collision can be resolved by renaming one of the methods or changing their script's path."
-const MOD_LOADER_HOOKS_START_STRING: = \
+const MOD_LOADER_HOOKS_START_STRING = \
 "\n# ModLoader Hooks - The following code has been automatically added by the Godot Mod Loader."
 
 
 
 
 
-const REGEX_MATCH_FUNC_WITH_WHITESPACE: = "\\bfunc\\b\\s+\\b%s\\b(?:.*\\n*)*?\\s*\\("
+const REGEX_MATCH_FUNC_WITH_WHITESPACE = "\\bfunc\\b\\s+\\b%s\\b(?:.*\\n*)*?\\s*\\("
 
 
 
-var regex_getter_setter: = RegEx.create_from_string("(.*?[sg]et\\s*=\\s*)(\\w+)(\\g<1>)?(\\g<2>)?")
+var regex_getter_setter = RegEx.create_from_string("(.*?[sg]et\\s*=\\s*)(\\w+)(\\g<1>)?(\\g<2>)?")
 
 
 
-var regex_super_call: = RegEx.create_from_string("\\bsuper(?=\\s*\\()")
+var regex_super_call = RegEx.create_from_string("\\bsuper(?=\\s*\\()")
 
 
 
 
-var regex_func_body: = RegEx.create_from_string("(?smn)\\N*(\\n^(([\\t #]+\\N*)|$))*")
+var regex_func_body = RegEx.create_from_string("(?smn)\\N*(\\n^(([\\t #]+\\N*)|$))*")
 
 
-var regex_keyword_await: = RegEx.create_from_string("\\bawait\\b")
+var regex_keyword_await = RegEx.create_from_string("\\bawait\\b")
 
 
-var regex_keyword_void: = RegEx.create_from_string("\\bvoid\\b")
+var regex_keyword_void = RegEx.create_from_string("\\bvoid\\b")
 
-var hashmap: = {}
-var script_paths_hooked: = {}
+var hashmap = {}
+var script_paths_hooked = {}
 
 
 func process_begin() -> void :
     hashmap.clear()
 
 
-func process_script_verbose(path: String, enable_hook_check: = false, method_mask: Array[String] = []) -> String:
-    var start_time: = Time.get_ticks_msec()
+func process_script_verbose(path: String, enable_hook_check = false, method_mask: Array[String] = []) -> String:
+    var start_time = Time.get_ticks_msec()
     ModLoaderLog.debug("Start processing script at path: %s" % path, LOG_NAME)
-    var processed: = process_script(path, enable_hook_check, method_mask)
+    var processed = process_script(path, enable_hook_check, method_mask)
     ModLoaderLog.debug("Finished processing script at path: %s in %s ms" % [path, Time.get_ticks_msec() - start_time], LOG_NAME)
     return processed
 
@@ -59,27 +59,27 @@ func process_script_verbose(path: String, enable_hook_check: = false, method_mas
 
 
 
-func process_script(path: String, enable_hook_check: = false, method_mask: Array[String] = []) -> String:
-    var current_script: = load(path) as GDScript
-    var source_code: = current_script.source_code
-    var source_code_additions: = ""
+func process_script(path: String, enable_hook_check = false, method_mask: Array[String] = []) -> String:
+    var current_script = load(path) as GDScript
+    var source_code = current_script.source_code
+    var source_code_additions = ""
 
 
 
-    var class_prefix: = str(hash(path))
+    var class_prefix = str(hash(path))
     var method_store: Array[String] = []
 
-    var getters_setters: = collect_getters_and_setters(source_code)
-    var moddable_methods: = current_script.get_script_method_list().filter(
+    var getters_setters = collect_getters_and_setters(source_code)
+    var moddable_methods = current_script.get_script_method_list().filter(
         is_func_moddable.bind(source_code, getters_setters)
     )
 
-    var methods_hooked: = {}
+    var methods_hooked = {}
     for method in moddable_methods:
         if method.name in method_store:
             continue
 
-        var full_prefix: = "%s%s_" % [METHOD_PREFIX, class_prefix]
+        var full_prefix = "%s%s_" % [METHOD_PREFIX, class_prefix]
 
 
 
@@ -99,8 +99,8 @@ func process_script(path: String, enable_hook_check: = false, method_mask: Array
             if not method.name in method_mask:
                 continue
 
-        var type_string: = get_return_type_string(method.return )
-        var is_static: = true if method.flags == METHOD_FLAG_STATIC + METHOD_FLAG_NORMAL else false
+        var type_string = get_return_type_string(method.return )
+        var is_static = true if method.flags == METHOD_FLAG_STATIC + METHOD_FLAG_NORMAL else false
 
         var func_def: RegExMatch = match_func_with_whitespace(method.name, source_code)
         if not func_def:
@@ -109,7 +109,7 @@ func process_script(path: String, enable_hook_check: = false, method_mask: Array
 
 
 
-        var max_loop: = 1000
+        var max_loop = 1000
         while not is_top_level_func(source_code, func_def.get_start(), is_static):
             func_def = match_func_with_whitespace(method.name, source_code, func_def.get_end())
             if not func_def or max_loop <= 0:
@@ -123,28 +123,28 @@ func process_script(path: String, enable_hook_check: = false, method_mask: Array
 
 
 
-        var closing_paren_index: = get_closing_paren_index(func_def.get_end() - 1, source_code)
+        var closing_paren_index = get_closing_paren_index(func_def.get_end() - 1, source_code)
 
-        var func_body_start_index: = get_func_body_start_index(closing_paren_index, source_code)
+        var func_body_start_index = get_func_body_start_index(closing_paren_index, source_code)
         if func_body_start_index == -1:
             continue
 
-        var func_body: = match_method_body(method.name, func_body_start_index, source_code)
+        var func_body = match_method_body(method.name, func_body_start_index, source_code)
         if not func_body:
             continue
 
-        var is_async: = is_func_async(func_body.get_string())
-        var can_return: = can_return(source_code, method.name, closing_paren_index, func_body_start_index)
-        var method_arg_string_with_defaults_and_types: = get_function_parameters(method.name, source_code, is_static)
-        var method_arg_string_names_only: = get_function_arg_name_string(method.args)
+        var is_async = is_func_async(func_body.get_string())
+        var can_return = can_return(source_code, method.name, closing_paren_index, func_body_start_index)
+        var method_arg_string_with_defaults_and_types = get_function_parameters(method.name, source_code, is_static)
+        var method_arg_string_names_only = get_function_arg_name_string(method.args)
 
-        var hook_id: = _ModLoaderHooks.get_hook_hash(path, method.name)
-        var hook_id_data: = [path, method.name, true]
+        var hook_id = _ModLoaderHooks.get_hook_hash(path, method.name)
+        var hook_id_data = [path, method.name, true]
         if hashmap.has(hook_id):
             push_error(HASH_COLLISION_ERROR % [hashmap[hook_id], hook_id_data])
         hashmap[hook_id] = hook_id_data
 
-        var mod_loader_hook_string: = build_mod_hook_string(
+        var mod_loader_hook_string = build_mod_hook_string(
             method.name, 
             method_arg_string_names_only, 
             method_arg_string_with_defaults_and_types, 
@@ -181,11 +181,11 @@ func process_script(path: String, enable_hook_check: = false, method_mask: Array
     return source_code
 
 
-static func is_func_moddable(method: Dictionary, source_code: String, getters_setters: = {}) -> bool:
+static func is_func_moddable(method: Dictionary, source_code: String, getters_setters = {}) -> bool:
     if getters_setters.has(method.name):
         return false
 
-    var method_first_line_start: = _ModLoaderModHookPreProcessor.get_index_at_method_start(method.name, source_code)
+    var method_first_line_start = _ModLoaderModHookPreProcessor.get_index_at_method_start(method.name, source_code)
     if method_first_line_start == -1:
         return false
 
@@ -199,13 +199,13 @@ func is_func_async(func_body_text: String) -> bool:
     if not func_body_text.contains("await"):
         return false
 
-    var lines: = func_body_text.split("\n")
-    var in_multiline_string: = false
-    var current_multiline_delimiter: = ""
+    var lines = func_body_text.split("\n")
+    var in_multiline_string = false
+    var current_multiline_delimiter = ""
 
     for _line in lines:
         var line: String = _line
-        var char_index: = 0
+        var char_index = 0
         while char_index < line.length():
             if in_multiline_string:
 
@@ -245,7 +245,7 @@ func is_func_async(func_body_text: String) -> bool:
                 continue
 
 
-            var start: = char_index - 1 if char_index > 0 else 0
+            var start = char_index - 1 if char_index > 0 else 0
             if regex_keyword_await.search(line.substr(start)):
                 return true
 
@@ -256,7 +256,7 @@ func is_func_async(func_body_text: String) -> bool:
 
 
 static func get_function_arg_name_string(args: Array) -> String:
-    var arg_string: = ""
+    var arg_string = ""
     for x in args.size():
         if x == args.size() - 1:
             arg_string += args[x].name
@@ -266,13 +266,13 @@ static func get_function_arg_name_string(args: Array) -> String:
     return arg_string
 
 
-static func get_function_parameters(method_name: String, text: String, is_static: bool, offset: = 0) -> String:
-    var result: = match_func_with_whitespace(method_name, text, offset)
+static func get_function_parameters(method_name: String, text: String, is_static: bool, offset = 0) -> String:
+    var result = match_func_with_whitespace(method_name, text, offset)
     if result == null:
         return ""
 
 
-    var opening_paren_index: = result.get_end() - 1
+    var opening_paren_index = result.get_end() - 1
     if opening_paren_index == -1:
         return ""
 
@@ -281,12 +281,12 @@ static func get_function_parameters(method_name: String, text: String, is_static
 
 
 
-    var closing_paren_index: = get_closing_paren_index(opening_paren_index - 1, text)
+    var closing_paren_index = get_closing_paren_index(opening_paren_index - 1, text)
     if closing_paren_index == -1:
         return ""
 
 
-    var param_string: = text.substr(opening_paren_index + 1, closing_paren_index - opening_paren_index - 1)
+    var param_string = text.substr(opening_paren_index + 1, closing_paren_index - opening_paren_index - 1)
 
 
     param_string = param_string.strip_edges()\
@@ -300,10 +300,10 @@ static func get_function_parameters(method_name: String, text: String, is_static
 
 static func get_closing_paren_index(opening_paren_index: int, text: String) -> int:
 
-    var stack: = 0
-    var closing_paren_index: = opening_paren_index
+    var stack = 0
+    var closing_paren_index = opening_paren_index
     while closing_paren_index < text.length():
-        var char: = text[closing_paren_index]
+        var char = text[closing_paren_index]
         if char == "(":
             stack += 1
         elif char == ")":
@@ -324,7 +324,7 @@ func edit_vanilla_method(
     text: String, 
     func_def: RegExMatch, 
     func_body: RegExMatch, 
-    prefix: = METHOD_PREFIX, 
+    prefix = METHOD_PREFIX, 
 ) -> String:
     text = fix_method_super(method_name, func_body, text)
     text = text.erase(func_def.get_start(), func_def.get_end() - func_def.get_start())
@@ -348,7 +348,7 @@ func fix_method_super(method_name: String, func_body: RegExMatch, text: String) 
 
 
 func fix_method_super_before_4_2_2(method_name: String, func_body: RegExMatch, text: String) -> String:
-    var text_after_func_body_end: = text.substr(func_body.get_end())
+    var text_after_func_body_end = text.substr(func_body.get_end())
 
     text = regex_super_call.sub(
         text, "super.%s" % method_name, 
@@ -370,9 +370,9 @@ func match_method_body(method_name: String, func_body_start_index: int, text: St
     return regex_func_body.search(text, func_body_start_index)
 
 
-static func match_func_with_whitespace(method_name: String, text: String, offset: = 0) -> RegExMatch:
+static func match_func_with_whitespace(method_name: String, text: String, offset = 0) -> RegExMatch:
 
-    var func_with_whitespace: = RegEx.create_from_string(REGEX_MATCH_FUNC_WITH_WHITESPACE % method_name)
+    var func_with_whitespace = RegEx.create_from_string(REGEX_MATCH_FUNC_WITH_WHITESPACE % method_name)
     return func_with_whitespace.search(text, offset)
 
 
@@ -385,16 +385,16 @@ static func build_mod_hook_string(
     is_static: bool, 
     is_async: bool, 
     hook_id: int, 
-    method_prefix: = METHOD_PREFIX, 
-    enable_hook_check: = false, 
+    method_prefix = METHOD_PREFIX, 
+    enable_hook_check = false, 
 ) -> String:
-    var type_string: = " -> %s" % method_type if not method_type.is_empty() else ""
-    var return_string: = "return " if can_return else ""
-    var static_string: = "static " if is_static else ""
-    var await_string: = "await " if is_async else ""
-    var async_string: = "_async" if is_async else ""
-    var hook_check: = "if _ModLoaderHooks.any_mod_hooked:\n\t\t" if enable_hook_check else ""
-    var hook_check_else: = get_hook_check_else_string(
+    var type_string = " -> %s" % method_type if not method_type.is_empty() else ""
+    var return_string = "return " if can_return else ""
+    var static_string = "static " if is_static else ""
+    var await_string = "await " if is_async else ""
+    var async_string = "_async" if is_async else ""
+    var hook_check = "if _ModLoaderHooks.any_mod_hooked:\n\t\t" if enable_hook_check else ""
+    var hook_check_else = get_hook_check_else_string(
             return_string, await_string, method_prefix, method_name, method_arg_string_names_only
         ) if enable_hook_check else ""
 
@@ -421,7 +421,7 @@ static func get_previous_line_to(text: String, index: int) -> String:
     if index <= 0 or index >= text.length():
         return ""
 
-    var start_index: = index - 1
+    var start_index = index - 1
 
     while start_index > 0 and text[start_index] != "\n":
         start_index -= 1
@@ -432,7 +432,7 @@ static func get_previous_line_to(text: String, index: int) -> String:
     start_index -= 1
 
 
-    var end_index: = start_index
+    var end_index = start_index
     while start_index > 0 and text[start_index - 1] != "\n":
         start_index -= 1
 
@@ -440,7 +440,7 @@ static func get_previous_line_to(text: String, index: int) -> String:
 
 
 static func is_func_marked_moddable(method_start_idx, text) -> bool:
-    var prevline: = get_previous_line_to(text, method_start_idx)
+    var prevline = get_previous_line_to(text, method_start_idx)
 
     if prevline.contains("@not-moddable"):
         return false
@@ -451,7 +451,7 @@ static func is_func_marked_moddable(method_start_idx, text) -> bool:
 
 
 static func get_index_at_method_start(method_name: String, text: String) -> int:
-    var result: = match_func_with_whitespace(method_name, text)
+    var result = match_func_with_whitespace(method_name, text)
 
     if result:
         return text.find("\n", result.get_end())
@@ -459,12 +459,12 @@ static func get_index_at_method_start(method_name: String, text: String) -> int:
         return -1
 
 
-static func is_top_level_func(text: String, result_start_index: int, is_static: = false) -> bool:
+static func is_top_level_func(text: String, result_start_index: int, is_static = false) -> bool:
     if is_static:
         result_start_index = text.rfind("static", result_start_index)
 
-    var line_start_index: = text.rfind("\n", result_start_index) + 1
-    var pre_func_length: = result_start_index - line_start_index
+    var line_start_index = text.rfind("\n", result_start_index) + 1
+    var pre_func_length = result_start_index - line_start_index
 
     if pre_func_length > 0:
         return false
@@ -483,14 +483,14 @@ static func is_comment(text: String, start_index: int) -> bool:
 
 
 static func get_line_left(text: String, start: int) -> String:
-    var line_start_index: = text.rfind("\n", start) + 1
+    var line_start_index = text.rfind("\n", start) + 1
     return text.substr(line_start_index, start - line_start_index)
 
 
 
 func is_void(source_code: String, func_def_closing_paren_index: int, func_body_start_index: int) -> bool:
-    var func_def_end_index: = func_body_start_index - 1
-    var type_zone: = source_code.substr(func_def_closing_paren_index, func_def_end_index - func_def_closing_paren_index)
+    var func_def_end_index = func_body_start_index - 1
+    var type_zone = source_code.substr(func_def_closing_paren_index, func_def_end_index - func_def_closing_paren_index)
 
     for void_match in regex_keyword_void.search_all(type_zone):
         if is_comment(
@@ -528,7 +528,7 @@ static func get_return_type_string(return_data: Dictionary) -> String:
 
 
 func collect_getters_and_setters(text: String) -> Dictionary:
-    var result: = {}
+    var result = {}
 
 
 

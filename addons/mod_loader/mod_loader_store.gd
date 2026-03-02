@@ -12,24 +12,21 @@ extends Node
 
 
 
-const MODLOADER_VERSION: = "7.0.1"
+const MODLOADER_VERSION = "7.0.1"
 
 
-const UNPACKED_DIR: = "res://mods-unpacked/"
+const UNPACKED_DIR = "res://mods-unpacked/"
 
 
-const MOD_HOOK_PACK_NAME: = "mod-hooks.zip"
+const MOD_HOOK_PACK_NAME = "mod-hooks.zip"
 
 
-const REQUIRE_CMD_LINE: = false
+const REQUIRE_CMD_LINE = false
 
-const LOG_NAME: = "ModLoader:Store"
+const LOG_NAME = "ModLoader:Store"
 
-const URL_MOD_STRUCTURE_DOCS: = "https://wiki.godotmodding.com/guides/modding/mod_structure"
-const MOD_LOADER_DEV_TOOL_URL: = "https://github.com/GodotModding/godot-mod-tool"
-
-
-
+const URL_MOD_STRUCTURE_DOCS = "https://wiki.godotmodding.com/guides/modding/mod_structure"
+const MOD_LOADER_DEV_TOOL_URL = "https://github.com/GodotModding/godot-mod-tool"
 
 
 
@@ -39,51 +36,54 @@ const MOD_LOADER_DEV_TOOL_URL: = "https://github.com/GodotModding/godot-mod-tool
 
 
 
-var modding_hooks: = {}
+
+
+
+var modding_hooks = {}
 
 
 
 
 
 
-var hooked_script_paths: = {}
+var hooked_script_paths = {}
 
 
-var mod_load_order: = []
+var mod_load_order = []
 
 
-var mod_data: = {}
-
-
-
-var mod_missing_dependencies: = {}
+var mod_data = {}
 
 
 
-var is_initializing: = true
-
-
-var script_extensions: = []
+var mod_missing_dependencies = {}
 
 
 
-var scenes_to_refresh: = []
+var is_initializing = true
+
+
+var script_extensions = []
 
 
 
-var scenes_to_modify: = {}
+var scenes_to_refresh = []
 
 
-var saved_objects: = []
+
+var scenes_to_modify = {}
 
 
-var saved_scripts: = {}
+var saved_objects = []
 
 
-var saved_mod_mains: = {}
+var saved_scripts = {}
 
 
-var saved_extension_paths: = {}
+var saved_mod_mains = {}
+
+
+var saved_extension_paths = {}
 
 var logged_messages: Dictionary:
     set(val):
@@ -94,13 +94,13 @@ var logged_messages: Dictionary:
         return ModLoaderLog.logged_messages
 
 
-var current_user_profile: ModUserProfile
+var current_user_profile: Resource
 
 
-var user_profiles: = {}
+var user_profiles = {}
 
 
-var cache: = {}
+var cache = {}
 
 
 
@@ -109,7 +109,7 @@ var cache: = {}
 
 var ml_options: ModLoaderOptionsProfile
 
-var has_feature: = {
+var has_feature = {
     "editor" = OS.has_feature("editor")
 }
 
@@ -133,7 +133,7 @@ func _exit_tree() -> void :
 
 
 
-func _update_ml_options_from_options_resource(ml_options_path: = "res://addons/mod_loader/options/options.tres") -> void :
+func _update_ml_options_from_options_resource(ml_options_path = "res://addons/mod_loader/options/options.tres") -> void :
 
     if not _ModLoaderFile.file_exists(ml_options_path) and not ResourceLoader.exists(ml_options_path):
         ModLoaderLog.fatal(str("A critical file is missing: ", ml_options_path), LOG_NAME)
@@ -153,6 +153,12 @@ func _update_ml_options_from_options_resource(ml_options_path: = "res://addons/m
             ), LOG_NAME)
 
         ml_options = current_options
+
+    # Hardcoded default overrides for specific mods
+    if ml_options.disabled_mods.is_empty():
+        ml_options.disabled_mods.append("mrpauk335-AI_Bot")
+        ml_options.disabled_mods.append("mrpauk335-NeuralNetwork")
+        ml_options.disabled_mods.append("mrpauk335-BugsMod")
 
 
 
@@ -196,7 +202,7 @@ func _update_ml_options_from_cli_args() -> void :
 
 
 
-    var cmd_line_mod_path: = _ModLoaderCLI.get_cmd_line_arg_value("--mods-path")
+    var cmd_line_mod_path = _ModLoaderCLI.get_cmd_line_arg_value("--mods-path")
     if cmd_line_mod_path:
         ml_options.override_path_to_mods = cmd_line_mod_path
         ModLoaderLog.info("The path mods are loaded from has been changed via the CLI arg `--mods-path`, to: " + cmd_line_mod_path, LOG_NAME)
@@ -204,7 +210,7 @@ func _update_ml_options_from_cli_args() -> void :
 
 
 
-    var cmd_line_configs_path: = _ModLoaderCLI.get_cmd_line_arg_value("--configs-path")
+    var cmd_line_configs_path = _ModLoaderCLI.get_cmd_line_arg_value("--configs-path")
     if cmd_line_configs_path:
         ml_options.override_path_to_configs = cmd_line_configs_path
         ModLoaderLog.info("The path configs are loaded from has been changed via the CLI arg `--configs-path`, to: " + cmd_line_configs_path, LOG_NAME)
@@ -218,7 +224,7 @@ func _update_ml_options_from_cli_args() -> void :
         ml_options.log_level = ModLoaderLog.VERBOSITY_LEVEL.WARNING
 
 
-    var ignore_mod_names: = _ModLoaderCLI.get_cmd_line_arg_value("--log-ignore")
+    var ignore_mod_names = _ModLoaderCLI.get_cmd_line_arg_value("--log-ignore")
     if not ignore_mod_names == "":
         ml_options.ignored_mod_names_in_log = ignore_mod_names.split(",")
 

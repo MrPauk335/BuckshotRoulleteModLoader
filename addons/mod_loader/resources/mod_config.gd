@@ -7,7 +7,7 @@ extends Resource
 
 
 
-const LOG_NAME: = "ModLoader:ModConfig"
+const LOG_NAME = "ModLoader:ModConfig"
 
 
 var name: String
@@ -20,7 +20,7 @@ var data: Dictionary
 
 var save_path: String
 
-var valid: = false
+var valid = false
 
 
 func _init(_mod_id: String, _data: Dictionary, _save_path: String, _schema: Dictionary = {}) -> void :
@@ -30,7 +30,7 @@ func _init(_mod_id: String, _data: Dictionary, _save_path: String, _schema: Dict
     data = _data
     save_path = _save_path
 
-    var error_message: = validate()
+    var error_message = validate()
 
     if not error_message == "":
         ModLoaderLog.error("Mod Config for mod \"%s\" failed JSON Schema Validation with error message: \"%s\"" % [mod_id, error_message], LOG_NAME)
@@ -49,8 +49,8 @@ func get_schema_as_string() -> String:
 
 
 func validate() -> String:
-    var json_schema: = JSONSchema.new()
-    var error: = json_schema.validate(get_data_as_string(), get_schema_as_string())
+    var json_schema = JSONSchema.new()
+    var error = json_schema.validate(get_data_as_string(), get_schema_as_string())
 
     if error.is_empty():
         valid = true
@@ -72,11 +72,11 @@ func is_valid() -> bool:
 
 
 func save_to_file() -> bool:
-    var is_success: = _ModLoaderFile.save_dictionary_to_json_file(data, save_path)
+    var is_success = _ModLoaderFile.save_dictionary_to_json_file(data, save_path)
     return is_success
 
 
 
 func remove_file() -> bool:
-    var is_success: = _ModLoaderFile.remove_file(save_path)
+    var is_success = _ModLoaderFile.remove_file(save_path)
     return is_success

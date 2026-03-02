@@ -4,7 +4,7 @@ extends Resource
 
 
 
-var name: = ""
+var name = ""
 
 
 
@@ -14,9 +14,9 @@ var name: = ""
 
 
 
-var mod_list: = {}
+var mod_list = {}
 
 
-func _init(_name: = "", _mod_list: = {}) -> void :
+func _init(_name = "", _mod_list = {}) -> void :
     name = _name
     mod_list = _mod_list

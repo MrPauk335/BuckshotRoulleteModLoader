@@ -1,8 +1,8 @@
 class_name SaveFileManager extends Node
 
-const savePath: = "user://buckshotroulette_main_12.shell"
-const savePath_pills: = "user://buckshotroulette_pills.shell"
-const savePath_stats: = "user://buckshotroulette_playerstats.shell"
+const savePath = "user://buckshotroulette_main_12.shell"
+const savePath_pills = "user://buckshotroulette_pills.shell"
+const savePath_stats = "user://buckshotroulette_playerstats.shell"
 var data = {}
 @export var roundManager: RoundManager
 @export var isMainMenu: bool

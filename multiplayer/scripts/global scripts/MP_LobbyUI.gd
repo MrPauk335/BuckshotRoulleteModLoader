@@ -72,9 +72,9 @@ class_name MP_LobbyUI extends Node
 
 func _ready():
 	if _ModLoaderHooks.any_mod_hooked:
-		_ModLoaderHooks.call_hooks(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_LobbyUI.gd", "_ready"))
+		await _ModLoaderHooks.call_hooks_async(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_LobbyUI.gd", "_ready"))
 	else:
-		vanilla__ready()
+		await vanilla__ready()
 
 func vanilla__ready():
 	GlobalVariables.cursor_state_after_toggle = false
@@ -229,9 +229,9 @@ var fs = false
 var playing_info_change_sound = true
 func UpdatePlayerList():
 	if _ModLoaderHooks.any_mod_hooked:
-		_ModLoaderHooks.call_hooks(self.vanilla_UpdatePlayerList, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_LobbyUI.gd", "UpdatePlayerList"))
+		await _ModLoaderHooks.call_hooks_async(self.vanilla_UpdatePlayerList, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_LobbyUI.gd", "UpdatePlayerList"))
 	else:
-		vanilla_UpdatePlayerList()
+		await vanilla_UpdatePlayerList()
 
 func vanilla_UpdatePlayerList():
 	CheckAllVersions()
@@ -394,6 +394,7 @@ func CheckLobbyCopyPaste():
 var btn_add_bot: Button
 var btn_remove_bot: Button
 var btn_player_ai_toggle: Button
+var _btn_ai_target_toggle: Button
 
 func _create_bot_buttons():
 	var parent = ui_parent_lobby_home
@@ -439,6 +440,31 @@ func _create_bot_buttons():
 	btn_player_ai_toggle.pressed.connect(_on_ai_player_toggle)
 	parent.add_child(btn_player_ai_toggle)
 
+	_btn_ai_target_toggle = Button.new()
+	_btn_ai_target_toggle.text = "TARGET: DEALER"
+	if theme_res: _btn_ai_target_toggle.theme = theme_res
+	if font:
+		_btn_ai_target_toggle.add_theme_font_override("font", font)
+		_btn_ai_target_toggle.add_theme_font_size_override("font_size", 16)
+	_btn_ai_target_toggle.custom_minimum_size = Vector2(170, 35)
+	_btn_ai_target_toggle.position = Vector2(430, 275)
+	_btn_ai_target_toggle.pressed.connect(_on_ai_target_toggle)
+	parent.add_child(_btn_ai_target_toggle)
+
+func _on_ai_target_toggle():
+	if GlobalVariables.mp_bot_target == "dealer":
+		GlobalVariables.mp_bot_target = "all"
+	else:
+		GlobalVariables.mp_bot_target = "dealer"
+	_update_ai_target_button_text()
+
+func _update_ai_target_button_text():
+	if _btn_ai_target_toggle == null: return
+	if GlobalVariables.mp_bot_target == "dealer":
+		_btn_ai_target_toggle.text = "TARGET: DEALER"
+	else:
+		_btn_ai_target_toggle.text = "TARGET: ALL"
+
 func _on_ai_player_toggle():
 	GlobalVariables.mp_player_ai_enabled = !GlobalVariables.mp_player_ai_enabled
 	_update_ai_toggle_button_text()
@@ -469,6 +495,8 @@ func _check_bot_buttons():
 	btn_remove_bot.visible = show_bot_buttons and GlobalVariables.mp_bot_count > 0
 	_update_ai_toggle_button_text()
 	btn_player_ai_toggle.visible = GlobalSteam.LOBBY_ID != 0
+	_update_ai_target_button_text()
+	if _btn_ai_target_toggle: _btn_ai_target_toggle.visible = GlobalSteam.LOBBY_ID != 0 and GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID
 
 var is_starting_auto = false
 func _check_auto_battler():

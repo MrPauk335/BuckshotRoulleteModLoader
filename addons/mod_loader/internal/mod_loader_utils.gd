@@ -2,7 +2,7 @@ class_name ModLoaderUtils
 extends Node
 
 
-const LOG_NAME: = "ModLoader:ModLoaderUtils"
+const LOG_NAME = "ModLoader:ModLoaderUtils"
 
 
 
@@ -48,7 +48,7 @@ static func get_dict_from_dict(dict: Dictionary, key: String) -> Dictionary:
 
 
 static func dict_has_fields(dict: Dictionary, required_fields: Array[String]) -> bool:
-    var missing_fields: = get_missing_dict_fields(dict, required_fields)
+    var missing_fields = get_missing_dict_fields(dict, required_fields)
 
     if missing_fields.size() > 0:
         ModLoaderLog.fatal("Dictionary is missing required fields: %s" % str(missing_fields), LOG_NAME)
@@ -58,7 +58,7 @@ static func dict_has_fields(dict: Dictionary, required_fields: Array[String]) ->
 
 
 static func get_missing_dict_fields(dict: Dictionary, required_fields: Array[String]) -> Array[String]:
-    var missing_fields: = required_fields.duplicate()
+    var missing_fields = required_fields.duplicate()
 
     for key in dict.keys():
         if (required_fields.has(key)):
@@ -93,7 +93,7 @@ static func register_global_classes_from_array(new_global_classes: Array) -> voi
 
 
 static func _is_valid_global_class_dict(global_class_dict: Dictionary) -> bool:
-    var required_fields: = ["base", "class", "language", "path"]
+    var required_fields = ["base", "class", "language", "path"]
     if not global_class_dict.has_all(required_fields):
         ModLoaderLog.fatal("Global class to be registered is missing one of %s" % required_fields, LOG_NAME)
         return false

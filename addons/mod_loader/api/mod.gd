@@ -9,7 +9,7 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:Mod"
+const LOG_NAME = "ModLoader:Mod"
 
 
 
@@ -74,8 +74,8 @@ static func install_script_extension(child_script_path: String) -> void :
 
 
 static func install_script_hooks(vanilla_script_path: String, hook_script_path: String) -> void :
-    var hook_script: = load(hook_script_path) as GDScript
-    var hook_script_instance: = hook_script.new()
+    var hook_script = load(hook_script_path) as GDScript
+    var hook_script_instance = hook_script.new()
 
 
 
@@ -87,13 +87,13 @@ static func install_script_hooks(vanilla_script_path: String, hook_script_path: 
             %hook_script_path, LOG_NAME
         )
 
-    var vanilla_script: = load(vanilla_script_path) as GDScript
-    var vanilla_methods: = vanilla_script.get_script_method_list().map(
+    var vanilla_script = load(vanilla_script_path) as GDScript
+    var vanilla_methods = vanilla_script.get_script_method_list().map(
         func(method: Dictionary) -> String:
             return method.name
     )
 
-    var methods: = hook_script.get_script_method_list()
+    var methods = hook_script.get_script_method_list()
     for hook in methods:
         if hook.name in vanilla_methods:
             ModLoaderMod.add_hook(Callable(hook_script_instance, hook.name), vanilla_script_path, hook.name)

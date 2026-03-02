@@ -4,12 +4,12 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:ScriptExtension"
+const LOG_NAME = "ModLoader:ScriptExtension"
 
 
 
 static func handle_script_extensions() -> void :
-    var extension_paths: = []
+    var extension_paths = []
     for extension_path in ModLoaderStore.script_extensions:
         if FileAccess.file_exists(extension_path):
             extension_paths.push_back(extension_path)
@@ -31,9 +31,9 @@ static func handle_script_extensions() -> void :
 
 
 class InheritanceSorting:
-    var stack_cache: = {}
+    var stack_cache = {}
 
-    var load_order: = {}
+    var load_order = {}
 
     func _init(inheritance_array_to_sort: Array) -> void :
         _populate_load_order_table()
@@ -42,8 +42,8 @@ class InheritanceSorting:
 
 
     func check_inheritances(extension_a: String, extension_b: String) -> bool:
-        var a_stack: = cached_inheritances_stack(extension_a)
-        var b_stack: = cached_inheritances_stack(extension_b)
+        var a_stack = cached_inheritances_stack(extension_a)
+        var b_stack = cached_inheritances_stack(extension_b)
 
         var last_index: int
         for index in a_stack.size():
@@ -66,7 +66,7 @@ class InheritanceSorting:
         if stack_cache.has(extension_path):
             return stack_cache[extension_path]
 
-        var stack: = []
+        var stack = []
 
         var parent_script: Script = load(extension_path)
         while parent_script:
@@ -87,7 +87,7 @@ class InheritanceSorting:
 
 
     func _populate_load_order_table() -> void :
-        var mod_index: = 0
+        var mod_index = 0
         for mod in ModLoaderStore.mod_load_order:
             load_order[mod.dir_name] = mod_index
             mod_index += 1
@@ -141,7 +141,7 @@ static func apply_extension(extension_path: String) -> Script:
 static func _reload_vanilla_child_classes_for(script: Script) -> void :
     if script == null:
         return
-    var current_child_classes: = []
+    var current_child_classes = []
     var actual_path: String = script.get_base_script().resource_path
     var classes: Array = ProjectSettings.get_global_class_list()
 

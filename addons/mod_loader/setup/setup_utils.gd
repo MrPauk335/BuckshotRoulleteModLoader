@@ -3,7 +3,7 @@ class_name ModLoaderSetupUtils
 
 
 
-const LOG_NAME: = "ModLoader:SetupUtils"
+const LOG_NAME = "ModLoader:SetupUtils"
 
 
 static var ModLoaderSetupLog: Object = load("res://addons/mod_loader/setup/setup_log.gd")
@@ -12,7 +12,7 @@ static var ModLoaderSetupLog: Object = load("res://addons/mod_loader/setup/setup
 
 
 static func get_local_folder_dir(subfolder: String = "") -> String:
-    var game_install_directory: = OS.get_executable_path().get_base_dir()
+    var game_install_directory = OS.get_executable_path().get_base_dir()
 
     if OS.get_name() == "macOS":
         game_install_directory = game_install_directory.get_base_dir().get_base_dir()
@@ -27,8 +27,8 @@ static func get_local_folder_dir(subfolder: String = "") -> String:
 
 
 
-static func get_file_name_from_path(path: String, make_lower_case: = true, remove_extension: = false) -> String:
-    var file_name: = path.get_file()
+static func get_file_name_from_path(path: String, make_lower_case = true, remove_extension = false) -> String:
+    var file_name = path.get_file()
 
     if make_lower_case:
         file_name = file_name.to_lower()
@@ -41,7 +41,7 @@ static func get_file_name_from_path(path: String, make_lower_case: = true, remov
 
 
 static func get_autoload_array() -> Array:
-    var autoloads: = []
+    var autoloads = []
 
 
     for prop in ProjectSettings.get_property_list():
@@ -54,8 +54,8 @@ static func get_autoload_array() -> Array:
 
 
 static func get_autoload_index(autoload_name: String) -> int:
-    var autoloads: = get_autoload_array()
-    var autoload_index: = autoloads.find(autoload_name)
+    var autoloads = get_autoload_array()
+    var autoload_index = autoloads.find(autoload_name)
 
     return autoload_index
 
@@ -63,7 +63,7 @@ static func get_autoload_index(autoload_name: String) -> int:
 
 
 static func get_override_path() -> String:
-    var base_path: = ""
+    var base_path = ""
     if OS.has_feature("editor"):
         base_path = ProjectSettings.globalize_path("res://")
     else:
@@ -100,7 +100,7 @@ static func register_global_classes_from_array(new_global_classes: Array) -> voi
 
 
 static func _is_valid_global_class_dict(global_class_dict: Dictionary) -> bool:
-    var required_fields: = ["base", "class", "language", "path"]
+    var required_fields = ["base", "class", "language", "path"]
     if not global_class_dict.has_all(required_fields):
         ModLoaderSetupLog.fatal("Global class to be registered is missing one of %s" % required_fields, LOG_NAME)
         return false
@@ -124,16 +124,16 @@ static func is_running_with_command_line_arg(argument: String) -> bool:
 
 
 static func get_cmd_line_arg_value(argument: String) -> String:
-    var args: = _get_fixed_cmdline_args()
+    var args = _get_fixed_cmdline_args()
 
     for arg_index in args.size():
-        var arg: = args[arg_index] as String
+        var arg = args[arg_index] as String
 
-        var key: = arg.split("=")[0]
+        var key = arg.split("=")[0]
         if key == argument:
 
             if "=" in arg:
-                var value: = arg.trim_prefix(argument + "=")
+                var value = arg.trim_prefix(argument + "=")
                 value = value.trim_prefix("\"").trim_suffix("\"")
                 value = value.trim_prefix("'").trim_suffix("'")
                 return value
@@ -157,13 +157,13 @@ static func fix_godot_cmdline_args_string_space_splitting(args: PackedStringArra
     if OS.has_feature("windows"):
         return args
 
-    var fixed_args: = PackedStringArray([])
-    var fixed_arg: = ""
+    var fixed_args = PackedStringArray([])
+    var fixed_arg = ""
 
 
 
     for arg in args:
-        var arg_string: = arg as String
+        var arg_string = arg as String
         if "=\"" in arg_string or "=\"" in fixed_arg or \
 arg_string.begins_with("\"") or fixed_arg.begins_with("\""):
             if not fixed_arg == "":
@@ -197,11 +197,11 @@ or arg_string.begins_with("'") or fixed_arg.begins_with("'"):
 
 
 static func get_flat_view_dict(
-    p_dir: = "res://", 
-     p_match: = "", 
+    p_dir = "res://", 
+     p_match = "", 
     p_match_file_extensions: Array[StringName] = [], 
-    p_match_is_regex: = false, 
-    include_empty_dirs: = false, 
+    p_match_is_regex = false, 
+    include_empty_dirs = false, 
     ignored_dirs: Array[StringName] = []
 ) -> PackedStringArray:
     var data: PackedStringArray = []
@@ -213,11 +213,11 @@ static func get_flat_view_dict(
         if not regex.is_valid():
             return data
 
-    var dirs: = [p_dir]
-    var first: = true
+    var dirs = [p_dir]
+    var first = true
     while not dirs.is_empty():
         var dir_name: String = dirs.back()
-        var dir: = DirAccess.open(dir_name)
+        var dir = DirAccess.open(dir_name)
         dirs.pop_back()
 
         if dir_name.lstrip("res://").get_slice("/", 0) in ignored_dirs:
@@ -225,7 +225,7 @@ static func get_flat_view_dict(
 
         if dir:
             var _dirlist_error: int = dir.list_dir_begin()
-            var file_name: = dir.get_next()
+            var file_name = dir.get_next()
             if include_empty_dirs and not dir_name == p_dir:
                 data.append(dir_name)
             while file_name != "":
@@ -238,7 +238,7 @@ static func get_flat_view_dict(
                         dirs.push_back(dir.get_current_dir() + "/" + file_name)
 
                     else:
-                        var path: = dir.get_current_dir() + ("/" if not first else "") + file_name
+                        var path = dir.get_current_dir() + ("/" if not first else "") + file_name
 
                         if not p_match and not p_match_file_extensions:
                             data.append(path)
@@ -250,7 +250,7 @@ static func get_flat_view_dict(
                             data.append(path)
 
                         elif p_match_is_regex:
-                            var regex_match: = regex.search(path)
+                            var regex_match = regex.search(path)
                             if regex_match != null:
                                 data.append(path)
 
@@ -262,22 +262,22 @@ static func get_flat_view_dict(
 
 static func copy_file(from: String, to: String) -> void :
     ModLoaderSetupLog.debug("Copy file from: \"%s\" to: \"%s\"" % [from, to], LOG_NAME)
-    var global_to_path: = ProjectSettings.globalize_path(to.get_base_dir())
+    var global_to_path = ProjectSettings.globalize_path(to.get_base_dir())
 
     if not DirAccess.dir_exists_absolute(global_to_path):
         ModLoaderSetupLog.debug("Creating dir \"%s\"" % global_to_path, LOG_NAME)
         DirAccess.make_dir_recursive_absolute(global_to_path)
 
-    var file_from: = FileAccess.open(from, FileAccess.READ)
-    var file_from_error: = file_from.get_error()
+    var file_from = FileAccess.open(from, FileAccess.READ)
+    var file_from_error = file_from.get_error()
 
     if not file_from_error == OK:
         ModLoaderSetupLog.error("Error accessing file \"%s\": %s" % [from, error_string(file_from_error)], LOG_NAME)
         return
 
-    var file_from_content: = file_from.get_buffer(file_from.get_length())
-    var file_to: = FileAccess.open(to, FileAccess.WRITE)
-    var file_to_error: = file_to.get_error()
+    var file_from_content = file_from.get_buffer(file_from.get_length())
+    var file_to = FileAccess.open(to, FileAccess.WRITE)
+    var file_to_error = file_to.get_error()
 
     if not file_to_error == OK:
         ModLoaderSetupLog.error("Error writing file \"%s\": %s" % [to, error_string(file_to_error)], LOG_NAME)

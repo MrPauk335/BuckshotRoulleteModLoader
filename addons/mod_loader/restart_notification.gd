@@ -1,7 +1,7 @@
 extends Control
 
 
-@export var wait_time: = 20.0
+@export var wait_time = 20.0
 
 @onready var timer_label: Label = %TimerLabel
 @onready var timer: Timer = %Timer

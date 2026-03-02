@@ -4,13 +4,10 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:UserProfile"
+const LOG_NAME = "ModLoader:UserProfile"
 
 
-const FILE_PATH_USER_PROFILES: = "user://mod_user_profiles.json"
-
-
-
+const FILE_PATH_USER_PROFILES = "user://mod_user_profiles.json"
 
 
 
@@ -22,7 +19,10 @@ const FILE_PATH_USER_PROFILES: = "user://mod_user_profiles.json"
 
 
 
-static func enable_mod(mod_id: String, user_profile: = ModLoaderStore.current_user_profile) -> bool:
+
+
+
+static func enable_mod(mod_id: String, user_profile = ModLoaderStore.current_user_profile) -> bool:
     return _set_mod_state(mod_id, user_profile.name, true)
 
 
@@ -34,7 +34,7 @@ static func enable_mod(mod_id: String, user_profile: = ModLoaderStore.current_us
 
 
 
-static func force_enable_mod(mod_id: String, user_profile: = ModLoaderStore.current_user_profile) -> bool:
+static func force_enable_mod(mod_id: String, user_profile = ModLoaderStore.current_user_profile) -> bool:
     return _set_mod_state(mod_id, user_profile.name, true, true)
 
 
@@ -46,7 +46,7 @@ static func force_enable_mod(mod_id: String, user_profile: = ModLoaderStore.curr
 
 
 
-static func disable_mod(mod_id: String, user_profile: = ModLoaderStore.current_user_profile) -> bool:
+static func disable_mod(mod_id: String, user_profile = ModLoaderStore.current_user_profile) -> bool:
     return _set_mod_state(mod_id, user_profile.name, false)
 
 
@@ -59,7 +59,7 @@ static func disable_mod(mod_id: String, user_profile: = ModLoaderStore.current_u
 
 
 
-static func set_mod_current_config(mod_id: String, mod_config: ModConfig, user_profile: = ModLoaderStore.current_user_profile) -> bool:
+static func set_mod_current_config(mod_id: String, mod_config: ModConfig, user_profile = ModLoaderStore.current_user_profile) -> bool:
 
     if not _is_mod_id_in_mod_list(mod_id, user_profile.name):
         return false
@@ -68,7 +68,7 @@ static func set_mod_current_config(mod_id: String, mod_config: ModConfig, user_p
     user_profile.mod_list[mod_id].current_config = mod_config.name
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Set the \"current_config\" of \"%s\" to \"%s\" in user profile \"%s\" " % [mod_id, mod_config.name, user_profile.name], LOG_NAME)
@@ -89,9 +89,9 @@ static func create_profile(profile_name: String) -> bool:
         ModLoaderLog.error("User profile with the name of \"%s\" already exists." % profile_name, LOG_NAME)
         return false
 
-    var mod_list: = _generate_mod_list()
+    var mod_list = _generate_mod_list()
 
-    var new_profile: = _create_new_profile(profile_name, mod_list)
+    var new_profile = _create_new_profile(profile_name, mod_list)
 
 
     if not new_profile:
@@ -104,7 +104,7 @@ static func create_profile(profile_name: String) -> bool:
     ModLoaderStore.current_user_profile = new_profile
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Created new user profile \"%s\"" % profile_name, LOG_NAME)
@@ -129,7 +129,7 @@ static func set_profile(user_profile: ModUserProfile) -> bool:
     ModLoaderStore.current_user_profile = ModLoaderStore.user_profiles[user_profile.name]
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Current user profile set to \"%s\"" % user_profile.name, LOG_NAME)
@@ -165,7 +165,7 @@ static func delete_profile(user_profile: ModUserProfile) -> bool:
         return false
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Deleted user profile \"%s\"" % user_profile.name, LOG_NAME)
@@ -201,7 +201,7 @@ static func get_profile(profile_name: String) -> ModUserProfile:
 
 
 static func get_all_as_array() -> Array:
-    var user_profiles: = []
+    var user_profiles = []
 
     for user_profile_name in ModLoaderStore.user_profiles.keys():
         user_profiles.push_back(ModLoaderStore.user_profiles[user_profile_name])
@@ -254,7 +254,7 @@ static func _update_disabled_mods() -> void :
 static func _update_mod_lists() -> bool:
 
 
-    var current_mod_list: = _generate_mod_list()
+    var current_mod_list = _generate_mod_list()
 
 
     for profile_name in ModLoaderStore.user_profiles.keys():
@@ -263,12 +263,12 @@ static func _update_mod_lists() -> bool:
 
         profile.mod_list.merge(current_mod_list)
 
-        var update_mod_list: = _update_mod_list(profile.mod_list)
+        var update_mod_list = _update_mod_list(profile.mod_list)
 
         profile.mod_list = update_mod_list
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Updated the mod lists of all user profiles", LOG_NAME)
@@ -280,8 +280,8 @@ static func _update_mod_lists() -> bool:
 
 
 
-static func _update_mod_list(mod_list: Dictionary, mod_data: = ModLoaderStore.mod_data) -> Dictionary:
-    var updated_mod_list: = mod_list.duplicate(true)
+static func _update_mod_list(mod_list: Dictionary, mod_data = ModLoaderStore.mod_data) -> Dictionary:
+    var updated_mod_list = mod_list.duplicate(true)
 
 
     for mod_id in updated_mod_list.keys():
@@ -294,20 +294,18 @@ static func _update_mod_list(mod_list: Dictionary, mod_data: = ModLoaderStore.mo
             mod_list_entry.current_config = ModLoaderConfig.DEFAULT_CONFIG_NAME
 
         if (
-
-            not mod_data.has(mod_id) and 
-
-            mod_list_entry.has("zip_path") and 
-
-            not mod_list_entry.zip_path.is_empty() and 
-
-            not _ModLoaderFile.file_exists(mod_list_entry.zip_path)
+            not mod_data.has(mod_id) and (
+                (mod_list_entry.has("zip_path") and not mod_list_entry.zip_path.is_empty() and not _ModLoaderFile.file_exists(mod_list_entry.zip_path))
+                or
+                (not mod_list_entry.has("zip_path") and not _ModLoaderFile.dir_exists(_ModLoaderPath.get_unpacked_mods_dir_path().path_join(mod_id)))
+            )
         ):
 
 
+            var deleted_path = mod_list_entry.get("zip_path", _ModLoaderPath.get_unpacked_mods_dir_path().path_join(mod_id))
             ModLoaderLog.debug(
-                "Mod \"%s\" has been deleted from all user profiles as the corresponding zip file no longer exists at path \"%s\"."
-                %[mod_id, mod_list_entry.zip_path], 
+                "Mod \"%s\" has been deleted from all user profiles as the file/folder no longer exists at path \"%s\"."
+                %[mod_id, deleted_path], 
                 LOG_NAME, 
                 true
             )
@@ -322,7 +320,7 @@ static func _update_mod_list(mod_list: Dictionary, mod_data: = ModLoaderStore.mo
 
 
 static func _generate_mod_list() -> Dictionary:
-    var mod_list: = {}
+    var mod_list = {}
 
 
     for mod_id in ModLoaderStore.mod_data.keys():
@@ -338,7 +336,7 @@ static func _generate_mod_list() -> Dictionary:
 
 
 static func _generate_mod_list_entry(mod_id: String, is_active: bool) -> Dictionary:
-    var mod_list_entry: = {}
+    var mod_list_entry = {}
 
 
     mod_list_entry.is_active = is_active
@@ -361,7 +359,7 @@ static func _generate_mod_list_entry(mod_id: String, is_active: bool) -> Diction
 
 
 
-static func _set_mod_state(mod_id: String, profile_name: String, should_activate: bool, force: = false) -> bool:
+static func _set_mod_state(mod_id: String, profile_name: String, should_activate: bool, force = false) -> bool:
 
     if not _is_mod_id_in_mod_list(mod_id, profile_name):
         return false
@@ -376,7 +374,7 @@ static func _set_mod_state(mod_id: String, profile_name: String, should_activate
     ModLoaderStore.user_profiles[profile_name].mod_list[mod_id].is_active = should_activate
 
 
-    var is_save_success: = _save()
+    var is_save_success = _save()
 
     if is_save_success:
         ModLoaderLog.debug("Mod activation state changed: mod_id=%s should_activate=%s profile_name=%s" % [mod_id, should_activate, profile_name], LOG_NAME)
@@ -388,7 +386,7 @@ static func _set_mod_state(mod_id: String, profile_name: String, should_activate
 
 static func _is_mod_id_in_mod_list(mod_id: String, profile_name: String) -> bool:
 
-    var user_profile: = get_profile(profile_name)
+    var user_profile = get_profile(profile_name)
     if not user_profile:
 
         return false
@@ -405,7 +403,7 @@ static func _is_mod_id_in_mod_list(mod_id: String, profile_name: String) -> bool
 
 
 static func _create_new_profile(profile_name: String, mod_list: Dictionary) -> ModUserProfile:
-    var new_profile: = ModUserProfile.new()
+    var new_profile = ModUserProfile.new()
 
 
     if profile_name == "":
@@ -429,7 +427,7 @@ static func _create_new_profile(profile_name: String, mod_list: Dictionary) -> M
 
 static func _load() -> bool:
 
-    var data: = _ModLoaderFile.get_json_as_dict(FILE_PATH_USER_PROFILES)
+    var data = _ModLoaderFile.get_json_as_dict(FILE_PATH_USER_PROFILES)
 
 
     if data.is_empty():
@@ -442,7 +440,7 @@ static func _load() -> bool:
         var profile_data: Dictionary = data.profiles[profile_name]
 
 
-        var new_profile: = _create_new_profile(profile_name, profile_data.mod_list)
+        var new_profile = _create_new_profile(profile_name, profile_data.mod_list)
         ModLoaderStore.user_profiles[profile_name] = new_profile
 
 
@@ -454,7 +452,7 @@ static func _load() -> bool:
 
 static func _save() -> bool:
 
-    var save_dict: = {
+    var save_dict = {
         "current_profile": "", 
         "profiles": {}
     }

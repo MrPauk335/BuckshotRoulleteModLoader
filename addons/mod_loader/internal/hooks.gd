@@ -6,16 +6,16 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:Hooks"
+const LOG_NAME = "ModLoader:Hooks"
 
-static var any_mod_hooked: = false
+static var any_mod_hooked = false
 
 
 
 
 static func add_hook(mod_callable: Callable, script_path: String, method_name: String) -> void :
     any_mod_hooked = true
-    var hash: = get_hook_hash(script_path, method_name)
+    var hash = get_hook_hash(script_path, method_name)
     if not ModLoaderStore.modding_hooks.has(hash):
         ModLoaderStore.modding_hooks[hash] = []
     ModLoaderStore.modding_hooks[hash].push_back(mod_callable)
@@ -34,7 +34,7 @@ static func call_hooks(vanilla_method: Callable, args: Array, hook_hash: int) ->
     if hooks.is_empty():
         return vanilla_method.callv(args)
 
-    var chain: = ModLoaderHookChain.new(vanilla_method.get_object(), [vanilla_method] + hooks)
+    var chain = ModLoaderHookChain.new(vanilla_method.get_object(), [vanilla_method] + hooks)
     return chain.execute_next(args)
 
 
@@ -43,7 +43,7 @@ static func call_hooks_async(vanilla_method: Callable, args: Array, hook_hash: i
     if hooks.is_empty():
         return await vanilla_method.callv(args)
 
-    var chain: = ModLoaderHookChain.new(vanilla_method.get_object(), [vanilla_method] + hooks)
+    var chain = ModLoaderHookChain.new(vanilla_method.get_object(), [vanilla_method] + hooks)
     return await chain.execute_next_async(args)
 
 

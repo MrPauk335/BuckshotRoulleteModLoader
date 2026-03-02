@@ -4,19 +4,19 @@ extends Resource
 
 
 
-const LOG_NAME: = "ModLoader:ModManifest"
+const LOG_NAME = "ModLoader:ModManifest"
 
 
 
-var name: = ""
+var name = ""
 
 
-var mod_namespace: = ""
+var mod_namespace = ""
 
 
-var version_number: = "0.0.0"
-var description: = ""
-var website_url: = ""
+var version_number = "0.0.0"
+var description = ""
+var website_url = ""
 
 var dependencies: PackedStringArray = []
 
@@ -35,17 +35,17 @@ var load_before: PackedStringArray = []
 
 var tags: PackedStringArray = []
 
-var config_schema: = {}
-var description_rich: = ""
+var config_schema = {}
+var description_rich = ""
 var image: CompressedTexture2D
 
-var steam_workshop_id: = ""
+var steam_workshop_id = ""
 
 var validation_messages_error: Array[String] = []
 var validation_messages_warning: Array[String] = []
 
-var is_valid: = false
-var has_parsing_failed: = false
+var is_valid = false
+var has_parsing_failed = false
 
 
 const REQUIRED_MANIFEST_KEYS_ROOT: Array[String] = [
@@ -215,8 +215,8 @@ func to_json() -> String:
 
 
 func load_mod_config_defaults() -> ModConfig:
-    var default_config_save_path: = _ModLoaderPath.get_path_to_mod_config_file(get_mod_id(), ModLoaderConfig.DEFAULT_CONFIG_NAME)
-    var config: = ModConfig.new(
+    var default_config_save_path = _ModLoaderPath.get_path_to_mod_config_file(get_mod_id(), ModLoaderConfig.DEFAULT_CONFIG_NAME)
+    var config = ModConfig.new(
         get_mod_id(), 
         {}, 
         default_config_save_path, 
@@ -230,8 +230,8 @@ func load_mod_config_defaults() -> ModConfig:
 
 
     else:
-        var current_schema_md5: = config.get_schema_as_string().md5_text()
-        var cache_schema_md5s: = _ModLoaderCache.get_data("config_schemas")
+        var current_schema_md5 = config.get_schema_as_string().md5_text()
+        var cache_schema_md5s = _ModLoaderCache.get_data("config_schemas")
         var cache_schema_md5: String = cache_schema_md5s[config.mod_id] if cache_schema_md5s.has(config.mod_id) else ""
 
 
@@ -258,7 +258,7 @@ func load_mod_config_defaults() -> ModConfig:
 
 
 
-func _generate_default_config_from_schema(property: Dictionary, current_prop: = {}) -> Dictionary:
+func _generate_default_config_from_schema(property: Dictionary, current_prop = {}) -> Dictionary:
 
     if property.is_empty():
         return current_prop
@@ -287,8 +287,8 @@ func _generate_default_config_from_schema(property: Dictionary, current_prop: = 
 
 
 func _handle_compatible_mod_loader_version(mod_id: String, godot_details: Dictionary) -> Array:
-    var link_manifest_docs: = "https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Files#manifestjson"
-    var array_value: = ModLoaderUtils.get_array_from_dict(godot_details, "compatible_mod_loader_version")
+    var link_manifest_docs = "https://github.com/GodotModding/godot-mod-loader/wiki/Mod-Files#manifestjson"
+    var array_value = ModLoaderUtils.get_array_from_dict(godot_details, "compatible_mod_loader_version")
 
 
     if array_value.size() > 0:
@@ -299,7 +299,7 @@ func _handle_compatible_mod_loader_version(mod_id: String, godot_details: Dictio
         return array_value
 
 
-    var string_value: = ModLoaderUtils.get_string_from_dict(godot_details, "compatible_mod_loader_version")
+    var string_value = ModLoaderUtils.get_string_from_dict(godot_details, "compatible_mod_loader_version")
 
     if string_value == "":
 
@@ -316,8 +316,8 @@ func _handle_compatible_mod_loader_version(mod_id: String, godot_details: Dictio
 
 
 
-func is_name_or_namespace_valid(check_name: String, is_silent: = false) -> bool:
-    var re: = RegEx.new()
+func is_name_or_namespace_valid(check_name: String, is_silent = false) -> bool:
+    var re = RegEx.new()
     var _compile_error_1 = re.compile("^[a-zA-Z0-9_]*$")
 
     if re.search(check_name) == null:
@@ -334,8 +334,8 @@ func is_name_or_namespace_valid(check_name: String, is_silent: = false) -> bool:
     return true
 
 
-func is_semver_version_array_valid(mod_id: String, version_array: PackedStringArray, version_array_descripton: String, is_silent: = false) -> bool:
-    var is_valid: = true
+func is_semver_version_array_valid(mod_id: String, version_array: PackedStringArray, version_array_descripton: String, is_silent = false) -> bool:
+    var is_valid = true
 
     for version in version_array:
         if not is_semver_valid(mod_id, version, version_array_descripton, is_silent):
@@ -347,8 +347,8 @@ func is_semver_version_array_valid(mod_id: String, version_array: PackedStringAr
 
 
 
-func is_semver_valid(mod_id: String, check_version_number: String, field_name: String, is_silent: = false) -> bool:
-    var re: = RegEx.new()
+func is_semver_valid(mod_id: String, check_version_number: String, field_name: String, is_silent = false) -> bool:
+    var re = RegEx.new()
     var _compile_error = re.compile("^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$")
 
     if re.search(check_version_number) == null:
@@ -381,8 +381,8 @@ func validate_distinct_mod_ids_in_arrays(
     array_one: PackedStringArray, 
     array_two: PackedStringArray, 
     array_description: PackedStringArray, 
-    additional_info: = "", 
-    is_silent: = false
+    additional_info = "", 
+    is_silent = false
 ) -> bool:
 
     var overlaps: PackedStringArray = []
@@ -410,8 +410,8 @@ func validate_distinct_mod_ids_in_arrays(
     return false
 
 
-func is_mod_id_array_valid(own_mod_id: String, mod_id_array: PackedStringArray, mod_id_array_description: String, is_silent: = false) -> bool:
-    var is_valid: = true
+func is_mod_id_array_valid(own_mod_id: String, mod_id_array: PackedStringArray, mod_id_array_description: String, is_silent = false) -> bool:
+    var is_valid = true
 
 
     if mod_id_array.size() > 0:
@@ -429,7 +429,7 @@ func is_mod_id_array_valid(own_mod_id: String, mod_id_array: PackedStringArray, 
     return is_valid
 
 
-func is_mod_id_valid(original_mod_id: String, check_mod_id: String, type: = "", is_silent: = false) -> bool:
+func is_mod_id_valid(original_mod_id: String, check_mod_id: String, type = "", is_silent = false) -> bool:
     var intro_text = "A %s for the mod \"%s\" is invalid: " % [type, original_mod_id] if not type == "" else ""
 
 
@@ -448,7 +448,7 @@ func is_mod_id_valid(original_mod_id: String, check_mod_id: String, type: = "", 
     var split = check_mod_id.split("-")
     var check_namespace = split[0]
     var check_name = split[1]
-    var re: = RegEx.new()
+    var re = RegEx.new()
     re.compile("^[a-zA-Z0-9_]{3,}$")
 
     if re.search(check_namespace) == null:
@@ -464,7 +464,7 @@ func is_mod_id_valid(original_mod_id: String, check_mod_id: String, type: = "", 
     return true
 
 
-func is_string_length_valid(mod_id: String, field: String, string: String, required_length: int, is_silent: = false) -> bool:
+func is_string_length_valid(mod_id: String, field: String, string: String, required_length: int, is_silent = false) -> bool:
     if not string.length() == required_length:
         if not is_silent:
             validation_messages_error.push_back("Invalid length in field \"%s\" of mod \"%s\" it should be \"%s\" but it is \"%s\"." % [field, mod_id, required_length, string.length()])
@@ -474,8 +474,8 @@ func is_string_length_valid(mod_id: String, field: String, string: String, requi
 
 
 func _validate_workshop_id(path: String) -> void :
-    var steam_workshop_id_from_path: = _ModLoaderPath.get_steam_workshop_id(path)
-    var is_mod_source_workshop: = not steam_workshop_id_from_path.is_empty()
+    var steam_workshop_id_from_path = _ModLoaderPath.get_steam_workshop_id(path)
+    var is_mod_source_workshop = not steam_workshop_id_from_path.is_empty()
 
     if not _is_steam_workshop_id_valid(get_mod_id(), steam_workshop_id_from_path, steam_workshop_id, is_mod_source_workshop):
 
@@ -483,7 +483,7 @@ func _validate_workshop_id(path: String) -> void :
             steam_workshop_id = steam_workshop_id_from_path
 
 
-func _is_steam_workshop_id_valid(mod_id: String, steam_workshop_id_from_path: String, steam_workshop_id_to_validate: String, is_mod_source_workshop: = false, is_silent: = false) -> bool:
+func _is_steam_workshop_id_valid(mod_id: String, steam_workshop_id_from_path: String, steam_workshop_id_to_validate: String, is_mod_source_workshop = false, is_silent = false) -> bool:
     if steam_workshop_id_to_validate.is_empty():
 
         return true
@@ -505,14 +505,14 @@ func _is_steam_workshop_id_valid(mod_id: String, steam_workshop_id_from_path: St
 func _is_game_version_compatible(mod_id: String) -> bool:
     var mod_loader_store = Engine.get_main_loop().root.get_node_or_null("ModLoaderStore")
     var game_version: String = mod_loader_store.ml_options.semantic_version if mod_loader_store else "1.0.0"
-    var game_major: = int(game_version.get_slice(".", 0))
-    var game_minor: = int(game_version.get_slice(".", 1))
+    var game_major = int(game_version.get_slice(".", 0))
+    var game_minor = int(game_version.get_slice(".", 1))
 
-    var valid_major: = false
-    var valid_minor: = false
+    var valid_major = false
+    var valid_minor = false
     for version in compatible_game_version:
-        var compat_major: = int(version.get_slice(".", 0))
-        var compat_minor: = int(version.get_slice(".", 1))
+        var compat_major = int(version.get_slice(".", 0))
+        var compat_minor = int(version.get_slice(".", 1))
         if compat_major < game_major:
             continue
         valid_major = true

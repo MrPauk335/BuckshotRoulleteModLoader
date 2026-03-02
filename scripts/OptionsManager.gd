@@ -39,7 +39,7 @@ var defaultOption_inputmap_controller = {
 @export var checkmark_colorblind: Checkmark
 @export var checkmark_greyscale: Checkmark
 
-const savePath: = "user://buckshotroulette_options_12.shell"
+const savePath = "user://buckshotroulette_options_12.shell"
 var data = {}
 var data_inputmap = {}
 var setting_inputmap_keyboard = {}

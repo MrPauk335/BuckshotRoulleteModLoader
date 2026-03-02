@@ -5,7 +5,7 @@ extends RefCounted
 
 
 
-const LOG_NAME: = "ModLoader:Dependency"
+const LOG_NAME = "ModLoader:Dependency"
 
 
 
@@ -21,12 +21,12 @@ const LOG_NAME: = "ModLoader:Dependency"
 
 
 
-static func check_dependencies(mod: ModData, is_required: = true, dependency_chain: = []) -> bool:
-    var dependency_type: = "required" if is_required else "optional"
+static func check_dependencies(mod: ModData, is_required = true, dependency_chain = []) -> bool:
+    var dependency_type = "required" if is_required else "optional"
 
-    var dependencies: = mod.manifest.dependencies if is_required else mod.manifest.optional_dependencies
+    var dependencies = mod.manifest.dependencies if is_required else mod.manifest.optional_dependencies
 
-    var mod_id: = mod.dir_name
+    var mod_id = mod.dir_name
 
     ModLoaderLog.debug("Checking dependencies - mod_id: %s %s dependencies: %s" % [mod_id, dependency_type, dependencies], LOG_NAME)
 
@@ -82,7 +82,7 @@ static func check_load_before(mod: ModData) -> void :
             ModLoaderLog.debug("Load before - Skipping %s because it's missing" % load_before_id, LOG_NAME)
             continue
 
-        var load_before_mod_dependencies: = ModLoaderStore.mod_data[load_before_id].manifest.dependencies as PackedStringArray
+        var load_before_mod_dependencies = ModLoaderStore.mod_data[load_before_id].manifest.dependencies as PackedStringArray
 
 
         if mod.dir_name in load_before_mod_dependencies:

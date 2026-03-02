@@ -3,7 +3,7 @@ class_name ModLoaderSetupLog
 
 
 
-const MOD_LOG_PATH: = "user://logs/modloader.log"
+const MOD_LOG_PATH = "user://logs/modloader.log"
 
 enum VERBOSITY_LEVEL{
     ERROR, 
@@ -92,8 +92,8 @@ static func debug_json_print(message: String, json_printable, mod_name: String) 
 
 
 static func _log(message: String, mod_name: String, log_type: String = "info") -> void :
-    var time: = "%s   " % _get_time_string()
-    var log_entry: = ModLoaderLogEntry.new(mod_name, message, log_type, time)
+    var time = "%s   " % _get_time_string()
+    var log_entry = ModLoaderLogEntry.new(mod_name, message, log_type, time)
 
     match log_type.to_lower():
         "fatal-error":
@@ -122,13 +122,13 @@ static func _log(message: String, mod_name: String, log_type: String = "info") -
 
 
 static func _get_time_string() -> String:
-    var date_time: = Time.get_datetime_dict_from_system()
+    var date_time = Time.get_datetime_dict_from_system()
     return "%02d:%02d:%02d" % [date_time.hour, date_time.minute, date_time.second]
 
 
 
 static func _get_date_string() -> String:
-    var date_time: = Time.get_datetime_dict_from_system()
+    var date_time = Time.get_datetime_dict_from_system()
     return "%s-%02d-%02d" % [date_time.year, date_time.month, date_time.day]
 
 
@@ -144,7 +144,7 @@ static func _write_to_log_file(string_to_write: String) -> void :
     if not FileAccess.file_exists(MOD_LOG_PATH):
         _rotate_log_file()
 
-    var log_file: = FileAccess.open(MOD_LOG_PATH, FileAccess.READ_WRITE)
+    var log_file = FileAccess.open(MOD_LOG_PATH, FileAccess.READ_WRITE)
 
     if log_file == null:
         assert (false, "Could not open log file, error code: %s" % error)
@@ -162,18 +162,18 @@ static func _rotate_log_file() -> void :
 
     if FileAccess.file_exists(MOD_LOG_PATH):
         if MAX_LOGS > 1:
-            var datetime: = _get_date_time_string().replace(":", ".")
+            var datetime = _get_date_time_string().replace(":", ".")
             var backup_name: String = MOD_LOG_PATH.get_basename() + "_" + datetime
             if MOD_LOG_PATH.get_extension().length() > 0:
                 backup_name += "." + MOD_LOG_PATH.get_extension()
 
-            var dir: = DirAccess.open(MOD_LOG_PATH.get_base_dir())
+            var dir = DirAccess.open(MOD_LOG_PATH.get_base_dir())
             if not dir == null:
                 dir.copy(MOD_LOG_PATH, backup_name)
             _clear_old_log_backups()
 
 
-    var log_file: = FileAccess.open(MOD_LOG_PATH, FileAccess.WRITE)
+    var log_file = FileAccess.open(MOD_LOG_PATH, FileAccess.WRITE)
     if log_file == null:
         assert (false, "Could not open log file, error code: %s" % error)
     log_file.store_string("%s Created log" % _get_date_string())
@@ -181,18 +181,18 @@ static func _rotate_log_file() -> void :
 
 
 static func _clear_old_log_backups() -> void :
-    var MAX_LOGS: = int(ProjectSettings.get_setting("debug/file_logging/max_log_files"))
-    var MAX_BACKUPS: = MAX_LOGS - 1
-    var basename: = MOD_LOG_PATH.get_file().get_basename() as String
-    var extension: = MOD_LOG_PATH.get_extension() as String
+    var MAX_LOGS = int(ProjectSettings.get_setting("debug/file_logging/max_log_files"))
+    var MAX_BACKUPS = MAX_LOGS - 1
+    var basename = MOD_LOG_PATH.get_file().get_basename() as String
+    var extension = MOD_LOG_PATH.get_extension() as String
 
-    var dir: = DirAccess.open(MOD_LOG_PATH.get_base_dir())
+    var dir = DirAccess.open(MOD_LOG_PATH.get_base_dir())
     if dir == null:
         return
 
     dir.list_dir_begin()
-    var file: = dir.get_next()
-    var backups: = []
+    var file = dir.get_next()
+    var backups = []
     while file.length() > 0:
         if ( not dir.current_is_dir() and 
                 file.begins_with(basename) and 

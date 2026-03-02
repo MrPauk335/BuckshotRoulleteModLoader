@@ -2,9 +2,9 @@ class_name MP_RoundManager extends Node
 
 func _ready():
 	if _ModLoaderHooks.any_mod_hooked:
-		_ModLoaderHooks.call_hooks(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_RoundManager.gd", "_ready"))
+		await _ModLoaderHooks.call_hooks_async(self.vanilla__ready, [], _ModLoaderHooks.get_hook_hash("res://multiplayer/scripts/global scripts/MP_RoundManager.gd", "_ready"))
 	else:
-		vanilla__ready()
+		await vanilla__ready()
 
 func vanilla__ready():
 	pass

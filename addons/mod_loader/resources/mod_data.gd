@@ -5,11 +5,11 @@ extends Resource
 
 
 
-const LOG_NAME: = "ModLoader:ModData"
+const LOG_NAME = "ModLoader:ModData"
 
-const MOD_MAIN: = "mod_main.gd"
-const MANIFEST: = "manifest.json"
-const OVERWRITES: = "overwrites.gd"
+const MOD_MAIN = "mod_main.gd"
+const MANIFEST = "manifest.json"
+const OVERWRITES = "overwrites.gd"
 
 
 
@@ -34,29 +34,29 @@ enum Sources{
 }
 
 
-var zip_name: = ""
+var zip_name = ""
 
-var zip_path: = ""
+var zip_path = ""
 
 
-var dir_name: = ""
+var dir_name = ""
 
-var dir_path: = ""
+var dir_path = ""
 
-var is_loadable: = true
+var is_loadable = true
 
-var is_overwrite: = false
+var is_overwrite = false
 
-var is_locked: = false
+var is_locked = false
 
-var is_active: = true
+var is_active = true
 
-var importance: = 0
+var importance = 0
 
 var manifest: ModManifest
 
 
-var configs: = {}
+var configs = {}
 
 var current_config: ModConfig: set = _set_current_config
 
@@ -106,8 +106,8 @@ func load_configs() -> void :
     if not manifest.load_mod_config_defaults():
         return
 
-    var config_dir_path: = _ModLoaderPath.get_path_to_mod_configs_dir(dir_name)
-    var config_file_paths: = _ModLoaderPath.get_file_paths_in_dir(config_dir_path)
+    var config_dir_path = _ModLoaderPath.get_path_to_mod_configs_dir(dir_name)
+    var config_file_paths = _ModLoaderPath.get_file_paths_in_dir(config_dir_path)
     for config_file_path in config_file_paths:
         _load_config(config_file_path)
 
@@ -120,7 +120,7 @@ func load_configs() -> void :
 
 
 func _load_config(config_file_path: String) -> void :
-    var config_data: = _ModLoaderFile.get_json_as_dict(config_file_path)
+    var config_data = _ModLoaderFile.get_json_as_dict(config_file_path)
     var mod_config = ModConfig.new(
         dir_name, 
         config_data, 
@@ -141,7 +141,7 @@ func _set_current_config(new_current_config: ModConfig) -> void :
         ModLoader.current_config_changed.emit(new_current_config)
 
 
-func set_mod_state(should_activate: bool, force: = false) -> bool:
+func set_mod_state(should_activate: bool, force = false) -> bool:
     if is_locked and should_activate != is_active:
         var mod_loader_store = Engine.get_main_loop().root.get_node_or_null("ModLoaderStore")
         var locked = []
@@ -173,7 +173,7 @@ func set_mod_state(should_activate: bool, force: = false) -> bool:
 
 
 func _is_mod_dir_name_same_as_id(mod_manifest: ModManifest) -> bool:
-    var manifest_id: = mod_manifest.get_mod_id()
+    var manifest_id = mod_manifest.get_mod_id()
     if not dir_name == manifest_id:
         load_errors.push_back("Mod directory name \"%s\" does not match the data in manifest.json. Expected \"%s\" (Format: {namespace}-{name})" % [dir_name, manifest_id])
         return false
@@ -186,10 +186,10 @@ func _is_overwrite() -> bool:
 
 
 func _has_required_files() -> bool:
-    var has_required_files: = true
+    var has_required_files = true
 
     for required_file in RequiredModFiles:
-        var required_file_path: = get_required_mod_file_path(RequiredModFiles[required_file])
+        var required_file_path = get_required_mod_file_path(RequiredModFiles[required_file])
 
         if not _ModLoaderFile.file_exists(required_file_path, zip_path):
             var mod_loader_store = Engine.get_main_loop().root.get_node_or_null("ModLoaderStore")

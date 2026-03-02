@@ -6,9 +6,9 @@ extends Object
 
 
 
-const MOD_LOG_PATH: = "user://logs/modloader.log"
+const MOD_LOG_PATH = "user://logs/modloader.log"
 
-const _LOG_NAME: = "ModLoader:Log"
+const _LOG_NAME = "ModLoader:Log"
 
 
 enum VERBOSITY_LEVEL{
@@ -21,7 +21,7 @@ enum VERBOSITY_LEVEL{
 
 
 
-static var logged_messages: = {
+static var logged_messages = {
     "all": {}, 
     "by_mod": {}, 
     "by_type": {
@@ -44,7 +44,7 @@ static var verbosity: VERBOSITY_LEVEL = VERBOSITY_LEVEL.DEBUG
 static var ignored_mods: Array[String] = []
 
 
-static var hint_color: = Color("#70bafa")
+static var hint_color = Color("#70bafa")
 
 
 class ModLoaderLogEntry:
@@ -69,7 +69,7 @@ class ModLoaderLogEntry:
 
 
 
-    var stack: = []
+    var stack = []
 
 
 
@@ -115,7 +115,7 @@ class ModLoaderLogEntry:
 
 
     func get_all_entries() -> Array:
-        var entries: = [self]
+        var entries = [self]
         entries.append_array(stack)
 
         return entries
@@ -140,7 +140,7 @@ class ModLoaderLogEntry:
 
 
 
-static func fatal(message: String, mod_name: String, only_once: = false) -> void :
+static func fatal(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "fatal-error", only_once)
 
 
@@ -154,7 +154,7 @@ static func fatal(message: String, mod_name: String, only_once: = false) -> void
 
 
 
-static func error(message: String, mod_name: String, only_once: = false) -> void :
+static func error(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "error", only_once)
 
 
@@ -168,7 +168,7 @@ static func error(message: String, mod_name: String, only_once: = false) -> void
 
 
 
-static func warning(message: String, mod_name: String, only_once: = false) -> void :
+static func warning(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "warning", only_once)
 
 
@@ -182,7 +182,7 @@ static func warning(message: String, mod_name: String, only_once: = false) -> vo
 
 
 
-static func info(message: String, mod_name: String, only_once: = false) -> void :
+static func info(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "info", only_once)
 
 
@@ -196,7 +196,7 @@ static func info(message: String, mod_name: String, only_once: = false) -> void 
 
 
 
-static func success(message: String, mod_name: String, only_once: = false) -> void :
+static func success(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "success", only_once)
 
 
@@ -210,7 +210,7 @@ static func success(message: String, mod_name: String, only_once: = false) -> vo
 
 
 
-static func debug(message: String, mod_name: String, only_once: = false) -> void :
+static func debug(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "debug", only_once)
 
 
@@ -228,7 +228,7 @@ static func debug(message: String, mod_name: String, only_once: = false) -> void
 
 
 
-static func hint(message: String, mod_name: String, only_once: = false) -> void :
+static func hint(message: String, mod_name: String, only_once = false) -> void :
     _log(message, mod_name, "hint", only_once)
 
 
@@ -243,7 +243,7 @@ static func hint(message: String, mod_name: String, only_once: = false) -> void 
 
 
 
-static func debug_json_print(message: String, json_printable, mod_name: String, only_once: = false) -> void :
+static func debug_json_print(message: String, json_printable, mod_name: String, only_once = false) -> void :
     message = "%s\n%s" % [message, JSON.stringify(json_printable, "  ")]
     _log(message, mod_name, "debug", only_once)
 
@@ -265,7 +265,7 @@ static func get_all_as_resource() -> Array:
 
 
 static func get_all_as_string() -> Array:
-    var log_entries: = get_all()
+    var log_entries = get_all()
     return get_all_entries_as_string(log_entries)
 
 
@@ -288,7 +288,7 @@ static func get_by_mod_as_resource(mod_name: String) -> Array:
 
 
 static func get_by_mod_as_string(mod_name: String) -> Array:
-    var log_entries: = get_by_mod(mod_name)
+    var log_entries = get_by_mod(mod_name)
     return get_all_entries_as_string(log_entries)
 
 
@@ -311,7 +311,7 @@ static func get_by_type_as_resource(type: String) -> Array:
 
 
 static func get_by_type_as_string(type: String) -> Array:
-    var log_entries: = get_by_type(type)
+    var log_entries = get_by_type(type)
     return get_all_entries_as_string(log_entries)
 
 
@@ -320,7 +320,7 @@ static func get_by_type_as_string(type: String) -> Array:
 
 
 static func get_all() -> Array:
-    var log_entries: = []
+    var log_entries = []
 
 
     for entry_key in logged_messages.all.keys():
@@ -341,7 +341,7 @@ static func get_all() -> Array:
 
 
 static func get_by_mod(mod_name: String) -> Array:
-    var log_entries: = []
+    var log_entries = []
 
     if not logged_messages.by_mod.has(mod_name):
         error("\"%s\" not found in logged messages." % mod_name, _LOG_NAME)
@@ -362,7 +362,7 @@ static func get_by_mod(mod_name: String) -> Array:
 
 
 static func get_by_type(type: String) -> Array:
-    var log_entries: = []
+    var log_entries = []
 
     for entry_key in logged_messages.by_type[type].keys():
         var entry: ModLoaderLogEntry = logged_messages.by_type[type][entry_key]
@@ -379,7 +379,7 @@ static func get_by_type(type: String) -> Array:
 
 
 static func get_all_entries_as_string(log_entries: Array) -> Array:
-    var log_entry_strings: = []
+    var log_entry_strings = []
 
 
     for entry in log_entries:
@@ -391,12 +391,12 @@ static func get_all_entries_as_string(log_entries: Array) -> Array:
 
 
 
-static func _log(message: String, mod_name: String, log_type: String = "info", only_once: = false) -> void :
+static func _log(message: String, mod_name: String, log_type: String = "info", only_once = false) -> void :
     if _is_mod_name_ignored(mod_name):
         return
 
-    var time: = "%s   " % _get_time_string()
-    var log_entry: = ModLoaderLogEntry.new(mod_name, message, log_type, time)
+    var time = "%s   " % _get_time_string()
+    var log_entry = ModLoaderLogEntry.new(mod_name, message, log_type, time)
 
     if only_once and _is_logged_before(log_entry):
         return
@@ -498,13 +498,13 @@ class ModLoaderLogCompare:
 
 
 static func _get_time_string() -> String:
-    var date_time: = Time.get_datetime_dict_from_system()
+    var date_time = Time.get_datetime_dict_from_system()
     return "%02d:%02d:%02d" % [date_time.hour, date_time.minute, date_time.second]
 
 
 
 static func _get_date_string() -> String:
-    var date_time: = Time.get_datetime_dict_from_system()
+    var date_time = Time.get_datetime_dict_from_system()
     return "%s-%02d-%02d" % [date_time.year, date_time.month, date_time.day]
 
 
@@ -521,7 +521,7 @@ static func _write_to_log_file(string_to_write: String) -> void :
     if not FileAccess.file_exists(MOD_LOG_PATH):
         _rotate_log_file()
 
-    var log_file: = FileAccess.open(MOD_LOG_PATH, FileAccess.READ_WRITE)
+    var log_file = FileAccess.open(MOD_LOG_PATH, FileAccess.READ_WRITE)
 
     if log_file == null:
         assert (false, "Could not open log file, error code: %s" % error)
@@ -539,18 +539,18 @@ static func _rotate_log_file() -> void :
 
     if FileAccess.file_exists(MOD_LOG_PATH):
         if MAX_LOGS > 1:
-            var datetime: = _get_date_time_string().replace(":", ".")
+            var datetime = _get_date_time_string().replace(":", ".")
             var backup_name: String = MOD_LOG_PATH.get_basename() + "_" + datetime
             if MOD_LOG_PATH.get_extension().length() > 0:
                 backup_name += "." + MOD_LOG_PATH.get_extension()
 
-            var dir: = DirAccess.open(MOD_LOG_PATH.get_base_dir())
+            var dir = DirAccess.open(MOD_LOG_PATH.get_base_dir())
             if not dir == null:
                 dir.copy(MOD_LOG_PATH, backup_name)
             _clear_old_log_backups()
 
 
-    var log_file: = FileAccess.open(MOD_LOG_PATH, FileAccess.WRITE)
+    var log_file = FileAccess.open(MOD_LOG_PATH, FileAccess.WRITE)
     if log_file == null:
         assert (false, "Could not open log file, error code: %s" % error)
     log_file.store_string("%s Created log" % _get_date_string())
@@ -558,18 +558,18 @@ static func _rotate_log_file() -> void :
 
 
 static func _clear_old_log_backups() -> void :
-    var MAX_LOGS: = int(ProjectSettings.get_setting("debug/file_logging/max_log_files"))
-    var MAX_BACKUPS: = MAX_LOGS - 1
-    var basename: = MOD_LOG_PATH.get_file().get_basename() as String
-    var extension: = MOD_LOG_PATH.get_extension() as String
+    var MAX_LOGS = int(ProjectSettings.get_setting("debug/file_logging/max_log_files"))
+    var MAX_BACKUPS = MAX_LOGS - 1
+    var basename = MOD_LOG_PATH.get_file().get_basename() as String
+    var extension = MOD_LOG_PATH.get_extension() as String
 
-    var dir: = DirAccess.open(MOD_LOG_PATH.get_base_dir())
+    var dir = DirAccess.open(MOD_LOG_PATH.get_base_dir())
     if dir == null:
         return
 
     dir.list_dir_begin()
-    var file: = dir.get_next()
-    var backups: = []
+    var file = dir.get_next()
+    var backups = []
     while file.length() > 0:
         if ( not dir.current_is_dir() and 
                 file.begins_with(basename) and 

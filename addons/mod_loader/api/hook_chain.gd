@@ -9,10 +9,10 @@ extends RefCounted
 var reference_object: Object
 
 var _callbacks: Array[Callable] = []
-var _callback_index: = -1
+var _callback_index = -1
 
 
-const LOG_NAME: = "ModLoaderHookChain"
+const LOG_NAME = "ModLoaderHookChain"
 
 
 
@@ -32,8 +32,8 @@ func _init(reference_object: Object, callbacks: Array) -> void :
 
 
 
-func execute_next(args: = []) -> Variant:
-    var callback: = _get_next_callback()
+func execute_next(args = []) -> Variant:
+    var callback = _get_next_callback()
     if not callback:
         return
 
@@ -54,8 +54,8 @@ func execute_next(args: = []) -> Variant:
 
 
 
-func execute_next_async(args: = []) -> Variant:
-    var callback: = _get_next_callback()
+func execute_next_async(args = []) -> Variant:
+    var callback = _get_next_callback()
     if not callback:
         return
 

@@ -5,8 +5,8 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:Config"
-const DEFAULT_CONFIG_NAME: = "default"
+const LOG_NAME = "ModLoader:Config"
+const DEFAULT_CONFIG_NAME = "default"
 
 
 
@@ -44,9 +44,9 @@ static func create_config(mod_id: String, config_name: String, config_data: Dict
         return null
 
 
-    var config_file_path: = _ModLoaderPath.get_path_to_mod_configs_dir(mod_id).path_join("%s.json" % config_name)
+    var config_file_path = _ModLoaderPath.get_path_to_mod_configs_dir(mod_id).path_join("%s.json" % config_name)
 
-    var mod_config: = ModConfig.new(
+    var mod_config = ModConfig.new(
         mod_id, 
         config_data, 
         config_file_path
@@ -59,7 +59,7 @@ static func create_config(mod_id: String, config_name: String, config_data: Dict
 
     ModLoaderStore.mod_data[mod_id].configs[config_name] = mod_config
 
-    var is_save_success: = mod_config.save_to_file()
+    var is_save_success = mod_config.save_to_file()
 
     if not is_save_success:
         return null
@@ -78,7 +78,7 @@ static func create_config(mod_id: String, config_name: String, config_data: Dict
 
 static func update_config(config: ModConfig) -> ModConfig:
 
-    var error_message: = config.validate()
+    var error_message = config.validate()
 
 
     if config.name == DEFAULT_CONFIG_NAME:
@@ -91,7 +91,7 @@ static func update_config(config: ModConfig) -> ModConfig:
         return null
 
 
-    var is_save_success: = config.save_to_file()
+    var is_save_success = config.save_to_file()
 
     if not is_save_success:
         ModLoaderLog.error("Failed to save config \"%s\" to \"%s\"." % [config.name, config.save_path], LOG_NAME)
@@ -117,7 +117,7 @@ static func delete_config(config: ModConfig) -> bool:
 
     set_current_config(get_default_config(config.mod_id))
 
-    var is_remove_success: = config.remove_file()
+    var is_remove_success = config.remove_file()
 
     if not is_remove_success:
         return false
@@ -145,7 +145,7 @@ static func set_current_config(config: ModConfig) -> void :
 
 static func get_config_schema(mod_id: String) -> Dictionary:
 
-    var mod_configs: = get_configs(mod_id)
+    var mod_configs = get_configs(mod_id)
 
 
     if mod_configs.is_empty():
@@ -165,14 +165,14 @@ static func get_config_schema(mod_id: String) -> Dictionary:
 
 static func get_schema_for_prop(config: ModConfig, prop: String) -> Dictionary:
 
-    var prop_array: = prop.split(".")
+    var prop_array = prop.split(".")
 
 
     if prop_array.is_empty():
         return config.schema.properties[prop]
 
 
-    var schema_for_prop: = _traverse_schema(config.schema.properties, prop_array)
+    var schema_for_prop = _traverse_schema(config.schema.properties, prop_array)
 
 
     if schema_for_prop.is_empty():
@@ -222,7 +222,7 @@ static func _traverse_schema(schema_prop: Dictionary, prop_key_array: Array) -> 
 
 static func get_mods_with_config() -> Array:
 
-    var mods_with_config: = []
+    var mods_with_config = []
 
 
     for mod_id in ModLoaderStore.mod_data:
@@ -271,7 +271,7 @@ static func get_configs(mod_id: String) -> Dictionary:
 
 
 static func get_config(mod_id: String, config_name: String) -> ModConfig:
-    var configs: = get_configs(mod_id)
+    var configs = get_configs(mod_id)
 
     if not configs.has(config_name):
         ModLoaderLog.error("No config with name \"%s\" found for mod_id \"%s\" " % [config_name, mod_id], LOG_NAME)
@@ -288,7 +288,7 @@ static func get_config(mod_id: String, config_name: String) -> ModConfig:
 
 
 static func has_current_config(mod_id: String) -> bool:
-    var mod_data: = ModLoaderMod.get_mod_data(mod_id)
+    var mod_data = ModLoaderMod.get_mod_data(mod_id)
     return not mod_data.current_config == null
 
 
@@ -301,7 +301,7 @@ static func has_current_config(mod_id: String) -> bool:
 
 
 static func has_config(mod_id: String, config_name: String) -> bool:
-    var mod_data: = ModLoaderMod.get_mod_data(mod_id)
+    var mod_data = ModLoaderMod.get_mod_data(mod_id)
     return mod_data.configs.has(config_name)
 
 
@@ -325,7 +325,7 @@ static func get_default_config(mod_id: String) -> ModConfig:
 
 
 static func get_current_config(mod_id: String) -> ModConfig:
-    var current_config_name: = get_current_config_name(mod_id)
+    var current_config_name = get_current_config_name(mod_id)
     var current_config: ModConfig
 
 
@@ -375,7 +375,7 @@ static func get_current_config_name(mod_id: String) -> String:
 
 static func refresh_config_data(config: ModConfig) -> ModConfig:
 
-    var new_config_data: = _ModLoaderFile.get_json_as_dict(config.save_path)
+    var new_config_data = _ModLoaderFile.get_json_as_dict(config.save_path)
 
     config.data = new_config_data
 
@@ -398,11 +398,11 @@ static func refresh_current_configs() -> void :
             return
 
 
-        var config: = get_current_config(mod_id)
+        var config = get_current_config(mod_id)
 
-        var config_data_previous: = config.data.duplicate(true)
+        var config_data_previous = config.data.duplicate(true)
 
-        var config_new: = refresh_config_data(config)
+        var config_new = refresh_config_data(config)
 
 
         if not config_data_previous == config_new.data:

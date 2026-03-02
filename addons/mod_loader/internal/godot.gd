@@ -6,11 +6,11 @@ extends Object
 
 
 
-const LOG_NAME: = "ModLoader:Godot"
-const AUTOLOAD_CONFIG_HELP_MSG: = "To configure your autoloads, go to Project > Project Settings > Autoload."
+const LOG_NAME = "ModLoader:Godot"
+const AUTOLOAD_CONFIG_HELP_MSG = "To configure your autoloads, go to Project > Project Settings > Autoload."
 
-const ENGINE_VERSION_HEX_4_2_2: = 262658
-const ENGINE_VERSION_HEX_4_2_0: = 262656
+const ENGINE_VERSION_HEX_4_2_2 = 262658
+const ENGINE_VERSION_HEX_4_2_0 = 262656
 
 static var engine_version_hex: int = Engine.get_version_info().hex
 
@@ -18,8 +18,8 @@ static var engine_version_hex: int = Engine.get_version_info().hex
 
 
 static func check_autoload_positions() -> void :
-    var override_cfg_path: = _ModLoaderPath.get_override_path()
-    var is_override_cfg_setup: = _ModLoaderFile.file_exists(override_cfg_path)
+    var override_cfg_path = _ModLoaderPath.get_override_path()
+    var is_override_cfg_setup = _ModLoaderFile.file_exists(override_cfg_path)
 
 
     if is_override_cfg_setup:
@@ -32,24 +32,24 @@ static func check_autoload_positions() -> void :
     if ModLoaderStore.ml_options.allow_modloader_autoloads_anywhere:
         is_autoload_before("ModLoaderStore", "ModLoader", true)
     else:
-        var _pos_ml_store: = check_autoload_position("ModLoaderStore", 0, true)
-        var _pos_ml_core: = check_autoload_position("ModLoader", 1, true)
+        var _pos_ml_store = check_autoload_position("ModLoaderStore", 0, true)
+        var _pos_ml_core = check_autoload_position("ModLoader", 1, true)
 
 
 
 
 
-static func is_autoload_before(autoload_name_before: String, autoload_name_after: String, trigger_error: = false) -> bool:
-    var autoload_name_before_index: = get_autoload_index(autoload_name_before)
-    var autoload_name_after_index: = get_autoload_index(autoload_name_after)
+static func is_autoload_before(autoload_name_before: String, autoload_name_after: String, trigger_error = false) -> bool:
+    var autoload_name_before_index = get_autoload_index(autoload_name_before)
+    var autoload_name_after_index = get_autoload_index(autoload_name_after)
 
 
     if not autoload_name_before_index < autoload_name_after_index:
-        var error_msg: = (
+        var error_msg = (
             "Expected %s ( position: %s ) to be loaded before %s ( position: %s ). "
             %[autoload_name_before, autoload_name_before_index, autoload_name_after, autoload_name_after_index]
         )
-        var help_msg: = AUTOLOAD_CONFIG_HELP_MSG if OS.has_feature("editor") else ""
+        var help_msg = AUTOLOAD_CONFIG_HELP_MSG if OS.has_feature("editor") else ""
 
         if trigger_error:
             var final_message = error_msg + help_msg
@@ -66,17 +66,17 @@ static func is_autoload_before(autoload_name_before: String, autoload_name_after
 
 
 
-static func check_autoload_position(autoload_name: String, position_index: int, trigger_error: = false) -> bool:
-    var autoload_array: = get_autoload_array()
-    var autoload_index: = autoload_array.find(autoload_name)
-    var position_matches: = autoload_index == position_index
+static func check_autoload_position(autoload_name: String, position_index: int, trigger_error = false) -> bool:
+    var autoload_array = get_autoload_array()
+    var autoload_index = autoload_array.find(autoload_name)
+    var position_matches = autoload_index == position_index
 
     if not position_matches and trigger_error:
-        var error_msg: = (
+        var error_msg = (
             "Expected %s to be the autoload in position %s, but this is currently %s. "
             %[autoload_name, str(position_index + 1), autoload_array[position_index]]
         )
-        var help_msg: = AUTOLOAD_CONFIG_HELP_MSG if OS.has_feature("editor") else ""
+        var help_msg = AUTOLOAD_CONFIG_HELP_MSG if OS.has_feature("editor") else ""
         var final_message = error_msg + help_msg
 
         push_error(final_message)
@@ -89,7 +89,7 @@ static func check_autoload_position(autoload_name: String, position_index: int, 
 
 
 static func get_autoload_array() -> Array:
-    var autoloads: = []
+    var autoloads = []
 
 
     for prop in ProjectSettings.get_property_list():
@@ -102,8 +102,8 @@ static func get_autoload_array() -> Array:
 
 
 static func get_autoload_index(autoload_name: String) -> int:
-    var autoloads: = get_autoload_array()
-    var autoload_index: = autoloads.find(autoload_name)
+    var autoloads = get_autoload_array()
+    var autoload_index = autoloads.find(autoload_name)
 
     return autoload_index
 
