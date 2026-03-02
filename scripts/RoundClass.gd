@@ -17,8 +17,8 @@ class_name RoundClass extends Resource
 @export var hasIntro2: bool
 
 func _ready():
-    pass
+	pass
 
 
 func _process(delta):
-    pass
+	pass

@@ -9,17 +9,17 @@ class_name MP_EditorDebug extends Node
 var failsafe_skip = false
 
 func _ready():
-    if ( !debugging):
-        editor_preview.visible = false
+	if ( !debugging):
+		editor_preview.visible = false
 
 func SetViewblockerVis(visible: bool):
-    global_viewblocker.visible = visible
+	global_viewblocker.visible = visible
 
 var is_first = true
 func SendConsoleMessage(message: String):
-    if !is_first: console.append_text("\n")
-    is_first = false
-    console.add_text(message)
-    await get_tree().create_timer(line_deletion_delay, false).timeout
-    console.remove_paragraph(0)
-    is_first = console.text == ""
+	if !is_first: console.append_text("\n")
+	is_first = false
+	console.add_text(message)
+	await get_tree().create_timer(line_deletion_delay, false).timeout
+	console.remove_paragraph(0)
+	is_first = console.text == ""

@@ -21,35 +21,35 @@ class_name ButtonClass_Main extends Node
 var mainActive = true
 
 func _ready():
-    get_parent().connect("focus_entered", OnHover)
-    get_parent().connect("focus_exited", OnExit)
-    get_parent().connect("pressed", OnPress)
-    if (isDynamic): SetUI(false)
-    pass
+	get_parent().connect("focus_entered", OnHover)
+	get_parent().connect("focus_exited", OnExit)
+	get_parent().connect("pressed", OnPress)
+	if (isDynamic): SetUI(false)
+	pass
 
 func SetUI(state: bool):
-    if (state):
-        if ( !is3D): ui.modulate.a = ui_opacity_active
-        else: ui_3D.visible = true
-    else:
-        if ( !is3D): ui.modulate.a = ui_opacity_inactive
-        else: ui_3D.visible = false
+	if (state):
+		if ( !is3D): ui.modulate.a = ui_opacity_active
+		else: ui_3D.visible = true
+	else:
+		if ( !is3D): ui.modulate.a = ui_opacity_inactive
+		else: ui_3D.visible = false
 
 func OnHover():
-    if (isActive && mainActive):
-        if (isDynamic):
-            SetUI(true)
-            if (overridingMouseRaycast): mouseRaycast.GetRaycastOverride(mouseRaycastVector)
+	if (isActive && mainActive):
+		if (isDynamic):
+			SetUI(true)
+			if (overridingMouseRaycast): mouseRaycast.GetRaycastOverride(mouseRaycastVector)
 
 func OnExit():
-    if (isActive && mainActive):
-        if (isDynamic):
-            SetUI(false)
+	if (isActive && mainActive):
+		if (isDynamic):
+			SetUI(false)
 
 signal is_pressed
 func OnPress():
-    if (isActive && mainActive):
-        emit_signal("is_pressed")
-        if (usingInteractionPipe): interaction.InteractWith(alias)
-        if (isSignature): interaction.SignatureButtonRemote(signatureBranch, alias_signature)
-        if (overridingMouseRaycast): interaction.MainInteractionEvent()
+	if (isActive && mainActive):
+		emit_signal("is_pressed")
+		if (usingInteractionPipe): interaction.InteractWith(alias)
+		if (isSignature): interaction.SignatureButtonRemote(signatureBranch, alias_signature)
+		if (overridingMouseRaycast): interaction.MainInteractionEvent()

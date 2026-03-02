@@ -8,14 +8,14 @@ var light
 var flickering = false
 
 func _ready():
-    light = get_parent()
-    flickering = true
-    Flicker()
+	light = get_parent()
+	flickering = true
+	Flicker()
 
 func Flicker():
-    while flickering:
-        if !is_inside_tree(): break
-        var energy = randf_range(energy_r1, energy_r2)
-        light.light_energy = energy
-        await get_tree().create_timer(delay, false).timeout
-        if !is_inside_tree(): break
+	while flickering:
+		if !is_inside_tree(): break
+		var energy = randf_range(energy_r1, energy_r2)
+		light.light_energy = energy
+		await get_tree().create_timer(delay, false).timeout
+		if !is_inside_tree(): break

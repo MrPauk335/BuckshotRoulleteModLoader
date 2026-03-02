@@ -18,27 +18,27 @@ var is_lobby_friends_only = true
 var lobby_player_limit = 4
 
 func _ready():
-    process_priority = 1000
-    set_process_internal(true)
-    InitializeSteam()
+	process_priority = 1000
+	set_process_internal(true)
+	InitializeSteam()
 
-    if GlobalVariables.using_steam:
-        ONLINE = Steam.loggedOn()
-        STEAM_ID = Steam.getSteamID()
-        STEAM_NAME = Steam.getPersonaName()
-    if GlobalVariables.mp_debugging: STEAM_ID = 1234
-    print("online ... ", ONLINE, " ... steam id ... ", STEAM_ID, " ... steam name ... ", STEAM_NAME)
+	if GlobalVariables.using_steam:
+		ONLINE = Steam.loggedOn()
+		STEAM_ID = Steam.getSteamID()
+		STEAM_NAME = Steam.getPersonaName()
+	if GlobalVariables.mp_debugging: STEAM_ID = 1234
+	print("online ... ", ONLINE, " ... steam id ... ", STEAM_ID, " ... steam name ... ", STEAM_NAME)
 
 func _process(_delta: float) -> void :
 
-    if GlobalVariables.using_steam:
-        Steam.run_callbacks()
+	if GlobalVariables.using_steam:
+		Steam.run_callbacks()
 
 func InitializeSteam():
-    if GlobalVariables.using_steam:
-            OS.set_environment("SteamAppId", str(appid))
-            OS.set_environment("SteamGameId", str(appid))
+	if GlobalVariables.using_steam:
+			OS.set_environment("SteamAppId", str(appid))
+			OS.set_environment("SteamGameId", str(appid))
 
-            var INIT = Steam.steamInit(false)
-            print("steam init: ", str(INIT))
-    else: print("steam not initialized - not running steam version")
+			var INIT = Steam.steamInit(false)
+			print("steam init: ", str(INIT))
+	else: print("steam not initialized - not running steam version")

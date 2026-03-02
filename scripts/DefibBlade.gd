@@ -8,10 +8,10 @@ class_name DefibBlade extends Node
 @export var wire_broken: Node3D
 
 func Blade(state: String, playSound: bool):
-    anim.play(state)
-    if (state == "open"): speaker.stream = sound_open
-    else:
-        speaker.stream = sound_close
-        wire_normal.visible = false
-        wire_broken.visible = true
-    if (playSound): speaker.play()
+	anim.play(state)
+	if (state == "open"): speaker.stream = sound_open
+	else:
+		speaker.stream = sound_close
+		wire_normal.visible = false
+		wire_broken.visible = true
+	if (playSound): speaker.play()

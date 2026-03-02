@@ -16,42 +16,42 @@ class_name MP_ButtonClass2 extends Node
 var mainActive = true
 
 func _ready():
-    ui_control = get_parent()
-    get_parent().connect("focus_entered", OnHover)
-    get_parent().connect("focus_exited", OnExit)
-    get_parent().connect("mouse_entered", OnHover)
-    get_parent().connect("mouse_exited", OnExit)
-    get_parent().connect("pressed", OnPress)
-    if (isDynamic): ui.modulate.a = ui_opacity_inactive
+	ui_control = get_parent()
+	get_parent().connect("focus_entered", OnHover)
+	get_parent().connect("focus_exited", OnExit)
+	get_parent().connect("mouse_entered", OnHover)
+	get_parent().connect("mouse_exited", OnExit)
+	get_parent().connect("pressed", OnPress)
+	if (isDynamic): ui.modulate.a = ui_opacity_inactive
 
 func SetFilter(alias: String):
-    if properties.is_active:
-        match (alias):
-            "ignore":
-                ui_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
-            "stop":
-                ui_control.mouse_filter = Control.MOUSE_FILTER_STOP
+	if properties.is_active:
+		match (alias):
+			"ignore":
+				ui_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			"stop":
+				ui_control.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func OnHover():
-    if properties.is_active:
-        print("on hover")
-        if (isActive && mainActive):
-            if (isDynamic):
-                if (playing_sound):
-                    speaker_hover.pitch_scale = randf_range(0.95, 1.0)
-                    speaker_hover.play()
-                ui.modulate.a = ui_opacity_active
-            cursor.SetCursorImage("hover")
+	if properties.is_active:
+		print("on hover")
+		if (isActive && mainActive):
+			if (isDynamic):
+				if (playing_sound):
+					speaker_hover.pitch_scale = randf_range(0.95, 1.0)
+					speaker_hover.play()
+				ui.modulate.a = ui_opacity_active
+			cursor.SetCursorImage("hover")
 
 func OnExit():
-    if properties.is_active:
-        if (isActive && mainActive):
-            if (isDynamic):
-                ui.modulate.a = ui_opacity_inactive
-            cursor.SetCursorImage("point")
+	if properties.is_active:
+		if (isActive && mainActive):
+			if (isDynamic):
+				ui.modulate.a = ui_opacity_inactive
+			cursor.SetCursorImage("point")
 
 signal is_pressed
 func OnPress():
-    if properties.is_active:
-        if (isActive && mainActive):
-            emit_signal("is_pressed")
+	if properties.is_active:
+		if (isActive && mainActive):
+			emit_signal("is_pressed")

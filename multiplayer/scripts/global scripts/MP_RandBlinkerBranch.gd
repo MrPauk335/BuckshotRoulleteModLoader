@@ -7,15 +7,15 @@ class_name MP_RandBlinkerBranch extends Node
 var looping = false
 
 func _ready():
-    if getting_object_from_parent: obj = get_parent()
-    looping = true
-    Loop()
+	if getting_object_from_parent: obj = get_parent()
+	looping = true
+	Loop()
 
 func Loop():
-    while looping:
-        if !is_inside_tree(): break
-        obj.visible = false
-        await get_tree().create_timer(randf_range(r1, r2), false).timeout
-        if !is_inside_tree(): break
-        obj.visible = true
-        await get_tree().create_timer(randf_range(r1, r2), false).timeout
+	while looping:
+		if !is_inside_tree(): break
+		obj.visible = false
+		await get_tree().create_timer(randf_range(r1, r2), false).timeout
+		if !is_inside_tree(): break
+		obj.visible = true
+		await get_tree().create_timer(randf_range(r1, r2), false).timeout

@@ -8,23 +8,23 @@ var looping = false
 var origpos
 
 func _ready():
-    origpos = text.position
-    looping = true
-    Shake()
+	origpos = text.position
+	looping = true
+	Shake()
 
 func Shake():
-    while (looping):
-        if not is_inside_tree(): break
-        var tree = get_tree()
-        if not tree: break
+	while (looping):
+		if not is_inside_tree(): break
+		var tree = get_tree()
+		if not tree: break
 
-        var randx = randf_range(offset1, offset2)
-        var randy = randf_range(offset1, offset2)
-        text.position = Vector2(randx, randy)
-        await tree.create_timer(delay, false).timeout
+		var randx = randf_range(offset1, offset2)
+		var randy = randf_range(offset1, offset2)
+		text.position = Vector2(randx, randy)
+		await tree.create_timer(delay, false).timeout
 
-        if not is_inside_tree(): break
-        text.position = origpos
-        await tree.create_timer(delay, false).timeout
-        pass
-    pass
+		if not is_inside_tree(): break
+		text.position = origpos
+		await tree.create_timer(delay, false).timeout
+		pass
+	pass

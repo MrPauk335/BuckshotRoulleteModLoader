@@ -12,33 +12,33 @@ class_name MP_UserStateManager extends Node
 @export var array_outside_ui: Array[Control]
 
 func _ready():
-    SetState()
+	SetState()
 
 func _unhandled_input(event):
-    if event.is_action_pressed("m") && GlobalVariables.mp_debugging:
-        nametag.visible = !nametag.visible
+	if event.is_action_pressed("m") && GlobalVariables.mp_debugging:
+		nametag.visible = !nametag.visible
 
 func SetState():
-    for i in array_outside_obj: i.visible = !properties.is_active
-    for i in array_outside_ui: i.visible = !properties.is_active
-    for i in array_inside_obj: i.visible = properties.is_active
-    for i in array_inside_ui: i.visible = properties.is_active
-    var visible_name = ""
-    if nametag != null:
-        if properties.cpu_enabled:
-            visible_name = properties.user_name
-        elif !GlobalVariables.mp_debugging:
-            visible_name = Steam.getFriendPersonaName(properties.user_id)
-        else:
-            visible_name = properties.user_name
-        nametag.text = visible_name.left(19)
+	for i in array_outside_obj: i.visible = !properties.is_active
+	for i in array_outside_ui: i.visible = !properties.is_active
+	for i in array_inside_obj: i.visible = properties.is_active
+	for i in array_inside_ui: i.visible = properties.is_active
+	var visible_name = ""
+	if nametag != null:
+		if properties.cpu_enabled:
+			visible_name = properties.user_name
+		elif !GlobalVariables.mp_debugging:
+			visible_name = Steam.getFriendPersonaName(properties.user_id)
+		else:
+			visible_name = properties.user_name
+		nametag.text = visible_name.left(19)
 
 
 
 
-        if properties.cpu_enabled:
-            nametag.visible = true
+		if properties.cpu_enabled:
+			nametag.visible = true
 
 
 func SetCameraAsCurrent():
-    cam.current = true
+	cam.current = true

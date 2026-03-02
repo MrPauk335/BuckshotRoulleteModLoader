@@ -9,28 +9,28 @@ var from
 var to
 
 func _process(delta):
-    LerpTimeScale()
+	LerpTimeScale()
 
 func BeginTimeScaleLerp(start: float, end: float):
-    moving = false
-    elapsed = 0
-    from = start
-    to = end
-    moving = true
+	moving = false
+	elapsed = 0
+	from = start
+	to = end
+	moving = true
 
 func LerpTimeScale():
-    if (moving):
-        elapsed += get_process_delta_time()
-        var c = clampf(elapsed / timeScaleLerpDuration, 0.0, 1.0)
-        c = ease(c, 0.4)
-        var val = lerpf(from, to, c)
-        Engine.time_scale = val
+	if (moving):
+		elapsed += get_process_delta_time()
+		var c = clampf(elapsed / timeScaleLerpDuration, 0.0, 1.0)
+		c = ease(c, 0.4)
+		var val = lerpf(from, to, c)
+		Engine.time_scale = val
 
 func _unhandled_input(event):
-    if GlobalVariables.mp_debugging:
-        if event.is_action_pressed("-"):
-            moving = false
-        if event.is_action_pressed(","):
-            moving = false
-        if event.is_action_pressed("."):
-            moving = false
+	if GlobalVariables.mp_debugging:
+		if event.is_action_pressed("-"):
+			moving = false
+		if event.is_action_pressed(","):
+			moving = false
+		if event.is_action_pressed("."):
+			moving = false

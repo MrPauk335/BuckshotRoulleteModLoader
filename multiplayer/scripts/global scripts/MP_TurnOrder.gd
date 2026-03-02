@@ -8,19 +8,19 @@ class_name MP_TurnOrder extends Node
 var default_animation_speed: float
 
 func _ready():
-    default_animation_speed = animator_indicator.speed_scale
+	default_animation_speed = animator_indicator.speed_scale
 
 func StartIndicator(direction: String):
-    animator_indicator.speed_scale = 0
-    await get_tree().create_timer(0.5, false).timeout
-    speaker_turn_order_bootup.play()
-    parent.visible = true
-    animator_indicator.speed_scale = default_animation_speed
-    if direction == "CW":
-        animator_indicator.play("loop clockwise")
-    else:
-        animator_indicator.play_backwards("loop clockwise")
+	animator_indicator.speed_scale = 0
+	await get_tree().create_timer(0.5, false).timeout
+	speaker_turn_order_bootup.play()
+	parent.visible = true
+	animator_indicator.speed_scale = default_animation_speed
+	if direction == "CW":
+		animator_indicator.play("loop clockwise")
+	else:
+		animator_indicator.play_backwards("loop clockwise")
 
 func FlipTurnOrder():
-    if game_state.MAIN_active_turn_order == "CW": game_state.MAIN_active_turn_order = "CCW"
-    else: game_state.MAIN_active_turn_order = "CW"
+	if game_state.MAIN_active_turn_order == "CW": game_state.MAIN_active_turn_order = "CCW"
+	else: game_state.MAIN_active_turn_order = "CW"

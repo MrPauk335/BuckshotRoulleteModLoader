@@ -6,21 +6,21 @@ var l
 var looping = false
 
 func _ready():
-    l = get_parent()
+	l = get_parent()
 
 func BeginMainLoop():
-    looping = true
-    BeginLoop()
+	looping = true
+	BeginLoop()
 
 func Hit():
-    animator.play("hit")
-    pass
+	animator.play("hit")
+	pass
 
 func BeginLoop():
-    while (looping):
-        Hit()
-        await get_tree().create_timer(delay, false).timeout
-        Hit()
-        await get_tree().create_timer(delay, false).timeout
-        pass
-    pass
+	while (looping):
+		Hit()
+		await get_tree().create_timer(delay, false).timeout
+		Hit()
+		await get_tree().create_timer(delay, false).timeout
+		pass
+	pass

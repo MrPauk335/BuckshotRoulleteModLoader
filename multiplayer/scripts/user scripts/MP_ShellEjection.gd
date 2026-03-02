@@ -9,14 +9,14 @@ class_name MP_ShellEjection extends Node
 
 
 func EjectShell():
-    var shell_to_eject = properties.intermediary.game_state.MAIN_shell_visible_to_eject
-    shell_branch.SetState(shell_to_eject)
-    animator_fade_out.play("set visible")
-    animator_eject.play("eject shell")
-    await get_tree().create_timer(0.6, false).timeout
-    speaker_shell_drop.pitch_scale = randf_range(0.9, 1)
-    speaker_shell_drop.stream = sounds_shelldrop[randi_range(0, sounds_shelldrop.size() - 1)]
-    speaker_shell_drop.play()
+	var shell_to_eject = properties.intermediary.game_state.MAIN_shell_visible_to_eject
+	shell_branch.SetState(shell_to_eject)
+	animator_fade_out.play("set visible")
+	animator_eject.play("eject shell")
+	await get_tree().create_timer(0.6, false).timeout
+	speaker_shell_drop.pitch_scale = randf_range(0.9, 1)
+	speaker_shell_drop.stream = sounds_shelldrop[randi_range(0, sounds_shelldrop.size() - 1)]
+	speaker_shell_drop.play()
 
 func FadeOutShell():
-    animator_fade_out.play("fade out")
+	animator_fade_out.play("fade out")

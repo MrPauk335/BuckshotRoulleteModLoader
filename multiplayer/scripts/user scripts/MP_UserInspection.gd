@@ -6,11 +6,11 @@ class_name MP_UserInspection extends Node
 @export var interaction_branch: MP_InteractionBranch
 
 func _ready():
-    SetName()
-    SetInspectObject(false)
+	SetName()
+	SetInspectObject(false)
 
 func SetName():
-    pickup_indicator.itemName = properties.user_name
+	pickup_indicator.itemName = properties.user_name
 
 func SetInspectObject(enabling: bool):
-    collider.disabled = !enabling
+	collider.disabled = !enabling

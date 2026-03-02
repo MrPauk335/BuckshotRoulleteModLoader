@@ -11,41 +11,41 @@ var elapsed
 var moving
 
 func _ready():
-    mesh = get_parent()
-    ResetToDefault()
+	mesh = get_parent()
+	ResetToDefault()
 
 func _process(delta):
-    Lerp()
+	Lerp()
 
 func ResetToDefault():
-    match assigned_name:
-        "divider bar":
-            ResetLerp()
-        "vertical counter bar":
-            SetScaleToMinimum()
-        "item briefcase bar":
-            SetScaleToMinimum()
-        "jammer bar":
-            SetScaleToMinimum()
+	match assigned_name:
+		"divider bar":
+			ResetLerp()
+		"vertical counter bar":
+			SetScaleToMinimum()
+		"item briefcase bar":
+			SetScaleToMinimum()
+		"jammer bar":
+			SetScaleToMinimum()
 
 func StartLerp(with_duration: float):
-    moving = false
-    elapsed = 0
-    duration = with_duration
-    moving = true
+	moving = false
+	elapsed = 0
+	duration = with_duration
+	moving = true
 
 func EndLerp():
-    moving = false
+	moving = false
 
 func ResetLerp():
-    mesh.scale = scale_start
+	mesh.scale = scale_start
 
 func SetScaleToMinimum():
-    mesh.scale = scale_end
+	mesh.scale = scale_end
 
 func Lerp():
-    if moving:
-        elapsed += get_process_delta_time()
-        var c = clampf(elapsed / duration, 0.0, 1.0)
-        var new_scale = lerp(scale_start, scale_end, c)
-        mesh.scale = new_scale
+	if moving:
+		elapsed += get_process_delta_time()
+		var c = clampf(elapsed / duration, 0.0, 1.0)
+		var new_scale = lerp(scale_start, scale_end, c)
+		mesh.scale = new_scale

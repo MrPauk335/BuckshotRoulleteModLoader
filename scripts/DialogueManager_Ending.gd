@@ -11,30 +11,30 @@ var moving = false
 var looping = false
 
 func _ready():
-    speaker_click.stream = soundArray_clicks[0]
+	speaker_click.stream = soundArray_clicks[0]
 
 func ShowText_Forever(activeText: String):
-    looping = false
-    dialogueUI.visible_characters = 0
-    dialogueUI.text = activeText
-    dialogueUI.visible = true
-    looping = true
-    TickText()
+	looping = false
+	dialogueUI.visible_characters = 0
+	dialogueUI.text = activeText
+	dialogueUI.visible = true
+	looping = true
+	TickText()
 
 func HideText():
-    looping = false
-    dialogueUI.visible = false
-    pass
+	looping = false
+	dialogueUI.visible = false
+	pass
 
 var overriding = false
 func TickText():
-    while (looping):
-        dialogueUI.visible_characters += 1
-        if ( !overriding): speaker_click.pitch_scale = randf_range(0.8, 1)
-        else: speaker_click.pitch_scale = randf_range(0.2, 0.4)
-        speaker_click.play()
-        if (dialogueUI.visible_ratio >= 1):
-            looping = false
-        await get_tree().create_timer(incrementDelay, false).timeout
-        pass
-    pass
+	while (looping):
+		dialogueUI.visible_characters += 1
+		if ( !overriding): speaker_click.pitch_scale = randf_range(0.8, 1)
+		else: speaker_click.pitch_scale = randf_range(0.2, 0.4)
+		speaker_click.play()
+		if (dialogueUI.visible_ratio >= 1):
+			looping = false
+		await get_tree().create_timer(incrementDelay, false).timeout
+		pass
+	pass

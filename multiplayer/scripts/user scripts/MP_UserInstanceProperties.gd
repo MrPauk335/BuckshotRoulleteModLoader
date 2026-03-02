@@ -105,297 +105,297 @@ var stat_amount_of_cash_earned: int
 @export var shotgun_local_parent: Node3D
 
 func _ready():
-    intermediary = get_node("/root/mp_main/standalone managers/interactions/interaction intermediary")
-    original_volume_linear_interaction = db_to_linear(AudioServer.get_bus_volume_db(3))
-    original_volume_linear_music = db_to_linear(AudioServer.get_bus_volume_db(1))
-    health_current = 100
-    CLearInventory_Count()
-    SetOscillators()
-    Debugging()
+	intermediary = get_node("/root/mp_main/standalone managers/interactions/interaction intermediary")
+	original_volume_linear_interaction = db_to_linear(AudioServer.get_bus_volume_db(3))
+	original_volume_linear_music = db_to_linear(AudioServer.get_bus_volume_db(1))
+	health_current = 100
+	CLearInventory_Count()
+	SetOscillators()
+	Debugging()
 
 func HardReset(clear_inventory: bool = true):
-    is_interacting_with_item = false
-    is_shooting = false
-    is_grabbing_items = false
-    is_bot_thinking = false
-    is_jammed = false
-    jammer_checked = false
-    is_stealing_item = false
-    is_holding_item_to_place = false
-    is_on_secondary_interaction = false
-    is_on_jammer_selection = false
-    is_viewing_jammer = false
-    is_holding_shotgun = false
+	is_interacting_with_item = false
+	is_shooting = false
+	is_grabbing_items = false
+	is_bot_thinking = false
+	is_jammed = false
+	jammer_checked = false
+	is_stealing_item = false
+	is_holding_item_to_place = false
+	is_on_secondary_interaction = false
+	is_on_jammer_selection = false
+	is_viewing_jammer = false
+	is_holding_shotgun = false
 
-    item_interaction.ResetAnimations()
-    shotgun.ResetAnimations()
-    if clear_inventory:
-        item_manager.ForceClearAllItems()
-    jammer_manager.Jammer_Disable()
+	item_interaction.ResetAnimations()
+	shotgun.ResetAnimations()
+	if clear_inventory:
+		item_manager.ForceClearAllItems()
+	jammer_manager.Jammer_Disable()
 
 func _process(delta):
-    LerpBus()
+	LerpBus()
 
 func _unhandled_input(event):
-    if GlobalVariables.mp_player_ai_enabled and is_active:
-        return
-    if event.is_action_pressed("exit game") && is_active:
-        mouse_raycast.SetMouseRaycast(intermediary.ingame_lobby_ui.viewing_ui)
-        intermediary.ingame_lobby_ui.ToggleUI()
+	if GlobalVariables.mp_player_ai_enabled and is_active:
+		return
+	if event.is_action_pressed("exit game") && is_active:
+		mouse_raycast.SetMouseRaycast(intermediary.ingame_lobby_ui.viewing_ui)
+		intermediary.ingame_lobby_ui.ToggleUI()
 
 func PacketSort(dict: Dictionary):
-    var value_category = dict.values()[0]
-    var value_alias = dict.values()[1]
-    match value_alias:
-        "pickup shotgun":
-            shotgun.ReceivePacket_PickUpShotgun(dict)
-        "shoot user":
-            shotgun.ReceivePacket_Shoot(dict)
-        "look at user":
-            look_manager.ReceivePacket_Look(dict)
-        "grab item":
-            item_manager.ReceivePacket_GrabItem(dict)
-        "place item":
-            item_manager.ReceivePacket_PlaceItem(dict)
-        "interact with item":
-            item_interaction.ReceivePacket_InteractWithItem(dict)
-        "secondary item interaction":
-            item_interaction.ReceivePacket_InteractWithItem_Secondary(dict)
-        "timeout exceeded":
-            ReceivePacket_TimeoutExceeded(dict)
+	var value_category = dict.values()[0]
+	var value_alias = dict.values()[1]
+	match value_alias:
+		"pickup shotgun":
+			shotgun.ReceivePacket_PickUpShotgun(dict)
+		"shoot user":
+			shotgun.ReceivePacket_Shoot(dict)
+		"look at user":
+			look_manager.ReceivePacket_Look(dict)
+		"grab item":
+			item_manager.ReceivePacket_GrabItem(dict)
+		"place item":
+			item_manager.ReceivePacket_PlaceItem(dict)
+		"interact with item":
+			item_interaction.ReceivePacket_InteractWithItem(dict)
+		"secondary item interaction":
+			item_interaction.ReceivePacket_InteractWithItem_Secondary(dict)
+		"timeout exceeded":
+			ReceivePacket_TimeoutExceeded(dict)
 
 func FreeLookCameraForUser_Enable():
-    is_allowed_to_free_look = true
+	is_allowed_to_free_look = true
 
 func FreeLookCameraForUser_Disable():
-    is_allowed_to_free_look = false
-    if camera_look.looking_active:
-        camera_look.EndCameraLook()
+	is_allowed_to_free_look = false
+	if camera_look.looking_active:
+		camera_look.EndCameraLook()
 
 func SetTurnControllerPrompts(state: bool):
-    if state:
-        bp_turn.visible = true
-        if cursor.controller_active: btn_shotgun.grab_focus()
-        controller.previousFocus = btn_shotgun
-    else:
-        bp_turn.visible = false
+	if state:
+		bp_turn.visible = true
+		if cursor.controller_active: btn_shotgun.grab_focus()
+		controller.previousFocus = btn_shotgun
+	else:
+		bp_turn.visible = false
 
 func SetAdrenalineControllerPrompts(state: bool):
-    if state:
-        bp_adrenaline.visible = true
-        if cursor.controller_active: btn_adrenaline_first.grab_focus()
-        controller.previousFocus = btn_adrenaline_first
-    else:
-        bp_adrenaline.visible = false
+	if state:
+		bp_adrenaline.visible = true
+		if cursor.controller_active: btn_adrenaline_first.grab_focus()
+		controller.previousFocus = btn_adrenaline_first
+	else:
+		bp_adrenaline.visible = false
 
 func TransferInventoryToGlobalParent():
-    for item in user_inventory_instance_array:
-        if item != null:
-            var orig = item.global_transform
-            item.get_parent().remove_child(item)
-            intermediary.item_spawn_global_parent.add_child(item)
-            item.global_transform = orig
+	for item in user_inventory_instance_array:
+		if item != null:
+			var orig = item.global_transform
+			item.get_parent().remove_child(item)
+			intermediary.item_spawn_global_parent.add_child(item)
+			item.global_transform = orig
 
 func CLearInventory_Count():
-    user_inventory_count_by_item_id = []
-    for i in 50: user_inventory_count_by_item_id.append(0)
+	user_inventory_count_by_item_id = []
+	for i in 50: user_inventory_count_by_item_id.append(0)
 
 func FadeInAudioBus():
-    lerp_bus_lerping = false
-    lerp_bus_elapsed = 0
-    lerp_bus_interaction_start_linear = db_to_linear(AudioServer.get_bus_volume_db(3))
-    lerp_bus_interaction_end_linear = original_volume_linear_interaction
-    lerp_bus_music_end_linear = db_to_linear(AudioServer.get_bus_volume_db(1))
-    lerp_bus_music_end_linear = original_volume_linear_music
-    lerp_bus_lerping = true
+	lerp_bus_lerping = false
+	lerp_bus_elapsed = 0
+	lerp_bus_interaction_start_linear = db_to_linear(AudioServer.get_bus_volume_db(3))
+	lerp_bus_interaction_end_linear = original_volume_linear_interaction
+	lerp_bus_music_end_linear = db_to_linear(AudioServer.get_bus_volume_db(1))
+	lerp_bus_music_end_linear = original_volume_linear_music
+	lerp_bus_lerping = true
 
 func FadeOutAudioBus():
-    lerp_bus_lerping = false
-    lerp_bus_elapsed = 0
-    lerp_bus_interaction_start_linear = db_to_linear(AudioServer.get_bus_volume_db(3))
-    lerp_bus_interaction_end_linear = 0
-    lerp_bus_music_end_linear = db_to_linear(AudioServer.get_bus_volume_db(1))
-    lerp_bus_music_end_linear = 0
-    lerp_bus_lerping = true
+	lerp_bus_lerping = false
+	lerp_bus_elapsed = 0
+	lerp_bus_interaction_start_linear = db_to_linear(AudioServer.get_bus_volume_db(3))
+	lerp_bus_interaction_end_linear = 0
+	lerp_bus_music_end_linear = db_to_linear(AudioServer.get_bus_volume_db(1))
+	lerp_bus_music_end_linear = 0
+	lerp_bus_lerping = true
 
 func LerpBus():
-    if lerp_bus_lerping:
-        lerp_bus_elapsed += get_process_delta_time()
-        var c = clampf(lerp_bus_elapsed / lerp_bus_duration, 0.0, 1.0)
-        var vol_interaction = lerp(float(lerp_bus_interaction_start_linear), float(lerp_bus_interaction_end_linear), c)
-        var vol_music = lerp(float(lerp_bus_music_start_linear), float(lerp_bus_music_end_linear), c)
-        AudioServer.set_bus_volume_db(3, linear_to_db(vol_interaction))
-        AudioServer.set_bus_volume_db(1, linear_to_db(vol_music))
+	if lerp_bus_lerping:
+		lerp_bus_elapsed += get_process_delta_time()
+		var c = clampf(lerp_bus_elapsed / lerp_bus_duration, 0.0, 1.0)
+		var vol_interaction = lerp(float(lerp_bus_interaction_start_linear), float(lerp_bus_interaction_end_linear), c)
+		var vol_music = lerp(float(lerp_bus_music_start_linear), float(lerp_bus_music_end_linear), c)
+		AudioServer.set_bus_volume_db(3, linear_to_db(vol_interaction))
+		AudioServer.set_bus_volume_db(1, linear_to_db(vol_music))
 
 func MuteAudioOnDeath():
-    lerp_bus_lerping = false
-    original_volume_interaction_bus_db = AudioServer.get_bus_volume_db(3)
-    original_volume_music_bus_db = AudioServer.get_bus_volume_db(1)
-    AudioServer.set_bus_volume_db(3, linear_to_db(0))
-    AudioServer.set_bus_volume_db(1, linear_to_db(0))
+	lerp_bus_lerping = false
+	original_volume_interaction_bus_db = AudioServer.get_bus_volume_db(3)
+	original_volume_music_bus_db = AudioServer.get_bus_volume_db(1)
+	AudioServer.set_bus_volume_db(3, linear_to_db(0))
+	AudioServer.set_bus_volume_db(1, linear_to_db(0))
 
 func UnmuteAudioOnRevive():
-    lerp_bus_lerping = false
-    AudioServer.set_bus_volume_db(3, original_volume_interaction_bus_db)
-    AudioServer.set_bus_volume_db(1, original_volume_music_bus_db)
+	lerp_bus_lerping = false
+	AudioServer.set_bus_volume_db(3, original_volume_interaction_bus_db)
+	AudioServer.set_bus_volume_db(1, original_volume_music_bus_db)
 
 func Debugging():
-    tabletop_blockout.visible = false
-    shotgun_local_parent.visible = false
+	tabletop_blockout.visible = false
+	shotgun_local_parent.visible = false
 
 func SetOscillators():
-    for osc in oscillators:
-        osc.SetRandomFrequency()
-    oscillator_manager.StartOscillating("hands")
-    oscillator_manager.StartOscillating("body")
+	for osc in oscillators:
+		osc.SetRandomFrequency()
+	oscillator_manager.StartOscillating("hands")
+	oscillator_manager.StartOscillating("body")
 
 func PauseOscillation():
-    oscillator_manager.StopOscillating("hands")
-    oscillator_manager.LerpToOriginal("hands")
+	oscillator_manager.StopOscillating("hands")
+	oscillator_manager.LerpToOriginal("hands")
 
 func ResumeOscillation():
-    oscillator_manager.StartOscillating("hands")
+	oscillator_manager.StartOscillating("hands")
 
 func LookAtSocket(socket_to_look_at: int, slow: bool):
-    var direction = GetDirection(socket_number, socket_to_look_at)
-    cam.BeginLerp("opponent " + direction, slow)
+	var direction = GetDirection(socket_number, socket_to_look_at)
+	cam.BeginLerp("opponent " + direction, slow)
 
 func GetDirection(self_socket, selected_socket):
-    var direction = ""
-    match self_socket:
-        0:
-            match selected_socket:
-                0: direction = "self"
-                1: direction = "left"
-                2: direction = "forward"
-                3: direction = "right"
-        1:
-            match selected_socket:
-                0: direction = "right"
-                1: direction = "self"
-                2: direction = "left"
-                3: direction = "forward"
-        2:
-            match selected_socket:
-                0: direction = "forward"
-                1: direction = "right"
-                2: direction = "self"
-                3: direction = "left"
-        3:
-            match selected_socket:
-                0: direction = "left"
-                1: direction = "forward"
-                2: direction = "right"
-                3: direction = "self"
-    return direction
+	var direction = ""
+	match self_socket:
+		0:
+			match selected_socket:
+				0: direction = "self"
+				1: direction = "left"
+				2: direction = "forward"
+				3: direction = "right"
+		1:
+			match selected_socket:
+				0: direction = "right"
+				1: direction = "self"
+				2: direction = "left"
+				3: direction = "forward"
+		2:
+			match selected_socket:
+				0: direction = "forward"
+				1: direction = "right"
+				2: direction = "self"
+				3: direction = "left"
+		3:
+			match selected_socket:
+				0: direction = "left"
+				1: direction = "forward"
+				2: direction = "right"
+				3: direction = "self"
+	return direction
 
 func GetSocketFromDirection(self_socket: int, selected_direction: String):
-    var socket_number = 0
-    match self_socket:
-        0:
-            match selected_direction:
-                "self": socket_number = 0
-                "left": socket_number = 1
-                "forward": socket_number = 2
-                "right": socket_number = 3
-        1:
-            match selected_direction:
-                "self": socket_number = 1
-                "left": socket_number = 2
-                "forward": socket_number = 3
-                "right": socket_number = 0
-        2:
-            match selected_direction:
-                "self": socket_number = 2
-                "left": socket_number = 3
-                "forward": socket_number = 0
-                "right": socket_number = 1
-        3:
-            match selected_direction:
-                "self": socket_number = 3
-                "left": socket_number = 0
-                "forward": socket_number = 1
-                "right": socket_number = 2
-    return socket_number
+	var socket_number = 0
+	match self_socket:
+		0:
+			match selected_direction:
+				"self": socket_number = 0
+				"left": socket_number = 1
+				"forward": socket_number = 2
+				"right": socket_number = 3
+		1:
+			match selected_direction:
+				"self": socket_number = 1
+				"left": socket_number = 2
+				"forward": socket_number = 3
+				"right": socket_number = 0
+		2:
+			match selected_direction:
+				"self": socket_number = 2
+				"left": socket_number = 3
+				"forward": socket_number = 0
+				"right": socket_number = 1
+		3:
+			match selected_direction:
+				"self": socket_number = 3
+				"left": socket_number = 0
+				"forward": socket_number = 1
+				"right": socket_number = 2
+	return socket_number
 
 func GetSocketProperties(socket_number: int):
-    for instance_property in intermediary.instance_handler.instance_property_array:
-        if instance_property.socket_number == socket_number:
-            return instance_property
-    return null
+	for instance_property in intermediary.instance_handler.instance_property_array:
+		if instance_property.socket_number == socket_number:
+			return instance_property
+	return null
 
 func ResetLastAliveProperty():
-    permissions.SetMajorPermission(false)
-    permissions.SetMainPermission(false)
-    SetTurnControllerPrompts(false)
-    SetAdrenalineControllerPrompts(false)
-    shotgun.SetTargetControllerPrompts(false)
-    jammer_manager.SetJammerControllerPrompts(false)
-    await get_tree().create_timer(3.8, false).timeout
-    if is_grabbing_items:
-        item_manager.EndItemGrabbingDefault()
-    if is_stealing_item:
-        cam.BeginLerp("home")
-        SetAdrenalineControllerPrompts(false)
-        permissions.SetMainPermission(false)
-        is_stealing_item = false
-        is_on_secondary_interaction = false
-    if is_holding_shotgun:
-        cam.BeginLerp("home")
-        shotgun.DropShotgun()
-    if is_viewing_jammer:
-        item_interaction.ReturnJammerAfterTimeout()
-        is_on_secondary_interaction = false
+	permissions.SetMajorPermission(false)
+	permissions.SetMainPermission(false)
+	SetTurnControllerPrompts(false)
+	SetAdrenalineControllerPrompts(false)
+	shotgun.SetTargetControllerPrompts(false)
+	jammer_manager.SetJammerControllerPrompts(false)
+	await get_tree().create_timer(3.8, false).timeout
+	if is_grabbing_items:
+		item_manager.EndItemGrabbingDefault()
+	if is_stealing_item:
+		cam.BeginLerp("home")
+		SetAdrenalineControllerPrompts(false)
+		permissions.SetMainPermission(false)
+		is_stealing_item = false
+		is_on_secondary_interaction = false
+	if is_holding_shotgun:
+		cam.BeginLerp("home")
+		shotgun.DropShotgun()
+	if is_viewing_jammer:
+		item_interaction.ReturnJammerAfterTimeout()
+		is_on_secondary_interaction = false
 
 func ReceivePacket_TimeoutExceeded(packet: Dictionary):
-    print("timeout exceeded with packet: ", packet)
+	print("timeout exceeded with packet: ", packet)
 
-    var game_state_ref = intermediary.get("game_state")
-    game_state_ref.StopTimeoutForSocket(packet.timeout_type, packet.socket_number)
-    game_state_ref.StopTimeoutForSocket("adrenaline", packet.socket_number)
-    game_state_ref.StopTimeoutForSocket("jammer", packet.socket_number)
+	var game_state_ref = intermediary.get("game_state")
+	game_state_ref.StopTimeoutForSocket(packet.timeout_type, packet.socket_number)
+	game_state_ref.StopTimeoutForSocket("adrenaline", packet.socket_number)
+	game_state_ref.StopTimeoutForSocket("jammer", packet.socket_number)
 
-    match packet.timeout_type:
-        "adrenaline":
-            if !packet.ending_turn_after_timeout:
-                if socket_number == packet.socket_number:
-                    cam.BeginLerp("home")
-                    permissions.SetMainPermission(true)
-                    SetAdrenalineControllerPrompts(false)
-                    SetTurnControllerPrompts(true)
-                    is_stealing_item = false
-                    is_on_secondary_interaction = false
-                else:
-                    LookAtSocket(packet.socket_number, true)
-            else:
-                if socket_number == packet.socket_number:
-                    permissions.SetMainPermission(false)
-                    intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
-                    is_stealing_item = false
-                    is_on_secondary_interaction = false
-        "jammer":
-            if !packet.ending_turn_after_timeout:
-                if socket_number == packet.socket_number:
-                    item_interaction.ReturnJammerAfterTimeout()
-                    permissions.SetMainPermission(true)
-                    SetTurnControllerPrompts(true)
-                    is_on_secondary_interaction = false
-            else:
-                if socket_number == packet.socket_number:
-                    item_interaction.ReturnJammerAfterTimeout()
-                    permissions.SetMainPermission(false)
-                    is_on_secondary_interaction = false
-                    intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
-        "item distribution":
-            if socket_number == packet.socket_number:
-                item_manager.EndItemGrabbingAfterTimeout()
-        "turn":
-            if socket_number == packet.socket_number:
-                permissions.SetMainPermission(false)
-                intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
-        "shotgun target selection":
-            if socket_number == packet.socket_number:
-                permissions.SetMainPermission(false)
-                shotgun.DropShotgun()
-                await get_tree().create_timer(0.39, false).timeout
-                intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
+	match packet.timeout_type:
+		"adrenaline":
+			if !packet.ending_turn_after_timeout:
+				if socket_number == packet.socket_number:
+					cam.BeginLerp("home")
+					permissions.SetMainPermission(true)
+					SetAdrenalineControllerPrompts(false)
+					SetTurnControllerPrompts(true)
+					is_stealing_item = false
+					is_on_secondary_interaction = false
+				else:
+					LookAtSocket(packet.socket_number, true)
+			else:
+				if socket_number == packet.socket_number:
+					permissions.SetMainPermission(false)
+					intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
+					is_stealing_item = false
+					is_on_secondary_interaction = false
+		"jammer":
+			if !packet.ending_turn_after_timeout:
+				if socket_number == packet.socket_number:
+					item_interaction.ReturnJammerAfterTimeout()
+					permissions.SetMainPermission(true)
+					SetTurnControllerPrompts(true)
+					is_on_secondary_interaction = false
+			else:
+				if socket_number == packet.socket_number:
+					item_interaction.ReturnJammerAfterTimeout()
+					permissions.SetMainPermission(false)
+					is_on_secondary_interaction = false
+					intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
+		"item distribution":
+			if socket_number == packet.socket_number:
+				item_manager.EndItemGrabbingAfterTimeout()
+		"turn":
+			if socket_number == packet.socket_number:
+				permissions.SetMainPermission(false)
+				intermediary.get("roundManager").PassTurn(packet.next_turn_socket)
+		"shotgun target selection":
+			if socket_number == packet.socket_number:
+				permissions.SetMainPermission(false)
+				shotgun.DropShotgun()
+				await get_tree().create_timer(0.39, false).timeout
+				intermediary.get("roundManager").PassTurn(packet.next_turn_socket)

@@ -4906,8 +4906,8 @@ var scores = [[430, 430],
 
 
 func val2compressed(val):
-    var accuracy_bits = 17
-    var a = max(0, floor(log(val) / log(2)) + 1 - accuracy_bits)
-    if 2 ** accuracy_bits * (2 ** a - 1) > val: a -= 1
-    var b = (val - 2 ** accuracy_bits * (2 ** a - 1)) / (2 ** a)
-    return floor((a * 2 ** accuracy_bits) + b)
+	var accuracy_bits = 17
+	var a = max(0, floor(log(val) / log(2)) + 1 - accuracy_bits)
+	if 2 ** accuracy_bits * (2 ** a - 1) > val: a -= 1
+	var b = (val - 2 ** accuracy_bits * (2 ** a - 1)) / (2 ** a)
+	return floor((a * 2 ** accuracy_bits) + b)

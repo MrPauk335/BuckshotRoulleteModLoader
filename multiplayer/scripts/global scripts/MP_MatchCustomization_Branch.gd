@@ -10,10 +10,10 @@ var assigned_item_id: int
 var assigned_sequence_index: int
 
 func _ready():
-    AssignID()
+	AssignID()
 
 func AssignID():
-    if item_properties != null && !is_sequence:
-        assigned_item_id = item_properties.item_id
-    if item_properties != null && is_sequence:
-        assigned_sequence_index = item_properties.sequence_index
+	if item_properties != null && !is_sequence:
+		assigned_item_id = item_properties.item_id
+	if item_properties != null && is_sequence:
+		assigned_sequence_index = item_properties.sequence_index

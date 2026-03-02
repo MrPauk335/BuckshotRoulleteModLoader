@@ -56,279 +56,279 @@ var stashed_match_customization_dictionary: Dictionary
 var previous_match_customization_differences: Dictionary
 
 var debug_match_customization = {
-    "number_of_rounds": 3, 
-    "skipping_intro": false, 
-    "round_property_array": [
-        {
-            "round_index": 0, 
-            "starting_health": -1, 
-            "item_properties": [
-                {
-                    "item_id": 1, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 2, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 3, 
-                    "max_per_player": 1, 
-                    "max_on_table": 1, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 4, 
-                    "max_per_player": 1, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 5, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 6, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 8, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 9, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 10, 
-                    "max_per_player": 1, 
-                    "max_on_table": 2, 
-                    "is_ingame": true}], 
-            "shell_load_properties": [
-                {
-                    "sequence_index": 0, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 1, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 2, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 3, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, ]}, 
-        {
-            "round_index": 1, 
-            "starting_health": -1, 
-            "item_properties": [
-                {
-                    "item_id": 1, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 2, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 3, 
-                    "max_per_player": 1, 
-                    "max_on_table": 1, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 4, 
-                    "max_per_player": 1, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 5, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 6, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 8, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 9, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 10, 
-                    "max_per_player": 1, 
-                    "max_on_table": 2, 
-                    "is_ingame": true}], 
-            "shell_load_properties": [
-                {
-                    "sequence_index": 0, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 1, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 2, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 3, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, ]
-        }, 
-        {
-            "round_index": 2, 
-            "starting_health": -1, 
-            "item_properties": [
-                {
-                    "item_id": 1, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 2, 
-                    "max_per_player": 2, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 3, 
-                    "max_per_player": 1, 
-                    "max_on_table": 1, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 4, 
-                    "max_per_player": 1, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 5, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 6, 
-                    "max_per_player": 8, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 8, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 9, 
-                    "max_per_player": 4, 
-                    "max_on_table": 32, 
-                    "is_ingame": true}, 
-                {
-                    "item_id": 10, 
-                    "max_per_player": 1, 
-                    "max_on_table": 2, 
-                    "is_ingame": true}], 
-            "shell_load_properties": [
-                {
-                    "sequence_index": 0, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 1, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 2, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, 
-                {
-                    "sequence_index": 3, 
-                    "number_of_blanks": -1, 
-                    "number_of_lives": -1, 
-                    "number_of_items": -1, }, ]
-        }
-        ]
+	"number_of_rounds": 3, 
+	"skipping_intro": false, 
+	"round_property_array": [
+		{
+			"round_index": 0, 
+			"starting_health": -1, 
+			"item_properties": [
+				{
+					"item_id": 1, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 2, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 3, 
+					"max_per_player": 1, 
+					"max_on_table": 1, 
+					"is_ingame": true}, 
+				{
+					"item_id": 4, 
+					"max_per_player": 1, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 5, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 6, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 8, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 9, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 10, 
+					"max_per_player": 1, 
+					"max_on_table": 2, 
+					"is_ingame": true}], 
+			"shell_load_properties": [
+				{
+					"sequence_index": 0, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 1, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 2, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 3, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, ]}, 
+		{
+			"round_index": 1, 
+			"starting_health": -1, 
+			"item_properties": [
+				{
+					"item_id": 1, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 2, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 3, 
+					"max_per_player": 1, 
+					"max_on_table": 1, 
+					"is_ingame": true}, 
+				{
+					"item_id": 4, 
+					"max_per_player": 1, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 5, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 6, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 8, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 9, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 10, 
+					"max_per_player": 1, 
+					"max_on_table": 2, 
+					"is_ingame": true}], 
+			"shell_load_properties": [
+				{
+					"sequence_index": 0, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 1, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 2, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 3, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, ]
+		}, 
+		{
+			"round_index": 2, 
+			"starting_health": -1, 
+			"item_properties": [
+				{
+					"item_id": 1, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 2, 
+					"max_per_player": 2, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 3, 
+					"max_per_player": 1, 
+					"max_on_table": 1, 
+					"is_ingame": true}, 
+				{
+					"item_id": 4, 
+					"max_per_player": 1, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 5, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 6, 
+					"max_per_player": 8, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 8, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 9, 
+					"max_per_player": 4, 
+					"max_on_table": 32, 
+					"is_ingame": true}, 
+				{
+					"item_id": 10, 
+					"max_per_player": 1, 
+					"max_on_table": 2, 
+					"is_ingame": true}], 
+			"shell_load_properties": [
+				{
+					"sequence_index": 0, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 1, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 2, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, 
+				{
+					"sequence_index": 3, 
+					"number_of_blanks": -1, 
+					"number_of_lives": -1, 
+					"number_of_items": -1, }, ]
+		}
+		]
 }
 
 func _ready():
-    if using_steam: currentVersion = currentVersion_nr + versuffix_steam
-    else: currentVersion = currentVersion_nr + versuffix_itch
-    debug_round_index_to_end_game_at = 2
-    original_volume_linear_interaction = db_to_linear(AudioServer.get_bus_volume_db(3))
-    original_volume_linear_music = db_to_linear(AudioServer.get_bus_volume_db(1))
-    version_to_check = currentVersion_nr + "." + str(currentVersion_hotfix)
-    print("running full version name: ", version_to_check)
-    if GlobalVariables.mp_debugging:
-        TranslationServer.set_locale("EN")
-        active_match_customization_dictionary = debug_match_customization
+	if using_steam: currentVersion = currentVersion_nr + versuffix_steam
+	else: currentVersion = currentVersion_nr + versuffix_itch
+	debug_round_index_to_end_game_at = 2
+	original_volume_linear_interaction = db_to_linear(AudioServer.get_bus_volume_db(3))
+	original_volume_linear_music = db_to_linear(AudioServer.get_bus_volume_db(1))
+	version_to_check = currentVersion_nr + "." + str(currentVersion_hotfix)
+	print("running full version name: ", version_to_check)
+	if GlobalVariables.mp_debugging:
+		TranslationServer.set_locale("EN")
+		active_match_customization_dictionary = debug_match_customization
 
 func _unhandled_input(event):
-    if mp_debugging or mp_debug_keys_enabled:
-        if event.is_action_pressed("debug_q"):
-            SwapLanguage(false)
-        if event.is_action_pressed("debug_e"):
-            SwapLanguage(true)
-        if event.is_action_pressed("-"):
-            Engine.time_scale = 0.05
-        if event.is_action_pressed(","):
-            Engine.time_scale = 1
-        if event.is_action_pressed("."):
-            Engine.time_scale = 10
-        if event.is_action_pressed("end"):
-            Engine.time_scale = 0
+	if mp_debugging or mp_debug_keys_enabled:
+		if event.is_action_pressed("debug_q"):
+			SwapLanguage(false)
+		if event.is_action_pressed("debug_e"):
+			SwapLanguage(true)
+		if event.is_action_pressed("-"):
+			Engine.time_scale = 0.05
+		if event.is_action_pressed(","):
+			Engine.time_scale = 1
+		if event.is_action_pressed("."):
+			Engine.time_scale = 10
+		if event.is_action_pressed("end"):
+			Engine.time_scale = 0
 
 var language_array = ["EN", "EE", "RU", "ES LATAM", "ES", "FR", "IT", "JA", "KO", "PL", "PT", "DE", "TR", "UA", "ZHS", "ZHT"]
 var index = 0
 func SwapLanguage(dir: bool):
-    if dir:
-        if index == language_array.size() - 1:
-            index = 0
-        else:
-            index += 1
-    else:
-        if index == 0:
-            index = language_array.size() - 1
-        else:
-            index -= 1
-    TranslationServer.set_locale(language_array[index])
-    print("setting locale to: ", language_array[index])
+	if dir:
+		if index == language_array.size() - 1:
+			index = 0
+		else:
+			index += 1
+	else:
+		if index == 0:
+			index = language_array.size() - 1
+		else:
+			index -= 1
+	TranslationServer.set_locale(language_array[index])
+	print("setting locale to: ", language_array[index])
 
 func LogAnalytics(winner_name: String, rounds: int, winner_socket: int):
-    var path = "user://game_analytics.log"
-    var file = FileAccess.open(path, FileAccess.READ_WRITE)
-    if file == null:
-        file = FileAccess.open(path, FileAccess.WRITE)
-    else:
-        file.seek_end()
+	var path = "user://game_analytics.log"
+	var file = FileAccess.open(path, FileAccess.READ_WRITE)
+	if file == null:
+		file = FileAccess.open(path, FileAccess.WRITE)
+	else:
+		file.seek_end()
 
-    var time = Time.get_datetime_dict_from_system()
-    var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [time.year, time.month, time.day, time.hour, time.minute, time.second]
-    var log_line = "[%s] WINNER: %s (Socket %d) | ROUNDS: %d\n" % [time_str, winner_name, winner_socket, rounds + 1]
+	var time = Time.get_datetime_dict_from_system()
+	var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [time.year, time.month, time.day, time.hour, time.minute, time.second]
+	var log_line = "[%s] WINNER: %s (Socket %d) | ROUNDS: %d\n" % [time_str, winner_name, winner_socket, rounds + 1]
 
-    file.store_string(log_line)
-    file.close()
-    print("[ANALYTICS] Result logged: ", log_line)
+	file.store_string(log_line)
+	file.close()
+	print("[ANALYTICS] Result logged: ", log_line)

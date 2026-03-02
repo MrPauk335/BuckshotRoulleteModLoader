@@ -37,61 +37,61 @@ var intermed_properties: MP_UserInstanceProperties
 @export var environmental_event: MP_EnvironmentalEvent
 
 func _ready():
-    viewblocker_top_global.visible = false
-    input_blocker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	viewblocker_top_global.visible = false
+	input_blocker.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func HoverPanEntered(active_hoverpan_socket: int):
 
-    pass
+	pass
 
 func SetShotgunVisible_Global(setting_visible: bool):
-    if setting_visible:
-        if !game_state.MAIN_is_shotgun_held:
-            globalparent_shotgun_main.visible = true
-            globalparent_shotgun_forestock.visible = true
-    else:
-        globalparent_shotgun_main.visible = false
-        globalparent_shotgun_forestock.visible = false
+	if setting_visible:
+		if !game_state.MAIN_is_shotgun_held:
+			globalparent_shotgun_main.visible = true
+			globalparent_shotgun_forestock.visible = true
+	else:
+		globalparent_shotgun_main.visible = false
+		globalparent_shotgun_forestock.visible = false
 
 func ExitGame(message_to_forward: String = ""):
-    instance_handler.removing_instances = false
-    print("exiting game with message to forward: ", message_to_forward)
-    GlobalVariables.message_to_forward = message_to_forward
-    input_blocker.mouse_filter = Control.MOUSE_FILTER_STOP
-    viewblocker_top_global.visible = true
-    ingame_lobby_ui.toggle_allowed = false
-    await get_tree().create_timer(0.3, false).timeout
-    print("global variables disband lobby after exiting main scene: ", GlobalVariables.disband_lobby_after_exiting_main_scene)
-    if !GlobalVariables.mp_debugging && GlobalVariables.disband_lobby_after_exiting_main_scene:
-        print("exiting game and disbanding current lobby.")
-        ingame_lobby_ui.lobby.leave_lobby()
-    GlobalVariables.running_short_intro_in_lobby_scene = true
-    GlobalVariables.disband_lobby_after_exiting_main_scene = false
-    get_tree().change_scene_to_file("res://multiplayer/scenes/mp_lobby.tscn")
+	instance_handler.removing_instances = false
+	print("exiting game with message to forward: ", message_to_forward)
+	GlobalVariables.message_to_forward = message_to_forward
+	input_blocker.mouse_filter = Control.MOUSE_FILTER_STOP
+	viewblocker_top_global.visible = true
+	ingame_lobby_ui.toggle_allowed = false
+	await get_tree().create_timer(0.3, false).timeout
+	print("global variables disband lobby after exiting main scene: ", GlobalVariables.disband_lobby_after_exiting_main_scene)
+	if !GlobalVariables.mp_debugging && GlobalVariables.disband_lobby_after_exiting_main_scene:
+		print("exiting game and disbanding current lobby.")
+		ingame_lobby_ui.lobby.leave_lobby()
+	GlobalVariables.running_short_intro_in_lobby_scene = true
+	GlobalVariables.disband_lobby_after_exiting_main_scene = false
+	get_tree().change_scene_to_file("res://multiplayer/scenes/mp_lobby.tscn")
 
 func InteractionPipe(alias: String, button_class_main: MP_ButtonClassMain):
-    match alias:
-        "disconnect button":
-            ingame_lobby_ui.ShowConfirmation()
-        "disconnect confirmation yes":
-            if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
-                GlobalVariables.disband_lobby_after_exiting_main_scene = true
-                ExitGame()
+	match alias:
+		"disconnect button":
+			ingame_lobby_ui.ShowConfirmation()
+		"disconnect confirmation yes":
+			if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
+				GlobalVariables.disband_lobby_after_exiting_main_scene = true
+				ExitGame()
 
-            else:
-                GlobalVariables.disband_lobby_after_exiting_main_scene = true
-                ExitGame()
-        "disconnect confirmation no":
-            ingame_lobby_ui.HideConfirmation()
-        "continue button":
-            ingame_lobby_ui.ToggleUI()
-        "kick button":
-            var packet = {
-                "packet category": "MP_LobbyManager", 
-                "packet alias": "kick player", 
-                "sent_from": "host", 
-                "packet_id": 26, 
-                "steam_id": button_class_main.segment.user_id, 
-            }
-            packets.send_p2p_packet(0, packet)
-            if GlobalVariables.mp_debugging: packets.PipeData(packet)
+			else:
+				GlobalVariables.disband_lobby_after_exiting_main_scene = true
+				ExitGame()
+		"disconnect confirmation no":
+			ingame_lobby_ui.HideConfirmation()
+		"continue button":
+			ingame_lobby_ui.ToggleUI()
+		"kick button":
+			var packet = {
+				"packet category": "MP_LobbyManager", 
+				"packet alias": "kick player", 
+				"sent_from": "host", 
+				"packet_id": 26, 
+				"steam_id": button_class_main.segment.user_id, 
+			}
+			packets.send_p2p_packet(0, packet)
+			if GlobalVariables.mp_debugging: packets.PipeData(packet)

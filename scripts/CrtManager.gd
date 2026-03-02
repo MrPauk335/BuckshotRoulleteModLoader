@@ -36,37 +36,37 @@ var selection_range1 = 1
 var selection_range2 = 12
 
 func _ready():
-    screenparent_stats.visible = true
-    screenparent_leaderboard.visible = false
+	screenparent_stats.visible = true
+	screenparent_leaderboard.visible = false
 
 func _unhandled_input(event):
-    if (event.is_action_pressed("ui_accept") && viewing):
-        Interaction("window")
-    if (event.is_action_pressed("ui_cancel") && viewing):
-        Interaction("exit")
-    if (event.is_action_pressed("exit game") && viewing):
-        Interaction("exit")
-    if (event.is_action_pressed("ui_left") && viewing):
-        Interaction("left")
-    if (event.is_action_pressed("ui_right") && viewing):
-        Interaction("right")
+	if (event.is_action_pressed("ui_accept") && viewing):
+		Interaction("window")
+	if (event.is_action_pressed("ui_cancel") && viewing):
+		Interaction("exit")
+	if (event.is_action_pressed("exit game") && viewing):
+		Interaction("exit")
+	if (event.is_action_pressed("ui_left") && viewing):
+		Interaction("left")
+	if (event.is_action_pressed("ui_right") && viewing):
+		Interaction("right")
 
 func DisableCRT():
-    SetCRT(false)
+	SetCRT(false)
 
 func SetCRT(state: bool):
-    if (state && GlobalVariables.using_steam):
-        bathroom_normal.set_layer_mask_value(1, false)
-        bathroom_broken.visible = true
-        for obj in objarray_normal: obj.visible = false
-        for obj in objarray_broken: obj.visible = true
-        mask.visible = true
-    else:
-        bathroom_normal.set_layer_mask_value(1, true)
-        bathroom_broken.visible = false
-        for obj in objarray_normal: obj.visible = true
-        for obj in objarray_broken: obj.visible = false
-        mask.visible = false
+	if (state && GlobalVariables.using_steam):
+		bathroom_normal.set_layer_mask_value(1, false)
+		bathroom_broken.visible = true
+		for obj in objarray_normal: obj.visible = false
+		for obj in objarray_broken: obj.visible = true
+		mask.visible = true
+	else:
+		bathroom_normal.set_layer_mask_value(1, true)
+		bathroom_broken.visible = false
+		for obj in objarray_normal: obj.visible = true
+		for obj in objarray_broken: obj.visible = false
+		mask.visible = false
 
 @export var branch_right: InteractionBranch
 @export var branch_left: InteractionBranch
@@ -75,97 +75,97 @@ func SetCRT(state: bool):
 
 var has_exited = false
 func Interaction(alias: String):
-    speaker_buttonpress.pitch_scale = randf_range(0.8, 1)
-    speaker_buttonpress.play()
-    match alias:
-        "right":
-            branch_right.get_parent().get_child(1).Press()
-            if (selection_range2 <= board.active_entry_count && window_index == 0):
-                selection_range1 += 12
-                selection_range2 += 12
-                if (window_index == 0): board.DownloadEntries(selection_range1, selection_range2, "top")
-        "left":
-            branch_left.get_parent().get_child(1).Press()
-            if (selection_range1 != 1 && window_index == 0):
-                selection_range1 -= 12
-                selection_range2 -= 12
-                if (window_index == 0): board.DownloadEntries(selection_range1, selection_range2, "top")
-        "window":
-            branch_window.get_parent().get_child(1).Press()
-            CycleWindow()
-        "exit":
-            has_exited = true
-            branch_exit.get_parent().get_child(1).Press()
-            viewing = false
-            board.TurnOffDisplay()
-            intro.DisableInteractionCrt()
-            await get_tree().create_timer(0.3, false).timeout
-            intro.RevertCRT()
-            exit.exitAllowed = true
+	speaker_buttonpress.pitch_scale = randf_range(0.8, 1)
+	speaker_buttonpress.play()
+	match alias:
+		"right":
+			branch_right.get_parent().get_child(1).Press()
+			if (selection_range2 <= board.active_entry_count && window_index == 0):
+				selection_range1 += 12
+				selection_range2 += 12
+				if (window_index == 0): board.DownloadEntries(selection_range1, selection_range2, "top")
+		"left":
+			branch_left.get_parent().get_child(1).Press()
+			if (selection_range1 != 1 && window_index == 0):
+				selection_range1 -= 12
+				selection_range2 -= 12
+				if (window_index == 0): board.DownloadEntries(selection_range1, selection_range2, "top")
+		"window":
+			branch_window.get_parent().get_child(1).Press()
+			CycleWindow()
+		"exit":
+			has_exited = true
+			branch_exit.get_parent().get_child(1).Press()
+			viewing = false
+			board.TurnOffDisplay()
+			intro.DisableInteractionCrt()
+			await get_tree().create_timer(0.3, false).timeout
+			intro.RevertCRT()
+			exit.exitAllowed = true
 
 func CycleWindow():
-    board.lock.material_override.albedo_color = Color(1, 1, 1, 0)
-    selection_range1 = 1
-    selection_range2 = 12
-    board.ClearDisplay()
-    window_index += 1
-    if window_index == 4: window_index = 0
-    for icon in iconbranches: icon.CheckState(window_index)
-    if (window_index == 3):
-        board.nocon.visible = false
-        screenparent_leaderboard.visible = false
-        screenparent_stats.visible = true
-    else:
-        screenparent_leaderboard.visible = true
-        screenparent_stats.visible = false
-        board.nocon.visible = true
-    if (window_index == 0): board.PassLeaderboard(selection_range1, selection_range2, "top")
-    if (window_index == 1):
-        board.lock.visible = true
-        board.PassLeaderboard(selection_range1, selection_range2, "overview")
-    if (window_index == 2): board.PassLeaderboard(1, 49, "friends")
+	board.lock.material_override.albedo_color = Color(1, 1, 1, 0)
+	selection_range1 = 1
+	selection_range2 = 12
+	board.ClearDisplay()
+	window_index += 1
+	if window_index == 4: window_index = 0
+	for icon in iconbranches: icon.CheckState(window_index)
+	if (window_index == 3):
+		board.nocon.visible = false
+		screenparent_leaderboard.visible = false
+		screenparent_stats.visible = true
+	else:
+		screenparent_leaderboard.visible = true
+		screenparent_stats.visible = false
+		board.nocon.visible = true
+	if (window_index == 0): board.PassLeaderboard(selection_range1, selection_range2, "top")
+	if (window_index == 1):
+		board.lock.visible = true
+		board.PassLeaderboard(selection_range1, selection_range2, "overview")
+	if (window_index == 2): board.PassLeaderboard(1, 49, "friends")
 
 func Bootup():
-    has_exited = false
-    board.lock.material_override.albedo_color = Color(1, 1, 1, 0)
-    screenparent_stats.visible = true
-    board.UpdateStats()
-    window_index = 3
-    for icon in iconbranches: icon.CheckState(window_index)
-    for line in array_bootup:
-        line.visible = true
-        await get_tree().create_timer(0.07, false).timeout
-        speaker_navbeep.pitch_scale = randf_range(1, 1)
-        speaker_navbeep.play()
-    await get_tree().create_timer(0.1, false).timeout
-    for part in array_partbranch:
-        part.Loop(true)
-        await get_tree().create_timer(0.04, false).timeout
-        speaker_navbeep.pitch_scale = randf_range(0.1, 0.1)
-        speaker_navbeep.play()
-    await get_tree().create_timer(1, false).timeout
-    for part in array_partbranch: part.Loop(false)
-    await get_tree().create_timer(1, false).timeout
-    for line in array_bootup: line.visible = false
-    await get_tree().create_timer(0.2, false).timeout
-    speaker_melody.pitch_scale = 2
-    speaker_melody.play()
-    for line in array_bootuplogo:
-        line.visible = true
-        await get_tree().create_timer(0.07, false).timeout
-    await get_tree().create_timer(2, false).timeout
-    for line in array_bootuplogo: line.visible = false
-    speaker_melody.stop()
-    speaker_melodyhide.play()
-    await get_tree().create_timer(0.5, false).timeout
-    anim_iconfade.play("fade in")
-    await get_tree().create_timer(0.5, false).timeout
-    for i in array_stats:
-        i.visible = true
-        await get_tree().create_timer(0.07, false).timeout
-        speaker_navbeep.pitch_scale = randf_range(0.5, 0.5)
-        speaker_navbeep.play()
-    await get_tree().create_timer(0.3, false).timeout
-    intro.EnabledInteractionCRT()
-    exit.exitAllowed = false
-    viewing = true
+	has_exited = false
+	board.lock.material_override.albedo_color = Color(1, 1, 1, 0)
+	screenparent_stats.visible = true
+	board.UpdateStats()
+	window_index = 3
+	for icon in iconbranches: icon.CheckState(window_index)
+	for line in array_bootup:
+		line.visible = true
+		await get_tree().create_timer(0.07, false).timeout
+		speaker_navbeep.pitch_scale = randf_range(1, 1)
+		speaker_navbeep.play()
+	await get_tree().create_timer(0.1, false).timeout
+	for part in array_partbranch:
+		part.Loop(true)
+		await get_tree().create_timer(0.04, false).timeout
+		speaker_navbeep.pitch_scale = randf_range(0.1, 0.1)
+		speaker_navbeep.play()
+	await get_tree().create_timer(1, false).timeout
+	for part in array_partbranch: part.Loop(false)
+	await get_tree().create_timer(1, false).timeout
+	for line in array_bootup: line.visible = false
+	await get_tree().create_timer(0.2, false).timeout
+	speaker_melody.pitch_scale = 2
+	speaker_melody.play()
+	for line in array_bootuplogo:
+		line.visible = true
+		await get_tree().create_timer(0.07, false).timeout
+	await get_tree().create_timer(2, false).timeout
+	for line in array_bootuplogo: line.visible = false
+	speaker_melody.stop()
+	speaker_melodyhide.play()
+	await get_tree().create_timer(0.5, false).timeout
+	anim_iconfade.play("fade in")
+	await get_tree().create_timer(0.5, false).timeout
+	for i in array_stats:
+		i.visible = true
+		await get_tree().create_timer(0.07, false).timeout
+		speaker_navbeep.pitch_scale = randf_range(0.5, 0.5)
+		speaker_navbeep.play()
+	await get_tree().create_timer(0.3, false).timeout
+	intro.EnabledInteractionCRT()
+	exit.exitAllowed = false
+	viewing = true

@@ -24,44 +24,44 @@ var mainActive = true
 var orig
 
 func _ready():
-    if (adding_cursor): orig = t.text
-    ui_control = get_parent()
-    get_parent().connect("focus_entered", OnHover)
-    get_parent().connect("focus_exited", OnExit)
-    get_parent().connect("mouse_entered", OnHover)
-    get_parent().connect("mouse_exited", OnExit)
-    get_parent().connect("pressed", OnPress)
-    if (isDynamic): ui.modulate.a = ui_opacity_inactive
+	if (adding_cursor): orig = t.text
+	ui_control = get_parent()
+	get_parent().connect("focus_entered", OnHover)
+	get_parent().connect("focus_exited", OnExit)
+	get_parent().connect("mouse_entered", OnHover)
+	get_parent().connect("mouse_exited", OnExit)
+	get_parent().connect("pressed", OnPress)
+	if (isDynamic): ui.modulate.a = ui_opacity_inactive
 
 func SetFilter(alias: String):
-    match (alias):
-        "ignore":
-            ui_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        "stop":
-            ui_control.mouse_filter = Control.MOUSE_FILTER_STOP
+	match (alias):
+		"ignore":
+			ui_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		"stop":
+			ui_control.mouse_filter = Control.MOUSE_FILTER_STOP
 
 func OnHover():
-    if (isActive && mainActive):
-        if (isDynamic):
-            speaker_hover.pitch_scale = randf_range(0.95, 1.0)
-            speaker_hover.play()
-            ui.modulate.a = ui_opacity_active
-        cursor.SetCursorImage("hover")
-        if (adding_cursor): t.text = "<  " + tr(orig) + "  >"
+	if (isActive && mainActive):
+		if (isDynamic):
+			speaker_hover.pitch_scale = randf_range(0.95, 1.0)
+			speaker_hover.play()
+			ui.modulate.a = ui_opacity_active
+		cursor.SetCursorImage("hover")
+		if (adding_cursor): t.text = "<  " + tr(orig) + "  >"
 
 func OnExit():
-    if (isActive && mainActive):
-        if (isDynamic):
-            ui.modulate.a = ui_opacity_inactive
-        cursor.SetCursorImage("point")
-        if (adding_cursor): t.text = tr(orig)
+	if (isActive && mainActive):
+		if (isDynamic):
+			ui.modulate.a = ui_opacity_inactive
+		cursor.SetCursorImage("point")
+		if (adding_cursor): t.text = tr(orig)
 
 signal is_pressed
 func OnPress():
-    if (isActive && mainActive):
-        if (altsound): speaker_press.play()
-        if (isDynamic && playing): speaker_press.play()
-        if (rebind != null): rebindManager.GetRebind(rebind)
-        if (language): options.AdjustLanguage(alias)
-        if (pipe != null): pipe.Pipe(alias)
-        emit_signal("is_pressed")
+	if (isActive && mainActive):
+		if (altsound): speaker_press.play()
+		if (isDynamic && playing): speaker_press.play()
+		if (rebind != null): rebindManager.GetRebind(rebind)
+		if (language): options.AdjustLanguage(alias)
+		if (pipe != null): pipe.Pipe(alias)
+		emit_signal("is_pressed")

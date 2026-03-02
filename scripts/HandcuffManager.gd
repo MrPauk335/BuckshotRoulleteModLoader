@@ -9,48 +9,48 @@ class_name HandcuffManager extends Node
 var previousSocket
 
 func AttachHandCuffs():
-    animator_handcuffsPlayer.play("RESET")
-    await get_tree().create_timer(0.1, false).timeout
-    handcuffs_player.visible = true
+	animator_handcuffsPlayer.play("RESET")
+	await get_tree().create_timer(0.1, false).timeout
+	handcuffs_player.visible = true
 
 func CheckPlayerHandCuffs(lerpingToPrevious: bool):
-    previousSocket = camera.activeSocket
-    camera.BeginLerp("check handcuffs")
-    await get_tree().create_timer(0.6, false).timeout
-    animator_handcuffsPlayer.play("check handcuffs")
-    await get_tree().create_timer(0.8, false).timeout
-    if (lerpingToPrevious): camera.BeginLerp(previousSocket)
+	previousSocket = camera.activeSocket
+	camera.BeginLerp("check handcuffs")
+	await get_tree().create_timer(0.6, false).timeout
+	animator_handcuffsPlayer.play("check handcuffs")
+	await get_tree().create_timer(0.8, false).timeout
+	if (lerpingToPrevious): camera.BeginLerp(previousSocket)
 
 func BreakPlayerHandCuffs(lerpingToPrevious: bool):
-    previousSocket = camera.activeSocket
-    camera.BeginLerp("check handcuffs")
-    await get_tree().create_timer(0.6, false).timeout
-    animator_handcuffsPlayer.play("player break handcuffs")
-    await get_tree().create_timer(0.8, false).timeout
-    if (lerpingToPrevious): camera.BeginLerp(previousSocket)
+	previousSocket = camera.activeSocket
+	camera.BeginLerp("check handcuffs")
+	await get_tree().create_timer(0.6, false).timeout
+	animator_handcuffsPlayer.play("player break handcuffs")
+	await get_tree().create_timer(0.8, false).timeout
+	if (lerpingToPrevious): camera.BeginLerp(previousSocket)
 
 func CheckPlayerHandCuffs_Animation():
-    previousSocket = camera.activeSocket
-    camera.BeginLerp("check handcuffs")
-    await get_tree().create_timer(0.6, false).timeout
-    animator_handcuffsPlayer.play("check handcuffs")
-    await get_tree().create_timer(0.8, false).timeout
-    camera.BeginLerp(previousSocket)
+	previousSocket = camera.activeSocket
+	camera.BeginLerp("check handcuffs")
+	await get_tree().create_timer(0.6, false).timeout
+	animator_handcuffsPlayer.play("check handcuffs")
+	await get_tree().create_timer(0.8, false).timeout
+	camera.BeginLerp(previousSocket)
 
 func RemoveAllCuffsRoutine():
-    if (roundManager.dealerCuffed):
-        camera.BeginLerp("enemy cuffs close")
-        await get_tree().create_timer(0.3, false).timeout
-        dealerAI.animator_dealerHands.play("dealer break cuffs")
-        dealerAI.speaker_breakHandcuffs.play()
-        dealerAI.dealerAboutToBreakFree = false
-        roundManager.dealerCuffed = false
-        await get_tree().create_timer(0.47, false).timeout
-    if (roundManager.playerCuffed):
-        camera.BeginLerp("check handcuffs")
-        await get_tree().create_timer(0.6, false).timeout
-        animator_handcuffsPlayer.play("player break handcuffs")
-        roundManager.playerCuffed = false
-        roundManager.playerAboutToBreakFree = false
-        await get_tree().create_timer(0.8, false).timeout
-    pass
+	if (roundManager.dealerCuffed):
+		camera.BeginLerp("enemy cuffs close")
+		await get_tree().create_timer(0.3, false).timeout
+		dealerAI.animator_dealerHands.play("dealer break cuffs")
+		dealerAI.speaker_breakHandcuffs.play()
+		dealerAI.dealerAboutToBreakFree = false
+		roundManager.dealerCuffed = false
+		await get_tree().create_timer(0.47, false).timeout
+	if (roundManager.playerCuffed):
+		camera.BeginLerp("check handcuffs")
+		await get_tree().create_timer(0.6, false).timeout
+		animator_handcuffsPlayer.play("player break handcuffs")
+		roundManager.playerCuffed = false
+		roundManager.playerAboutToBreakFree = false
+		await get_tree().create_timer(0.8, false).timeout
+	pass

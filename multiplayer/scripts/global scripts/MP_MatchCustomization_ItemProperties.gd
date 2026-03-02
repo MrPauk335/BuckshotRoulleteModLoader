@@ -20,31 +20,31 @@ var is_ingame: bool
 @export var label_number_of_items: Label
 
 func _ready():
-    if !is_sequence:
-        AssignName()
-    else:
-        AssignSequence()
+	if !is_sequence:
+		AssignName()
+	else:
+		AssignSequence()
 
 func AssignName():
-    label_item_name.text = item_name_loc
+	label_item_name.text = item_name_loc
 
 func UpdateItemProperties(max_per_player: int, max_on_table: int, is_ingame: bool):
-    label_max_per_player.text = str(max_per_player)
-    label_max_on_table.text = str(max_on_table)
-    checkmark_ingame.visible = is_ingame
+	label_max_per_player.text = str(max_per_player)
+	label_max_on_table.text = str(max_on_table)
+	checkmark_ingame.visible = is_ingame
 
 func AssignSequence():
-    var verbal_index = sequence_index + 1
-    label_sequence_number.text = tr("MP_UI SHELL SEQUENCE") + " " + str(verbal_index) + ":"
+	var verbal_index = sequence_index + 1
+	label_sequence_number.text = tr("MP_UI SHELL SEQUENCE") + " " + str(verbal_index) + ":"
 
 func UpdateSequenceProperties(number_of_blanks: int, number_of_lives: int, number_of_items: int):
-    if number_of_blanks == -1 or number_of_lives == -1:
-        label_number_of_blanks.text = tr("MP_UI NUM OF BLANKS") + " ?"
-        label_number_of_lives.text = tr("MP_UI NUM OF LIVES") + " ?"
-    else:
-        label_number_of_blanks.text = tr("MP_UI NUM OF BLANKS") + " " + str(number_of_blanks)
-        label_number_of_lives.text = tr("MP_UI NUM OF LIVES") + " " + str(number_of_lives)
-    if number_of_items == -1:
-        label_number_of_items.text = tr("MP_UI NUM OF ITEMS") + " ?"
-    else:
-        label_number_of_items.text = tr("MP_UI NUM OF ITEMS") + " " + str(number_of_items)
+	if number_of_blanks == -1 or number_of_lives == -1:
+		label_number_of_blanks.text = tr("MP_UI NUM OF BLANKS") + " ?"
+		label_number_of_lives.text = tr("MP_UI NUM OF LIVES") + " ?"
+	else:
+		label_number_of_blanks.text = tr("MP_UI NUM OF BLANKS") + " " + str(number_of_blanks)
+		label_number_of_lives.text = tr("MP_UI NUM OF LIVES") + " " + str(number_of_lives)
+	if number_of_items == -1:
+		label_number_of_items.text = tr("MP_UI NUM OF ITEMS") + " ?"
+	else:
+		label_number_of_items.text = tr("MP_UI NUM OF ITEMS") + " " + str(number_of_items)

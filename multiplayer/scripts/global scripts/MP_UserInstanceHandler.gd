@@ -19,352 +19,352 @@ var original_host_id = 0
 var scene_root
 
 func _ready():
-    GetRoot()
-    if (GlobalVariables.mp_debugging):
-        StartMainGame()
-    original_host_id = GlobalSteam.HOST_ID
+	GetRoot()
+	if (GlobalVariables.mp_debugging):
+		StartMainGame()
+	original_host_id = GlobalSteam.HOST_ID
 
 func Setup_ExitGameWithLobbyMembers():
-    if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
-        Packet_ExitGameWithLobby()
-    else:
-        Packet_ExitGameWithLobby_Request()
+	if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
+		Packet_ExitGameWithLobby()
+	else:
+		Packet_ExitGameWithLobby_Request()
 
 func ExitGameWithLobby():
-    intermediary.ExitGame()
+	intermediary.ExitGame()
 
 func Packet_ExitGameWithLobby():
-    if GlobalSteam.STEAM_ID != GlobalSteam.HOST_ID: return
-    var packet = {
-        "packet category": "MP_UserInstanceHandler", 
-        "packet alias": "exit to lobby", 
-        "sent_from": "host", 
-        "packet_id": 29, 
-    }
-    packets.send_p2p_packet(0, packet)
-    packets.PipeData(packet)
+	if GlobalSteam.STEAM_ID != GlobalSteam.HOST_ID: return
+	var packet = {
+		"packet category": "MP_UserInstanceHandler", 
+		"packet alias": "exit to lobby", 
+		"sent_from": "host", 
+		"packet_id": 29, 
+	}
+	packets.send_p2p_packet(0, packet)
+	packets.PipeData(packet)
 
 func Packet_ExitGameWithLobby_Request():
-    var packet = {
-        "packet category": "MP_PacketVerification", 
-        "packet alias": "exit to lobby request", 
-        "sent_from": "client", 
-        "packet_id": 28, 
-    }
-    packets.send_p2p_packet_directly_to_host(GlobalSteam.STEAM_ID, packet)
+	var packet = {
+		"packet category": "MP_PacketVerification", 
+		"packet alias": "exit to lobby request", 
+		"sent_from": "client", 
+		"packet_id": 28, 
+	}
+	packets.send_p2p_packet_directly_to_host(GlobalSteam.STEAM_ID, packet)
 
 var removing_instances = true
 var previous_member_steamid_array = []
 var current_member_steamid_array = []
 var instances_to_delete = []
 func CheckLobbyMemberArray():
-    if GlobalVariables.mp_auto_battler_enabled:
-        return
+	if GlobalVariables.mp_auto_battler_enabled:
+		return
 
 
 
 
-    if GlobalVariables.mp_debugging: current_member_steamid_array = GlobalSteam.LOBBY_MEMBERS.duplicate()
-    if previous_member_steamid_array.size() != current_member_steamid_array.size():
-        var steamid_array_previous = []
-        var steamid_array_current = []
-        var steamid_array_deleting = []
-        for i in range(previous_member_steamid_array.size()):
-            steamid_array_previous.append(previous_member_steamid_array[i].steam_id)
-        for i in range(current_member_steamid_array.size()):
-            steamid_array_current.append(current_member_steamid_array[i].steam_id)
-        for id in steamid_array_previous:
-            if !steamid_array_current.has(id):
-                steamid_array_deleting.append(id)
-        for id in steamid_array_deleting:
-            var property_to_delete = null
-            for i in instance_property_array:
-                if i.user_id == id: property_to_delete = i
-            if property_to_delete != null:
-                print("found instance to delete with assigned steam id: ", property_to_delete.user_id, " and adding to array")
-                instances_to_delete.append(property_to_delete.user_id)
-        RemoveInstancesFromGame(instances_to_delete)
-    intermediary.ingame_lobby_ui.UpdateUserList()
+	if GlobalVariables.mp_debugging: current_member_steamid_array = GlobalSteam.LOBBY_MEMBERS.duplicate()
+	if previous_member_steamid_array.size() != current_member_steamid_array.size():
+		var steamid_array_previous = []
+		var steamid_array_current = []
+		var steamid_array_deleting = []
+		for i in range(previous_member_steamid_array.size()):
+			steamid_array_previous.append(previous_member_steamid_array[i].steam_id)
+		for i in range(current_member_steamid_array.size()):
+			steamid_array_current.append(current_member_steamid_array[i].steam_id)
+		for id in steamid_array_previous:
+			if !steamid_array_current.has(id):
+				steamid_array_deleting.append(id)
+		for id in steamid_array_deleting:
+			var property_to_delete = null
+			for i in instance_property_array:
+				if i.user_id == id: property_to_delete = i
+			if property_to_delete != null:
+				print("found instance to delete with assigned steam id: ", property_to_delete.user_id, " and adding to array")
+				instances_to_delete.append(property_to_delete.user_id)
+		RemoveInstancesFromGame(instances_to_delete)
+	intermediary.ingame_lobby_ui.UpdateUserList()
 
 func RemoveInstancesFromGame(instances_to_delete_array: Array):
-    if !removing_instances: return
-    var socket_turn_to_check = 0
-    if instances_to_delete.size() == 0: print("instances to delete array is empty. returning");return
-    print("removing instances from game with array: ", instances_to_delete_array)
-    for instance in instance_property_array:
-        for id in instances_to_delete_array:
-            if instance.user_id == id:
-                print("instance user id to disconnect: ", instance.user_id, " host id: ", GlobalSteam.HOST_ID)
-                for i in 3:
-                    print("----------------------------")
-                if instance.user_id == original_host_id:
-                    GlobalVariables.disband_lobby_after_exiting_main_scene = true
-                    intermediary.ExitGame(tr("MP_CONSOLE EXIT HOST DISCONNECTED"))
-                    return
-                instance.TransferInventoryToGlobalParent()
-                debug.SendConsoleMessage(tr("MP_UI PLAYER DISCONNECTED") % instance.user_name)
-                socket_turn_to_check = instance.socket_number
-                instance_property_array.erase(instance)
-                instance.instance_root.queue_free()
-    var num_of_alive_users = 0
-    var alive_socket = -1
-    for property in instance_property_array:
-        if property.health_current != 0:
-            num_of_alive_users += 1
-            alive_socket = property.socket_number
+	if !removing_instances: return
+	var socket_turn_to_check = 0
+	if instances_to_delete.size() == 0: print("instances to delete array is empty. returning");return
+	print("removing instances from game with array: ", instances_to_delete_array)
+	for instance in instance_property_array:
+		for id in instances_to_delete_array:
+			if instance.user_id == id:
+				print("instance user id to disconnect: ", instance.user_id, " host id: ", GlobalSteam.HOST_ID)
+				for i in 3:
+					print("----------------------------")
+				if instance.user_id == original_host_id:
+					GlobalVariables.disband_lobby_after_exiting_main_scene = true
+					intermediary.ExitGame(tr("MP_CONSOLE EXIT HOST DISCONNECTED"))
+					return
+				instance.TransferInventoryToGlobalParent()
+				debug.SendConsoleMessage(tr("MP_UI PLAYER DISCONNECTED") % instance.user_name)
+				socket_turn_to_check = instance.socket_number
+				instance_property_array.erase(instance)
+				instance.instance_root.queue_free()
+	var num_of_alive_users = 0
+	var alive_socket = -1
+	for property in instance_property_array:
+		if property.health_current != 0:
+			num_of_alive_users += 1
+			alive_socket = property.socket_number
 
-    if intermediary.game_state.MAIN_running_win_routine:
-        print("a user has disconnected, and there are not enough players behind the table to continue. the win routine is already running. returning")
-        return
-    if num_of_alive_users != 1:
-        CheckToPassTurnAfterUserDisconnect(socket_turn_to_check)
+	if intermediary.game_state.MAIN_running_win_routine:
+		print("a user has disconnected, and there are not enough players behind the table to continue. the win routine is already running. returning")
+		return
+	if num_of_alive_users != 1:
+		CheckToPassTurnAfterUserDisconnect(socket_turn_to_check)
 
-    if num_of_alive_users != 1:
-        for property in instance_property_array:
-            if property.is_viewing_jammer:
-                property.jammer_manager.SetValidTargets()
-                property.jammer_manager.Reset()
-                if !intermediary.game_state.CheckIfJammerHasEligibleTargets(property):
-                    property.item_interaction.RevertJammer()
-    if instance_property_array.size() == 1:
-        intermediary.ExitGame(tr("MP_CONSOLE EXIT NOT ENOUGH PLAYERS"))
+	if num_of_alive_users != 1:
+		for property in instance_property_array:
+			if property.is_viewing_jammer:
+				property.jammer_manager.SetValidTargets()
+				property.jammer_manager.Reset()
+				if !intermediary.game_state.CheckIfJammerHasEligibleTargets(property):
+					property.item_interaction.RevertJammer()
+	if instance_property_array.size() == 1:
+		intermediary.ExitGame(tr("MP_CONSOLE EXIT NOT ENOUGH PLAYERS"))
 
-    if !intermediary.globalparent_shotgun_main.visible:
-        intermediary.SetShotgunVisible_Global(true)
-        intermediary.game_state.MAIN_is_shotgun_held = false
+	if !intermediary.globalparent_shotgun_main.visible:
+		intermediary.SetShotgunVisible_Global(true)
+		intermediary.game_state.MAIN_is_shotgun_held = false
 
-    if (GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID) && num_of_alive_users != 1:
-        if intermediary.game_state.MAIN_item_grabbing_in_progress:
-            intermediary.game_state.CheckIfItemGrabbingFinishedForAllUsers()
+	if (GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID) && num_of_alive_users != 1:
+		if intermediary.game_state.MAIN_item_grabbing_in_progress:
+			intermediary.game_state.CheckIfItemGrabbingFinishedForAllUsers()
 
-    if num_of_alive_users == 1:
-        var winning_socket = -1
-        intermediary.intermed_properties.shotgun.CheckIfFinalShot_OnLastDisconnect()
-        for property in instance_property_array:
-            if property.socket_number == alive_socket:
-                property.ResetLastAliveProperty()
-                winning_socket = property.socket_number
-                break
-        await get_tree().create_timer(3.8, false).timeout
-        if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
-            print("a user disconnected, and there are not enough players behind the table to continue. attempting to run win routine for the remaining player")
-            if !intermediary.game_state.MAIN_running_win_routine:
-                print("running win routine for remaining player after last disconnect")
-                intermediary.game_state.round_manager.UserEndTurn_Packet(0, true, true, winning_socket)
-            else:
-                print("win routine already running after last disconnect")
-        intermediary.intermed_properties.permissions.SetMajorPermission(true)
+	if num_of_alive_users == 1:
+		var winning_socket = -1
+		intermediary.intermed_properties.shotgun.CheckIfFinalShot_OnLastDisconnect()
+		for property in instance_property_array:
+			if property.socket_number == alive_socket:
+				property.ResetLastAliveProperty()
+				winning_socket = property.socket_number
+				break
+		await get_tree().create_timer(3.8, false).timeout
+		if GlobalSteam.STEAM_ID == GlobalSteam.HOST_ID:
+			print("a user disconnected, and there are not enough players behind the table to continue. attempting to run win routine for the remaining player")
+			if !intermediary.game_state.MAIN_running_win_routine:
+				print("running win routine for remaining player after last disconnect")
+				intermediary.game_state.round_manager.UserEndTurn_Packet(0, true, true, winning_socket)
+			else:
+				print("win routine already running after last disconnect")
+		intermediary.intermed_properties.permissions.SetMajorPermission(true)
 
 func CheckToPassTurnAfterUserDisconnect(socket_number_that_disconnected: int):
-    if GlobalSteam.STEAM_ID != GlobalSteam.HOST_ID: return
-    if (socket_number_that_disconnected == intermediary.game_state.MAIN_active_current_turn_socket) && !intermediary.game_state.MAIN_shotgun_loading_in_progress && !intermediary.game_state.MAIN_running_win_routine:
-        print("the active turn user has disconnected. passing turn to next user ...")
-        await get_tree().create_timer(1, false).timeout
-        round.MainRoutine_PassTurn(round.GetNextTurn_Socket(round.game_state.MAIN_active_current_turn_socket))
+	if GlobalSteam.STEAM_ID != GlobalSteam.HOST_ID: return
+	if (socket_number_that_disconnected == intermediary.game_state.MAIN_active_current_turn_socket) && !intermediary.game_state.MAIN_shotgun_loading_in_progress && !intermediary.game_state.MAIN_running_win_routine:
+		print("the active turn user has disconnected. passing turn to next user ...")
+		await get_tree().create_timer(1, false).timeout
+		round.MainRoutine_PassTurn(round.GetNextTurn_Socket(round.game_state.MAIN_active_current_turn_socket))
 
 func PacketSort(dict: Dictionary):
-    var value_category = dict.values()[0]
-    var value_alias = dict.values()[1]
+	var value_category = dict.values()[0]
+	var value_alias = dict.values()[1]
 
-    match value_alias:
-        "initial instance setup":
-            InitialInstanceSetup_Peer(dict)
-        "exit to lobby":
-            ExitGameWithLobby()
+	match value_alias:
+		"initial instance setup":
+			InitialInstanceSetup_Peer(dict)
+		"exit to lobby":
+			ExitGameWithLobby()
 
 func GetRoot():
-    var root_children = get_tree().root.get_children()
-    for i in get_tree().root.get_children(): if i.name == "mp_main": scene_root = i
+	var root_children = get_tree().root.get_children()
+	for i in get_tree().root.get_children(): if i.name == "mp_main": scene_root = i
 
 func StartMainGame():
-    if (GlobalSteam.HOST_ID == GlobalSteam.STEAM_ID) or (GlobalVariables.mp_debugging):
-        if GlobalVariables.mp_debugging:
-            GetEnvironmentalEvent()
-            SetupDictionary_test()
-            SetupInstances_test(instance_dictionary_test)
-        else:
-            InitialInstanceSetup_Host()
-        print("waiting 2 seconds for initial instance setup ...")
-        await get_tree().create_timer(2, false).timeout
-        if intermediary.game_state.MAIN_active_environmental_event == "ice machine":
-            intermediary.environmental_event.ShowIceMachine()
-        round.MainRoutine_StartRound()
-    else: print("failed to start initial instance setup. you are not assigned as the host.")
+	if (GlobalSteam.HOST_ID == GlobalSteam.STEAM_ID) or (GlobalVariables.mp_debugging):
+		if GlobalVariables.mp_debugging:
+			GetEnvironmentalEvent()
+			SetupDictionary_test()
+			SetupInstances_test(instance_dictionary_test)
+		else:
+			InitialInstanceSetup_Host()
+		print("waiting 2 seconds for initial instance setup ...")
+		await get_tree().create_timer(2, false).timeout
+		if intermediary.game_state.MAIN_active_environmental_event == "ice machine":
+			intermediary.environmental_event.ShowIceMachine()
+		round.MainRoutine_StartRound()
+	else: print("failed to start initial instance setup. you are not assigned as the host.")
 
 func InitialInstanceSetup_Host():
-    print("initial instance setup with lobby array: ", GlobalSteam.LOBBY_MEMBERS)
+	print("initial instance setup with lobby array: ", GlobalSteam.LOBBY_MEMBERS)
 
 
-    SetupDictionary()
-    SetupInstances(instance_dictionary)
-    var packet = {
-        "packet category": "MP_UserInstanceHandler", 
-        "packet alias": "initial instance setup", 
-        "sent_from": "host", 
-        "packet_id": 6, 
-        "instance_dict": instance_dictionary, 
-        "environmental_event": GetEnvironmentalEvent()
-    }
-    for member in GlobalSteam.LOBBY_MEMBERS: if member.steam_id != GlobalSteam.HOST_ID:
-        packets.send_p2p_packet(member.steam_id, packet)
+	SetupDictionary()
+	SetupInstances(instance_dictionary)
+	var packet = {
+		"packet category": "MP_UserInstanceHandler", 
+		"packet alias": "initial instance setup", 
+		"sent_from": "host", 
+		"packet_id": 6, 
+		"instance_dict": instance_dictionary, 
+		"environmental_event": GetEnvironmentalEvent()
+	}
+	for member in GlobalSteam.LOBBY_MEMBERS: if member.steam_id != GlobalSteam.HOST_ID:
+		packets.send_p2p_packet(member.steam_id, packet)
 
 func InitialInstanceSetup_Peer(packet: Dictionary):
-    var p = packet
-    intermediary.game_state.MAIN_active_environmental_event = packet.environmental_event
-    SetupInstances(p.instance_dict)
+	var p = packet
+	intermediary.game_state.MAIN_active_environmental_event = packet.environmental_event
+	SetupInstances(p.instance_dict)
 
 func SetupDictionary():
-    var lobby_dict_array = GlobalSteam.LOBBY_MEMBERS
-    lobby_dict_array.shuffle()
-    var socket_index = 0
-    var total_players = lobby_dict_array.size() + GlobalVariables.mp_bot_count
-    var setting_opposite = total_players == 2
-    for i in range(lobby_dict_array.size()):
-        var is_host = lobby_dict_array[i].steam_id == GlobalSteam.HOST_ID
-        if setting_opposite:
-            if i == 0:
-                socket_index = 1
-            else:
-                socket_index = 3
-        var dict = {
-            "socket_number": socket_index, 
-            "user_id": lobby_dict_array[i].steam_id, 
-            "is_host": is_host, 
-            "user_name": "empty", 
-            "cpu_enabled": GlobalVariables.mp_auto_battler_enabled or GlobalVariables.mp_player_ai_enabled, 
-        }
-        instance_dictionary.append(dict)
-        socket_index += 1
+	var lobby_dict_array = GlobalSteam.LOBBY_MEMBERS
+	lobby_dict_array.shuffle()
+	var socket_index = 0
+	var total_players = lobby_dict_array.size() + GlobalVariables.mp_bot_count
+	var setting_opposite = total_players == 2
+	for i in range(lobby_dict_array.size()):
+		var is_host = lobby_dict_array[i].steam_id == GlobalSteam.HOST_ID
+		if setting_opposite:
+			if i == 0:
+				socket_index = 1
+			else:
+				socket_index = 3
+		var dict = {
+			"socket_number": socket_index, 
+			"user_id": lobby_dict_array[i].steam_id, 
+			"is_host": is_host, 
+			"user_name": "empty", 
+			"cpu_enabled": GlobalVariables.mp_auto_battler_enabled or GlobalVariables.mp_player_ai_enabled, 
+		}
+		instance_dictionary.append(dict)
+		socket_index += 1
 
-    var bot_names = ["Alex", "John", "David", "Mike"]
-    for b in range(GlobalVariables.mp_bot_count):
-        if setting_opposite and lobby_dict_array.size() == 1:
-            socket_index = 3
-        var bot_dict = {
-            "socket_number": socket_index, 
-            "user_id": 900000 + b, 
-            "is_host": false, 
-            "user_name": bot_names[b] if b < bot_names.size() else "Player", 
-            "cpu_enabled": true, 
-        }
-        instance_dictionary.append(bot_dict)
-        socket_index += 1
-    print("lobby dict array after initial dictionary array fill (with bots): ", instance_dictionary)
+	var bot_names = ["Alex", "John", "David", "Mike"]
+	for b in range(GlobalVariables.mp_bot_count):
+		if setting_opposite and lobby_dict_array.size() == 1:
+			socket_index = 3
+		var bot_dict = {
+			"socket_number": socket_index, 
+			"user_id": 900000 + b, 
+			"is_host": false, 
+			"user_name": bot_names[b] if b < bot_names.size() else "Player", 
+			"cpu_enabled": true, 
+		}
+		instance_dictionary.append(bot_dict)
+		socket_index += 1
+	print("lobby dict array after initial dictionary array fill (with bots): ", instance_dictionary)
 
 func SetupInstances(dictionary_array):
-    for user in dictionary_array:
-        var setting_active = false
-        var active_id = GlobalSteam.STEAM_ID
-        if user.user_id == active_id: user.active_user_id = user.user_id;setting_active = true
+	for user in dictionary_array:
+		var setting_active = false
+		var active_id = GlobalSteam.STEAM_ID
+		if user.user_id == active_id: user.active_user_id = user.user_id;setting_active = true
 
-        var _instance = user_instance.instantiate()
-        var instance = _instance
-        var properties = instance.get_child(0).get_child(0)
+		var _instance = user_instance.instantiate()
+		var instance = _instance
+		var properties = instance.get_child(0).get_child(0)
 
-        properties.socket_number = user.socket_number
-        properties.user_id = user.user_id
-        if user.cpu_enabled:
-            properties.user_name = user.user_name
-        else:
-            properties.user_name = Steam.getFriendPersonaName(user.user_id)
-        properties.cpu_enabled = user.cpu_enabled
-        properties.is_active = setting_active
+		properties.socket_number = user.socket_number
+		properties.user_id = user.user_id
+		if user.cpu_enabled:
+			properties.user_name = user.user_name
+		else:
+			properties.user_name = Steam.getFriendPersonaName(user.user_id)
+		properties.cpu_enabled = user.cpu_enabled
+		properties.is_active = setting_active
 
-        scene_root.add_child.call_deferred(instance)
-        instance_property_array.append(properties)
+		scene_root.add_child.call_deferred(instance)
+		instance_property_array.append(properties)
 
-        if (properties.is_active):
+		if (properties.is_active):
 
-            intermediary.intermed_description = properties.description
-            intermediary.intermed_properties = properties
+			intermediary.intermed_description = properties.description
+			intermediary.intermed_properties = properties
 
-        instance.rotation_degrees = socketArray_rotation[properties.socket_number]
-        print("user dict after instance spawn: ", user)
+		instance.rotation_degrees = socketArray_rotation[properties.socket_number]
+		print("user dict after instance spawn: ", user)
 
 func GetEnvironmentalEvent():
-    var event_array = ["ice machine"]
-    var roll = randi_range(0, 2000)
-    var event = event_array.pick_random()
-    print("environmental event roll: ", roll)
-    if roll == 90:
-        intermediary.game_state.MAIN_active_environmental_event = event
-        return event
-    else:
-        return ""
+	var event_array = ["ice machine"]
+	var roll = randi_range(0, 2000)
+	var event = event_array.pick_random()
+	print("environmental event roll: ", roll)
+	if roll == 90:
+		intermediary.game_state.MAIN_active_environmental_event = event
+		return event
+	else:
+		return ""
 
 func SetupDictionary_test():
-    var dict
-    GlobalSteam.HOST_ID = 1234
-    for i in range(4):
-        dict = {
-            "socket_number": 0, 
-            "user_id": 0, 
-            "is_host": false, 
-            "user_name": "", 
-            "cpu_enabled": false, 
-         }
-        instance_dictionary_test.append(dict)
+	var dict
+	GlobalSteam.HOST_ID = 1234
+	for i in range(4):
+		dict = {
+			"socket_number": 0, 
+			"user_id": 0, 
+			"is_host": false, 
+			"user_name": "", 
+			"cpu_enabled": false, 
+		 }
+		instance_dictionary_test.append(dict)
 
-    instance_dictionary_test[0].socket_number = 0
-    instance_dictionary_test[0].user_id = 1234
-    instance_dictionary_test[0].user_name = "MIKE"
-    instance_dictionary_test[0].is_host = true
+	instance_dictionary_test[0].socket_number = 0
+	instance_dictionary_test[0].user_id = 1234
+	instance_dictionary_test[0].user_name = "MIKE"
+	instance_dictionary_test[0].is_host = true
 
-    instance_dictionary_test[1].socket_number = 1
-    instance_dictionary_test[1].user_id = 111
-    instance_dictionary_test[1].user_name = "RAM"
-    instance_dictionary_test[1].cpu_enabled = true
+	instance_dictionary_test[1].socket_number = 1
+	instance_dictionary_test[1].user_id = 111
+	instance_dictionary_test[1].user_name = "RAM"
+	instance_dictionary_test[1].cpu_enabled = true
 
-    instance_dictionary_test[2].socket_number = 2
-    instance_dictionary_test[2].user_id = 222
-    instance_dictionary_test[2].user_name = "CROM"
-    instance_dictionary_test[2].cpu_enabled = true
+	instance_dictionary_test[2].socket_number = 2
+	instance_dictionary_test[2].user_id = 222
+	instance_dictionary_test[2].user_name = "CROM"
+	instance_dictionary_test[2].cpu_enabled = true
 
-    instance_dictionary_test[3].socket_number = 3
-    instance_dictionary_test[3].user_id = 333
-    instance_dictionary_test[3].user_name = "BIT"
-    instance_dictionary_test[3].cpu_enabled = true
+	instance_dictionary_test[3].socket_number = 3
+	instance_dictionary_test[3].user_id = 333
+	instance_dictionary_test[3].user_name = "BIT"
+	instance_dictionary_test[3].cpu_enabled = true
 
-    GlobalSteam.LOBBY_MEMBERS = [
-    {"steam_id": 1234, 
-        "steam_name": "Mike"}, 
-    {"steam_id": 111, 
-        "steam_name": "RAM"}, 
-    {"steam_id": 222, 
-        "steam_name": "CROM"}, 
-    {"steam_id": 333, 
-        "steam_name": "BIT"}
-    ]
+	GlobalSteam.LOBBY_MEMBERS = [
+	{"steam_id": 1234, 
+		"steam_name": "Mike"}, 
+	{"steam_id": 111, 
+		"steam_name": "RAM"}, 
+	{"steam_id": 222, 
+		"steam_name": "CROM"}, 
+	{"steam_id": 333, 
+		"steam_name": "BIT"}
+	]
 
-    instance_dictionary_test.shuffle()
-    previous_member_steamid_array = GlobalSteam.LOBBY_MEMBERS.duplicate()
+	instance_dictionary_test.shuffle()
+	previous_member_steamid_array = GlobalSteam.LOBBY_MEMBERS.duplicate()
 
 func SetupInstances_test(dictionary_array):
-    for user in dictionary_array:
-        var setting_active = false
-        var active_id = GlobalSteam.STEAM_ID
-        if user.user_id == active_id:
-            user.active_user_id = user.user_id
-            setting_active = true
-        print("user.user_id: ", user.user_id, " active id: ", active_id, " setting active: ", setting_active)
+	for user in dictionary_array:
+		var setting_active = false
+		var active_id = GlobalSteam.STEAM_ID
+		if user.user_id == active_id:
+			user.active_user_id = user.user_id
+			setting_active = true
+		print("user.user_id: ", user.user_id, " active id: ", active_id, " setting active: ", setting_active)
 
-        var _instance = user_instance.instantiate()
-        var instance = _instance
-        var properties = instance.get_child(0).get_child(0)
+		var _instance = user_instance.instantiate()
+		var instance = _instance
+		var properties = instance.get_child(0).get_child(0)
 
-        properties.socket_number = user.socket_number
-        properties.user_id = user.user_id
-        properties.user_name = user.user_name
-        properties.cpu_enabled = user.cpu_enabled
-        properties.is_active = setting_active
+		properties.socket_number = user.socket_number
+		properties.user_id = user.user_id
+		properties.user_name = user.user_name
+		properties.cpu_enabled = user.cpu_enabled
+		properties.is_active = setting_active
 
-        scene_root.add_child.call_deferred(instance)
-        instance_property_array.append(properties)
+		scene_root.add_child.call_deferred(instance)
+		instance_property_array.append(properties)
 
-        if (properties.is_active):
-            intermediary = get_node("/root/mp_main/standalone managers/interactions/interaction intermediary")
-            intermediary.intermed_description = properties.description
-            intermediary.intermed_properties = properties
+		if (properties.is_active):
+			intermediary = get_node("/root/mp_main/standalone managers/interactions/interaction intermediary")
+			intermediary.intermed_description = properties.description
+			intermediary.intermed_properties = properties
 
-        instance.rotation_degrees = socketArray_rotation[properties.socket_number]
-        print("user dict after instance spawn: ", user)
+		instance.rotation_degrees = socketArray_rotation[properties.socket_number]
+		print("user dict after instance spawn: ", user)

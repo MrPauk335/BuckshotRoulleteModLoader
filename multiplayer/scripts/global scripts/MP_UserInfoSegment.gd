@@ -8,10 +8,10 @@ class_name MP_UserInfoSegment extends Node
 @export var user_name: String
 
 func AssignMember(steam_id, steam_name):
-    ui_user_name.text = steam_name
-    if steam_id == GlobalSteam.HOST_ID:
-        ui_user_type.text = tr("MP_UI HOST")
-    else:
-        ui_user_type.text = tr("MP_UI GAMBLER")
-    user_id = steam_id
-    user_name = steam_name
+	ui_user_name.text = steam_name
+	if steam_id == GlobalSteam.HOST_ID:
+		ui_user_type.text = tr("MP_UI HOST")
+	else:
+		ui_user_type.text = tr("MP_UI GAMBLER")
+	user_id = steam_id
+	user_name = steam_name

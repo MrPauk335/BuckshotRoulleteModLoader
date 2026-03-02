@@ -14,7 +14,7 @@ class_name InteractionBranch extends Node
 @export var assignedSignatureButton: SignButton
 
 func _ready():
-    if (signatureButton_letterAlias != ""):
-        assignedSignatureButton = get_parent().get_child(3)
-    if (signatureButton_specialAlias != ""):
-        assignedSignatureButton = get_parent().get_child(3)
+	if (signatureButton_letterAlias != ""):
+		assignedSignatureButton = get_parent().get_child(3)
+	if (signatureButton_specialAlias != ""):
+		assignedSignatureButton = get_parent().get_child(3)

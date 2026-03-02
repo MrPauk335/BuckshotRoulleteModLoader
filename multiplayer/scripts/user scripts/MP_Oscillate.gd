@@ -20,52 +20,52 @@ var y_next: float
 var prev_y = 0
 
 func _ready():
-    initial_y = parent.transform.origin.y
+	initial_y = parent.transform.origin.y
 
 func _process(delta):
-    OscillateAxis()
-    LerpOriginalAxis()
-    if properties != null:
-        if properties.socket_number == properties.intermediary.game_state.MAIN_active_current_turn_socket:
-            if alias == "shotgun":
+	OscillateAxis()
+	LerpOriginalAxis()
+	if properties != null:
+		if properties.socket_number == properties.intermediary.game_state.MAIN_active_current_turn_socket:
+			if alias == "shotgun":
 
-                pass
+				pass
 
 func SetRandomFrequency():
-    frequency = randf_range(frequency_r1, frequency_r2)
+	frequency = randf_range(frequency_r1, frequency_r2)
 
 func StartOscillating():
-    time = 0
-    new_y = 0
-    lerping_to_orig = false
-    oscillating = true
+	time = 0
+	new_y = 0
+	lerping_to_orig = false
+	oscillating = true
 
 func StopOscillating():
 
-    lerping_to_orig = false
-    oscillating = false
+	lerping_to_orig = false
+	oscillating = false
 
 func LerpToOriginal():
-    oscillating = false
-    y_current = parent.transform.origin.y
-    y_next = initial_y
-    elapsed = 0
-    lerping_to_orig = true
+	oscillating = false
+	y_current = parent.transform.origin.y
+	y_next = initial_y
+	elapsed = 0
+	lerping_to_orig = true
 
 func LerpOriginalAxis():
-    if lerping_to_orig:
-        elapsed += get_process_delta_time()
-        var c = clampf(elapsed / dur, 0.0, 1.0)
-        c = ease(c, -3)
-        var y_new = lerp(y_current, y_next, c)
-        parent.transform.origin = Vector3(parent.transform.origin.x, y_new, parent.transform.origin.z)
+	if lerping_to_orig:
+		elapsed += get_process_delta_time()
+		var c = clampf(elapsed / dur, 0.0, 1.0)
+		c = ease(c, -3)
+		var y_new = lerp(y_current, y_next, c)
+		parent.transform.origin = Vector3(parent.transform.origin.x, y_new, parent.transform.origin.z)
 
 var new_y
 func OscillateAxis():
-    if oscillating:
-        time += get_process_delta_time()
-        var new_y = (sin(time * frequency) + amplitude) / offset
+	if oscillating:
+		time += get_process_delta_time()
+		var new_y = (sin(time * frequency) + amplitude) / offset
 
-        var oscillation_offset = initial_y + new_y - parent.transform.origin.y + 0.18
+		var oscillation_offset = initial_y + new_y - parent.transform.origin.y + 0.18
 
-        parent.transform.origin += Vector3(0, oscillation_offset, 0)
+		parent.transform.origin += Vector3(0, oscillation_offset, 0)
