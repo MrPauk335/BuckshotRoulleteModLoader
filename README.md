@@ -26,10 +26,11 @@ pip install numpy requests
 ```
 
 ## 📂 Project Structure
-- `/mods-unpacked`: Source for restored mods (AI Bot, Mod Menu, etc.).
-- `/multiplayer`: Core multiplayer logic with ModLoader hooks injected.
-- `ai_bridge.py`: Communication bridge between Godot and Python.
+- [ai_bridge.py](file:///d:/Godot/Projects/Buckshot/ai_bridge.py): Communication bridge between Godot and Python.
 - `buckshot_ai.py`: Neural Network architecture and training environment.
+
+## 📖 Modding Documentation
+Want to create your own mods? Check out our [Modding Guide](MODDING.md) for details on the mod structure, manifest requirements, and how to use our custom hook system.
 
 ## 🤝 Contribution
 Restored and maintained by **MrPauk335**. Feel free to open issues or pull requests.
